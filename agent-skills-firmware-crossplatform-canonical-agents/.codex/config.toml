@@ -1,0 +1,25 @@
+# Project-scoped Codex configuration.
+# Codex reads this file only when the project is trusted.
+# Adjust the values to match your team's approvals, sandbox, and model defaults.
+
+project_doc_fallback_filenames = ["TEAM_GUIDE.md", ".agents.md"]
+project_doc_max_bytes = 65536
+
+# Keep the default Git-root behavior, but make the intent explicit.
+project_root_markers = [".git"]
+
+# review_model = "gpt-5.4"
+# sandbox_mode = "read-only"
+# approval_policy = "on-request"
+# service_tier = "flex"
+
+[agents]
+# Keep the tree shallow at first.
+max_threads = 4
+max_depth = 1
+job_max_runtime_seconds = 1800
+
+# Example of tightening writable sandbox behavior if you switch to workspace-write.
+# [sandbox_workspace_write]
+# network_access = false
+# writable_roots = []
