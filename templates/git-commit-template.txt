@@ -1,0 +1,26 @@
+# <type>[optional scope]: <description>
+#
+# Prefer Conventional Commit headers when practical:
+#   feat, fix, docs, refactor, test, perf, chore
+#
+# Keep the subject short (50 char soft limit), imperative, and without
+# a trailing period.
+#
+# Leave a blank line, then explain:
+# - what problem exists without this change
+# - why this approach is better
+# - any important tradeoffs or follow-up
+#
+# Optional trailers when relevant or required:
+# BREAKING CHANGE: <what changed and what callers must do>
+# Co-authored-by: Name <email>
+# Signed-off-by: Name <email>
+#
+# Example:
+# fix(storage): avoid redundant flash erase
+#
+# The storage writer erased the page even when the payload matched the
+# existing contents. This increased wear and latency for idempotent writes.
+#
+# Skip the erase when the payload is unchanged and keep the existing
+# verification step. This preserves behavior while reducing wear.
