@@ -19,6 +19,7 @@ Optional specialists:
 - **release-manager** owns release readiness, version bump synthesis, release shape, and final release communication when release coordination becomes its own lane
 - **integration-engineer** owns reproducible integration, bench, HIL, environment evidence, and flake triage when real-environment work becomes its own lane
 - **workflow-architect** owns evidence-based improvement of prompts, templates, skills, and roles when the operating model itself needs work
+- **researcher** owns external domain investigation — datasheets, standards, specs, errata, feasibility signals, and technology landscape surveys — when a knowledge gap must be closed before planning is possible; stops before option comparison or design begins
 
 Keep one active human-facing owner. `product-owner` stays responsible for alignment with the requester. Multiple specialists may work in parallel only when `planner` has made ownership boundaries, dependencies, and integration checkpoints explicit. Specialists are internal workers by default: they return results to `product-owner`, not straight to the requester, unless the workflow explicitly says otherwise.
 
@@ -141,6 +142,7 @@ Every handoff should include:
 8. `release-manager` joins when version bump, changelog finalization, release shape, release readiness, or go/no-go communication deserves a dedicated owner.
 9. `integration-engineer` joins when integration setup, HIL, flashing, bench repro, environment stability, or flaky lab signal is the bottleneck.
 10. `workflow-architect` joins when repeated workflow friction, missing guidance, or possible new skills or roles need a dedicated owner.
+11. `researcher` joins when an external knowledge gap — datasheets, specs, standards, errata, or feasibility signals — must be closed before planning can start.
 
 ## Default skill sequences
 
@@ -217,6 +219,11 @@ Every handoff should include:
 2. `simplify-without-behavior-change`
 3. `refactoring`
 4. `verification`
+
+### External domain investigation
+1. `research`
+2. `planning` (receives the research summary as input)
+3. `trade-study-and-decision-analysis` when research surfaces multiple credible options
 
 ### Platform migration
 1. `codebase-exploration`

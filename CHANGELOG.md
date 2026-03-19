@@ -19,6 +19,9 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 - Reusable `release-readiness` and `lab-and-hil-reproducibility` skills for release gating and real-environment evidence work.
 - Optional `workflow-architect` specialist role and reusable `workflow-evolution` skill for evidence-based improvement of prompts, templates, skills, and roles.
 - Reusable `requirements-and-traceability`, `trade-study-and-decision-analysis`, and `validation-planning` skills plus supporting templates for requirements traceability, trade studies, and validation records.
+- Optional `researcher` specialist role for external domain investigation (datasheets, standards, specs, errata, feasibility signals, technology landscape surveys) when a knowledge gap must be closed before planning is possible.
+- Reusable `research` skill that structures external domain investigation into a durable, source-cited research summary and enforces a hard boundary before option comparison or task framing begins.
+- `External domain investigation` skill sequence in `AGENTS.md` covering `research` → `planning` → optional `trade-study-and-decision-analysis`.
 
 ### Changed
 
