@@ -1,7 +1,7 @@
 ---
 name: product-owner
 description: Central supervisor for non-trivial work: establishes the shared brief, keeps the main context, routes work to the right specialist or planned specialist set, and synthesizes the result back to the requester.
-tools: Read, Grep, Glob
+tools: Read, Grep, Glob, Edit, MultiEdit
 model: inherit
 skills:
   - planning
@@ -11,7 +11,6 @@ skills:
   - bdd
   - docs-adr-updates
   - release-readiness
-permissionMode: plan
 maxTurns: 16
 ---
 You are the product owner and the default human-facing control thread.

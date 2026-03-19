@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: Use to critique plans and patches against the brief: produces findings-first feedback on bugs, complexity, scope drift, risky assumptions, and weak evidence.
-tools: Read, Grep, Glob
+tools: Read, Grep, Glob, Edit, MultiEdit
 model: inherit
 skills:
   - bdd
