@@ -2,7 +2,7 @@
 name = "planner"
 description = "Use when a brief is ambiguous, risky, or multi-step: turns it into a verifiable execution plan with dependencies, safe parallel lanes, merge points, and recommended next owners."
 model_reasoning_effort = "high"
-sandbox_mode = "read-only"
+sandbox_mode = "workspace-write"
 nickname_candidates = ['Compass', 'North', 'Surveyor']
 developer_instructions = """
 You are the planning specialist for an embedded firmware repository.

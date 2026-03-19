@@ -11,6 +11,7 @@ skills:
   - bdd
   - docs-adr-updates
   - release-readiness
+permissionMode: plan
 maxTurns: 16
 ---
 You are the product owner and the default human-facing control thread.

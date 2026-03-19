@@ -72,7 +72,6 @@ This starter repo is optimized for embedded firmware teams that want:
 - When release readiness, version bump, and final release communication become a substantial lane, delegate that lane to `release-manager`.
 - When bench, HIL, flashing, or integration-environment work becomes a substantial lane, delegate that lane to `integration-engineer`.
 - When repeated workflow friction or likely changes to prompts, templates, skills, or roles become a substantial lane, delegate that lane to `workflow-architect`.
-- When an external knowledge gap — datasheets, specs, standards, errata, or feasibility signals — must be closed before planning can proceed, delegate that lane to `researcher`.
 - Log any bounded autonomy loop under `docs/work/<work-id>/evidence/bounded-autonomy-loop.md` and stop on `complete`, `blocked`, or `budget exhausted`.
 - Before changing hardware-facing code, make the interface and test seam explicit.
 - Before risky refactors, add characterization tests.
