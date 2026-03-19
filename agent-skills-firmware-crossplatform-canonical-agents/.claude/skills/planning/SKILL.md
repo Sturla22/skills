@@ -1,9 +1,7 @@
 ---
 name: planning
-description: Produce a concrete, staged plan with explicit verification before implementation.
-allowed-tools: Read, Grep, Glob, Bash
+description: Produce a concrete, staged plan with explicit verification before implementation. Use when planning before implementation, breaking down ambiguous work, structuring a multi-step approach, defining done criteria, or reducing risk before changing code.
 ---
-
 
 # Planning
 
@@ -17,23 +15,32 @@ Produce a low-risk, checkable plan.
 - risk needs to be reduced before code changes
 
 ## Process
-1. Restate the problem operationally.
-2. Define the end state and non-goals.
-3. Identify the smallest viable path.
-4. Break the work into ordered steps.
-5. Name assumptions and unknowns.
-6. Define how success will be verified.
+1. Read the relevant code, tests, and docs to understand current state before proposing anything.
+   ```
+   grep -rn "relevant_symbol\|TargetModule" src/ docs/
+   ```
+2. Restate the problem operationally.
+3. Define the end state and non-goals.
+4. Identify the smallest viable path.
+5. Break the work into ordered steps.
+6. Name assumptions and unknowns.
+7. Define how success will be verified.
 
-## Done-when
-- scope is explicit
-- steps are ordered
-- acceptance criteria are concrete
-- verification is specified
+## Guardrails
+- Do not propose a plan without first reading the relevant code — plans based on assumptions fail.
+- Every step in the plan must be individually verifiable.
+- Non-goals must be explicit — unstated non-goals become scope creep.
+- If the plan has more than 7 steps, look for a smaller viable path first.
 
-## Output
-- problem
+## Failure Classification
+- **Underspecified plan**: steps are too vague to execute — break each step into a concrete action.
+- **Missing verification**: the plan has no acceptance criteria — define done-when before starting.
+- **Scope creep**: the plan is growing to include "nice to have" work — remove non-essential steps.
+
+## Output Contract
+- problem stated operationally
 - scope and non-goals
-- plan steps
+- plan steps in order
 - risks and unknowns
 - verification plan
-- done-when
+- done-when criteria

@@ -1,7 +1,6 @@
 ---
 name: safety-risk-scan
 description: Enumerate likely failure modes and required mitigations for safety- or reliability-sensitive changes.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

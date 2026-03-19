@@ -1,7 +1,6 @@
 ---
 name: hypothesis-driven-debugging
 description: Debug by ranking concrete hypotheses and running discriminating checks.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

@@ -1,7 +1,6 @@
 ---
 name: firmware-migration
 description: Move from legacy platform structure to a target structure in small, verified, reversible steps.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

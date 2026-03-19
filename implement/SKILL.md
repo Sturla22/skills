@@ -2,7 +2,6 @@
 name: implement
 description: Find and implement NotImplementedError stubs in the codebase. Use when asked to implement a stub, fill in a skeleton, build out a TODO, make a module functional, or replace a placeholder with working code.
 argument-hint: "[module-or-class]"
-allowed-tools: Read, Grep, Edit, Bash(uv run pytest:*), Bash(uv run ruff:*)
 ---
 
 # Implement Stubs

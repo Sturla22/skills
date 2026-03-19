@@ -1,7 +1,6 @@
 ---
 name: hardware-abstraction
 description: Keep direct hardware access behind a narrow seam and separate policy from mechanism.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

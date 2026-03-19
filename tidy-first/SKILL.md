@@ -2,7 +2,6 @@
 name: tidy-first
 description: Quick hygiene pass (naming, dead code, small duplication, lint fixes) without changing behavior. Use when the user says "clean up this code", "tidy before feature work", "quick cleanup", or the target area is messy and needs low-risk prep first.
 argument-hint: "[file-or-module-scope]"
-allowed-tools: Read, Grep, Edit, Bash(uv run ruff:*), Bash(uv run pytest:*)
 ---
 
 # Tidy First

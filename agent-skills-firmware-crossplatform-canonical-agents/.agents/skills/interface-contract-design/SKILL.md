@@ -1,7 +1,6 @@
 ---
 name: interface-contract-design
 description: Define stable module contracts with explicit inputs, outputs, failure modes, timing, and ownership.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

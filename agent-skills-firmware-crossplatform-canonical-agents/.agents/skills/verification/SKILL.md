@@ -1,7 +1,6 @@
 ---
 name: verification
 description: Prove that the claimed change works and state clearly what remains unverified.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

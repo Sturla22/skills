@@ -1,7 +1,6 @@
 ---
 name: codebase-exploration
 description: Map the relevant files, entry points, boundaries, and invariants before changing code.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

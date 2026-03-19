@@ -1,7 +1,6 @@
 ---
 name: docs-adr-updates
 description: Keep README, architecture notes, and ADRs aligned with the implemented system.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

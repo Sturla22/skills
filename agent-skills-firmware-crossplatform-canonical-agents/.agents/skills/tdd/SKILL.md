@@ -1,7 +1,6 @@
 ---
 name: tdd
 description: Drive implementation with a failing test, the smallest passing change, and safe cleanup.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

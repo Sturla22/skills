@@ -1,7 +1,6 @@
 ---
 name: planning
 description: Produce a concrete, staged plan with explicit verification before implementation.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

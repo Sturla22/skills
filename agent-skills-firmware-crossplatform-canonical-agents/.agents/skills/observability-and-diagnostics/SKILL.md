@@ -1,7 +1,6 @@
 ---
 name: observability-and-diagnostics
 description: Add or refine the minimal logs, counters, asserts, and traces needed to verify and support the system.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

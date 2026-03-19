@@ -1,7 +1,6 @@
 ---
 name: resource-budget-review
 description: Review RAM, flash, stack, CPU, latency, and logging impact as part of the change.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

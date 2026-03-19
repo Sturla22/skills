@@ -1,7 +1,6 @@
 ---
 name: refactoring
 description: Improve internal structure while preserving externally visible behavior.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

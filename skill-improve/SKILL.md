@@ -2,7 +2,6 @@
 name: skill-improve
 description: Audit and iteratively improve Claude Code skills against best practices. Use when the user says "improve this skill", "audit skills", "skill quality check", "make skills better", or wants to optimize skill activation and execution quality.
 argument-hint: "[skill-name | all]"
-allowed-tools: Read, Grep, Glob, Edit
 ---
 
 # Skill Improver

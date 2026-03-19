@@ -1,7 +1,6 @@
 ---
 name: tidy-first
 description: Make tiny behavior-preserving cleanups that make the next change easier.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

@@ -1,9 +1,7 @@
 ---
 name: verification
-description: Prove that the claimed change works and state clearly what remains unverified.
-allowed-tools: Read, Grep, Glob, Bash
+description: Prove that the claimed change works and state clearly what remains unverified. Use when verifying a fix, checking a refactor, running regression tests, confirming a change works, or producing an evidence-based verdict before merge.
 ---
-
 
 # Verification
 
@@ -16,21 +14,33 @@ Demonstrate the main claim and relevant regressions as far as practical.
 - a refactor or migration needs evidence
 
 ## Process
-1. Restate the claim being verified.
+1. Read the change and restate the claim being verified.
+   ```
+   grep -rn "changed_symbol\|changed_function" src/ tests/
+   ```
 2. Choose the strongest available checks.
-3. Run focused checks first, then broader ones as needed.
-4. Compare results to acceptance criteria.
-5. State residual risk and unverified areas.
+3. Run focused checks first.
+   ```
+   make test
+   ```
+4. Run broader regression checks as needed.
+5. Compare results to acceptance criteria.
+6. State residual risk and unverified areas.
 
-## Done-when
-- the main claim is demonstrated
-- relevant regressions were checked
-- limitations are stated honestly
+## Guardrails
+- Do not declare verification passed if any regression failure remains.
+- Every claim must map to a runnable check — verbal assertions are not verification.
+- State what was NOT verified — partial verification presented as complete is a risk.
+- Environment blockers (missing display, device, hardware) must be reported explicitly, not silently skipped.
 
-## Output
+## Failure Classification
+- **Logic regression**: tests fail due to a real behavior change — must be fixed before claiming success.
+- **Environment blocker**: test fails due to missing display, hardware, or toolchain — report as blocked, not as regression.
+- **Missing coverage**: the claim cannot be verified because no test covers it — add the test or flag the gap.
+
+## Output Contract
 - claim verified
-- checks run
-- results
+- checks run and results
 - residual risk
-- not verified
+- not verified (explicit list)
 - verdict

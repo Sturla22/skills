@@ -2,7 +2,6 @@
 name: refactor-safe
 description: Perform behavior-preserving refactors with explicit invariants, staged edits, and regression gates. Use when the user asks to refactor, restructure, reorganize, or clean up code without changing external behavior.
 argument-hint: "[file-or-module-scope]"
-allowed-tools: Read, Grep, Edit, Bash(scripts/dev.sh:*), Bash(uv run pytest:*), Bash(uv run ruff:*)
 ---
 
 # Safe Refactoring

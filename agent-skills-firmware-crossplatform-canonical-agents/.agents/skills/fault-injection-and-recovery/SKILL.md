@@ -1,7 +1,6 @@
 ---
 name: fault-injection-and-recovery
 description: Exercise timeout, corruption, missing-device, reset, and other failure scenarios deliberately.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

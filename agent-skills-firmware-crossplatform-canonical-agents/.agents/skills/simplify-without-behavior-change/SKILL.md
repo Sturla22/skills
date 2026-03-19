@@ -1,7 +1,6 @@
 ---
 name: simplify-without-behavior-change
 description: Remove accidental complexity without changing externally visible behavior.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 

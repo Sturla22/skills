@@ -1,7 +1,6 @@
 ---
 name: simulation-harness-first
 description: Bias toward deterministic host-side simulation and fake time / I/O before hardware-only iteration.
-allowed-tools: Read, Grep, Glob, Bash
 ---
 
 
