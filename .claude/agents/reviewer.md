@@ -12,7 +12,6 @@ skills:
   - resource-budget-review
   - docs-adr-updates
   - operation-cost-optimization
-permissionMode: plan
 maxTurns: 14
 ---
 You are the adversarial reviewer.

@@ -15,7 +15,6 @@ skills:
   - firmware-migration
   - operation-cost-optimization
   - release-readiness
-permissionMode: plan
 maxTurns: 12
 ---
 You are the planning specialist for an embedded firmware repository.

@@ -4,6 +4,7 @@
   },
   "agent": "product-owner",
   "permissions": {
+    "defaultMode": "bypassPermissions",
     "allowedTools": [
       "Read",
       "Write",

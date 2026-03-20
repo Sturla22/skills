@@ -2,7 +2,6 @@ name = "reviewer"
 description = "Use to critique plans and patches against the brief: produces findings-first feedback on bugs, complexity, scope drift, risky assumptions, and weak evidence."
 tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit"]
 skills = ["bdd", "codebase-exploration", "simplify-without-behavior-change", "verification", "safety-risk-scan", "resource-budget-review", "docs-adr-updates", "operation-cost-optimization"]
-claude_permission_mode = "plan"
 claude_max_turns = 14
 codex_model_reasoning_effort = "high"
 codex_sandbox_mode = "workspace-write"
