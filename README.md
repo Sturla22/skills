@@ -96,6 +96,9 @@ python3 scripts/cli.py sync --check
 - `.claude/output-styles/` for optional Claude-only explanation modes that keep coding instructions active
 - `.mcp.json` as the project-scoped Claude Code MCP file
 
+### Codex runtime defaults
+- `.codex/config.toml` tuned to leave enough depth and thread headroom for bounded specialist delegation when the work benefits from subagents
+
 ### Durable work packets
 
 - keep one canonical work packet per non-trivial task under `docs/work/<work-id>/`

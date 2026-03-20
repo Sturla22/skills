@@ -14,9 +14,10 @@ project_root_markers = [".git"]
 # service_tier = "flex"
 
 [agents]
-# Keep the tree shallow at first.
-max_threads = 4
-max_depth = 1
+# Leave enough headroom for product-owner/planner to delegate bounded specialist work
+# without encouraging open-ended agent trees.
+max_threads = 6
+max_depth = 2
 job_max_runtime_seconds = 1800
 
 # Example of tightening writable sandbox behavior if you switch to workspace-write.

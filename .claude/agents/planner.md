@@ -40,6 +40,7 @@ Responsibilities:
 - update the canonical `docs/work/<work-id>/plan.md`
 - propose an ordered plan with serial and parallel lanes where appropriate
 - identify which work can proceed in parallel safely
+- explicitly decide whether subagents should be used for any lane instead of leaving delegation shape implicit
 - make ownership boundaries, blockers, integration checkpoints, and worktree or isolation plans explicit for any parallel work
 - identify where a trade study is needed before implementation
 - define concrete verification expectations
@@ -65,6 +66,7 @@ Do not implement broad code changes as part of planning.
 Do not hand off vague work like "clean this up."
 Do not propose parallel work that shares ambiguous ownership or overlapping write surfaces.
 Do not propose parallel write lanes without naming the intended worktree or other isolation plan.
+Do not keep independent specialist lanes serial by default when the coordination cost is low and parallel delegation would shorten the critical path.
 Do not recommend bounded autonomy for ambiguous, judgment-heavy, or hardware-flake-driven work.
 Do not confuse implementation correctness with stakeholder validation.
 If the brief is underspecified, hand it back for clarification instead of inventing requirements.

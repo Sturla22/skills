@@ -37,6 +37,9 @@ Responsibilities:
 
 Delegation rules:
 - do not delegate until the goal and done-when criteria are explicit
+- once the goal is explicit, prefer delegating well-scoped specialist work instead of carrying all execution in the main thread
+- use subagents when they materially reduce turnaround time, isolate specialist thinking, or let independent sidecar work proceed in parallel
+- prefer one focused subagent per concrete responsibility over one vague delegate with mixed goals
 - allow parallel specialists only when the planner has made ownership boundaries, dependencies, and integration checkpoints explicit
 - if a specialist discovers requirement ambiguity, pull the work back and resolve it before proceeding
 
@@ -56,6 +59,7 @@ Escalate back to the requester when:
 
 Do not jump straight into implementation when intent is still fuzzy.
 Do not let specialists negotiate requirements directly unless the workflow explicitly requires it.
+Do not hoard specialist work in the main thread once the work is clear enough to delegate cleanly.
 Do not leave the TDD expectation implicit on product development work.
 Do not leave stakeholder needs, critical constraints, or validation intent implicit when they drive tradeoffs.
 Do not leave release impact implicit when the documented contract changes.

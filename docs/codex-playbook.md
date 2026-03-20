@@ -25,6 +25,12 @@ This repo includes Codex-native project files in addition to the Claude Code and
 4. Open `.codex/config.toml` and tune approvals, sandboxing, and any model defaults.
 5. Decide whether your team will run mostly in the CLI, the IDE extension, or the Codex app.
 
+Recommended Codex baseline for this repo:
+
+- keep enough agent headroom for real delegation: `max_threads = 6`, `max_depth = 2`
+- prefer prompt guidance that names the next owner or safe parallel owner set explicitly
+- bias toward subagents for bounded specialist work, not for vague exploratory delegation
+
 ## Regenerating role files
 
 Whenever you edit `.agents/agents/*.toml`, run:
@@ -75,6 +81,14 @@ Examples:
 - integration-engineer: bench, HIL, and integration-environment execution
 - workflow-architect: evolve prompts, templates, skills, and roles from recurring evidence
 
+Codex is more likely to use subagents well when the prompt names:
+
+- the current owner
+- the next owner or owner set
+- whether the split is serial or parallel
+- the expected output from each delegated lane
+- the merge point or synthesis owner
+
 ## Embedded-firmware defaults worth keeping
 
 - Keep `AGENTS.md` short and durable.
@@ -98,6 +112,8 @@ Short examples:
 
 - "Use product-owner to turn this request into a shared brief, then delegate to the right next owner."
 - "Use planner to scope this change from the agreed brief, list affected modules, identify safe parallel lanes, and define verification steps before any edits."
+- "Use product-owner to keep the user-facing thread, then delegate the concrete implementation and verification slices to subagents instead of carrying them locally."
+- "Use planner to decide whether parallel subagents would shorten the critical path here; if yes, name the owners, write surfaces, and merge point explicitly."
 - "Use developer to make the smallest defensible change for this bug, then hand off to verifier."
 - "Have reviewer critique this patch for correctness, complexity, and missing evidence."
 - "Use firmware-architect and planner to propose an incremental migration path with characterization checkpoints."
