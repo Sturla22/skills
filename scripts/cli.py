@@ -393,7 +393,7 @@ def cmd_new_skill(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Sync helpers (formerly scripts/sync_agent_layouts.py)
+# Sync helpers
 # ---------------------------------------------------------------------------
 
 CANONICAL_AGENTS = ROOT / ".agents" / "agents"
@@ -626,7 +626,7 @@ def cmd_sync(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Coverage helpers (formerly scripts/check-scenario-coverage.py)
+# Coverage helpers
 # ---------------------------------------------------------------------------
 
 _SC_ID_PATTERN = re.compile(r"\bSC-\d+\b")

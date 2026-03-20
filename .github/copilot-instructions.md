@@ -14,6 +14,7 @@ Read `AGENTS.md` first for the operating model.
 - For firmware code, keep hardware access behind explicit boundaries.
 - Make units, timing assumptions, and failure behavior explicit.
 - Update docs or ADR notes when design truth changes.
+- In stable docs and code comments, prefer current-state wording over historical narration. Put change history in `CHANGELOG.md`, ADR supersession, release notes, or work packets.
 - Say clearly what was not verified on real hardware.
 
 ## Output expectations

@@ -61,6 +61,7 @@ This starter repo is optimized for embedded firmware teams that want:
 - Prefer a short imperative commit subject, ideally in Conventional Commit form, with a body when the why or tradeoffs are not obvious.
 - Treat Semantic Versioning as the default release policy for this repo's documented contract.
 - Use a durable work packet under `docs/work/<work-id>/` for briefs, plans, status, evidence, and handoffs instead of scattering the same context across chat.
+- In stable docs and code comments, prefer current-state wording over historical narration. Keep change history in `CHANGELOG.md`, ADR supersession, release notes, or work packets unless the file is explicitly about migration or history.
 - Use `release-readiness` when release preparation, SemVer classification, or go / no-go synthesis becomes real work instead of an afterthought.
 - Use `lab-and-hil-reproducibility` when bench or HIL evidence needs setup identity, repeatable steps, and honest flake classification.
 - Use `workflow-evolution` when the process itself needs evidence-based improvement and the smallest intervention must be chosen deliberately.

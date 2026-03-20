@@ -75,9 +75,9 @@ This version is biased toward **embedded firmware** and **safety-aware engineeri
 - treat integration and V&V as continuous signals, not late phases
 - track resource and safety risk, not just correctness
 
-## What changed in this variant
+## Canonical layout
 
-This version makes **`.agents/` the canonical source of truth** for role definitions and shared skills.
+**`.agents/` is the canonical source of truth** for role definitions and shared skills.
 
 - Canonical role specs live in `.agents/agents/*.toml`
 - Canonical shared skills live in `.agents/skills/<skill>/SKILL.md`

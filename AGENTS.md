@@ -132,6 +132,13 @@ Every handoff should include:
 - When functionality is deprecated, document the deprecation in the changelog before the removal release when practical.
 - On release, move `Unreleased` entries into a dated version section using ISO `YYYY-MM-DD`.
 
+## Documentation tone
+
+- Prefer current-state documentation over historical narration.
+- Do not add headings or prose such as "what changed", "formerly", "this variant", or migration commentary in stable repo docs unless the history is itself the point.
+- Keep change history in the appropriate durable places: `CHANGELOG.md`, ADR supersession links, release notes, and work-packet evidence or handoffs.
+- When a reader only needs the current contract or workflow, describe the current truth directly instead of explaining how the repo got there.
+
 ## Default role flow
 
 1. `product-owner` establishes shared understanding with the requester.
@@ -255,3 +262,4 @@ Every handoff should include:
 - For workflow changes, prefer one small mutable surface, an explicit evaluation window, and a keep / revise / revert decision.
 - State what was not tested on real hardware.
 - When uncertain, tighten the shared understanding, reduce the next step, and add instrumentation.
+- Do not add historical comments to stable docs or code comments unless the file is explicitly for history, release communication, or migration tracking.
