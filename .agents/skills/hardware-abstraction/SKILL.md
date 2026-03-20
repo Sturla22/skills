@@ -20,12 +20,14 @@ Prevent hardware-specific details from leaking into higher-level logic.
 3. **Define a narrow capability-oriented boundary** — one header per peripheral type; each function maps to exactly one hardware capability. Thin HAL: no business logic, retry policies, or protocol parsing inside the HAL.
 
 4. **Implement with opaque handles** — application code receives a handle it cannot inspect; hardware register details are hidden by the type system.
-   ```c
-   // C: function-pointer struct
-   typedef struct {
-       bool (*init)(uint32_t baud);
-       int  (*send)(const uint8_t *buf, size_t len);
-   } UartDriver_t;
+   ```cpp
+   // C++: pure virtual interface
+   class IUart {
+   public:
+       virtual ~IUart() = default;
+       virtual bool init(uint32_t baud) = 0;
+       virtual int  send(const uint8_t* buf, std::size_t len) = 0;
+   };
    ```
 
 5. **Move policy above the boundary** — decision logic, retry policies, and state machines live above the seam; only raw mechanism lives below.

@@ -27,31 +27,34 @@ Create a fast, deterministic feedback loop for behavior that does not truly requ
    | **Spy** | Need to record calls for later assertion | Records every GPIO toggle |
 
 4. **Fake time explicitly** — inject a clock seam instead of calling a global tick function:
-   ```c
-   typedef uint32_t (*GetTicksFn)(void);
-   void TimeService_SetGetTicks(GetTicksFn fn);
+   ```cpp
+   class IClock {
+   public:
+       virtual ~IClock() = default;
+       virtual uint32_t getTicks() const = 0;
+   };
    ```
-   In tests, call `FakeTime_Advance(500)` to simulate 500 ms instantly — no `sleep()`, no race conditions.
+   In tests, pass a `FakeClock` that implements `IClock`; call `fakeClock.advance(500)` to simulate 500 ms instantly — no `sleep()`, no race conditions.
 
 5. **Capture current behavior with deterministic fixtures** — write tests that exercise the core logic through the fakes and record actual output. Prefer using BDD-style behavior scenarios as the fixture source.
 
 6. **Use the harness for debugging, BDD, and TDD** — reproduce bugs, drive new behavior, and execute lower-level behavior scenarios without hardware.
 
 ## Tooling options
-- **Unity + CMock + Ceedling** — CMock auto-generates mocks from C header files; Ceedling orchestrates build + test. Run `ceedling test:all`.
-- **fff (Fake Function Framework)** — single-header C library; define a fake with `FAKE_VOID_FUNC(HAL_GPIO_WritePin, ...)`, inspect `HAL_GPIO_WritePin_fake.call_count`.
+- **GoogleTest + GMock** — idiomatic C++ unit testing and mocking; define mocks with `MOCK_METHOD`; integrate with CMake via `FetchContent`. Run `ctest --output-on-failure`.
+- **Catch2** — header-only C++ framework with BDD-style `SCENARIO`/`GIVEN`/`WHEN`/`THEN` macros; low setup cost for new projects.
 - **QEMU** — boots unmodified firmware ELF on a virtual board; `qemu-system-arm -machine mps2-an385 -kernel firmware.elf`; attach GDB via `-s -S`; pipe results via semihosting.
 - **Renode** — multi-board simulation with Robot Framework integration; supports Zephyr, FreeRTOS, multi-node CAN/UART/SPI topologies; GitHub Action available.
 
 ## Recommended directory structure
 ```
 hal/
-  hal_uart.h          # Interface (seam)
-  hal_uart_real.c     # Production (vendor HAL calls)
-  hal_uart_mock.c     # Test double (CMock/fff)
+  IUart.hpp           # Interface (seam, pure virtual)
+  UartReal.cpp        # Production (vendor HAL calls)
+  UartFake.hpp/.cpp   # Test double (stateful fake or GMock)
 tests/
-  fakes/              # Stateful test doubles (fake flash = RAM array)
-  mocks/              # CMock-generated or fff doubles
+  fakes/              # Stateful test doubles (e.g. FakeFlash backed by std::array)
+  mocks/              # GMock-derived doubles
   src/                # Test files
 ```
 
