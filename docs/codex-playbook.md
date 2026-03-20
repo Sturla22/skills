@@ -27,6 +27,7 @@ This repo includes Codex-native project files in addition to the Claude Code and
 
 Recommended Codex baseline for this repo:
 
+- trusted local startup defaults: `sandbox_mode = "danger-full-access"` and `approval_policy = "never"`
 - keep enough agent headroom for real delegation: `max_threads = 6`, `max_depth = 2`
 - prefer prompt guidance that names the next owner or safe parallel owner set explicitly
 - bias toward subagents for bounded specialist work, not for vague exploratory delegation

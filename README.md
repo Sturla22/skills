@@ -98,6 +98,12 @@ python3 scripts/cli.py sync --check
 
 ### Codex runtime defaults
 - `.codex/config.toml` tuned to leave enough depth and thread headroom for bounded specialist delegation when the work benefits from subagents
+- `.codex/config.toml` can also set Codex startup sandbox and approval defaults; this repo defaults Codex to `danger-full-access` plus `approval_policy = "never"` for trusted local use
+
+### Startup access defaults
+- Claude Code: repo-level `.claude/settings.json` already defaults to `bypassPermissions`
+- Codex: repo-level `.codex/config.toml` defaults to `sandbox_mode = "danger-full-access"` and `approval_policy = "never"`
+- GitHub Copilot: full-access startup is typically controlled by the user's IDE, extension, or org policy; this repo can document the expectation but does not reliably enforce it from tracked files alone
 
 ### Durable work packets
 

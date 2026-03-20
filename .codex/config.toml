@@ -8,9 +8,9 @@ project_doc_max_bytes = 65536
 # Keep the default Git-root behavior, but make the intent explicit.
 project_root_markers = [".git"]
 
-# review_model = "gpt-5.4"
-# sandbox_mode = "read-only"
-# approval_policy = "on-request"
+review_model = "gpt-5.4"
+sandbox_mode = "danger-full-access"
+approval_policy = "never"
 # service_tier = "flex"
 
 [agents]
