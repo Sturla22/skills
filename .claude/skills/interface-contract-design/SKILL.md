@@ -19,10 +19,10 @@ Define a contract that can survive implementation changes and platform migration
    - **Preconditions** — what must be true before calling (inputs, system state, locks held)
    - **Postconditions** — what is guaranteed after a successful return (outputs, changed state, error codes)
    - **Side effects** — what external state changes; what does not change
-   - **Ownership** — who owns resources before and after the call; who is responsible for release
+   - **Ownership** — who owns resources before and after the call; who is responsible for release. **`etl::delegate` (heap-free callable).** `etl::delegate` is a heap-free callable wrapper for free functions, member functions, or lambdas; the captured object's lifetime must not exceed the delegate's owner's lifetime. Mismatched lifetimes are the primary failure mode — state this constraint explicitly in the contract when a delegate is stored.
    - **Interface authority** — who owns changes to this contract and who must adapt if it changes
    - **Error contract** — which conditions return errors (caller-detectable failures) vs. trigger assertions (programmer bugs)
-   - **Concurrency / reentrancy** — thread-safe? ISR-safe? which locks are assumed held?
+   - **Concurrency / reentrancy** — thread-safe? ISR-safe? which locks are assumed held? **Observer / event bus contracts.** When an interface notifies observers, the following must be explicit in the contract: (1) notification order is deterministic and follows registration order; (2) if `notify_observers()` can be called from ISR context, every observer's `notification()` must be ISR-safe — prefer posting to a queue and notifying from task context instead; (3) `etl::observer_list_full` is a contract invariant — the maximum observer count is fixed at compile time and exceeding it is a programmer error, not a runtime condition; (4) observers cannot be removed during traversal — any deregistration during notification produces undefined behavior and must be prevented by the contract.
    - **Timing / real-time constraints** — worst-case execution time, latency bounds, deadline requirements
    - **External dependencies / assumptions** — upstream timing, data guarantees, protocol assumptions, or hardware conditions relied upon
    - **Invariants** — what object/module state is preserved across all calls
@@ -35,6 +35,8 @@ Define a contract that can survive implementation changes and platform migration
 4. **Review for ambiguity** — for each field, ask: "could a caller and implementer interpret this differently?" Resolve ambiguities before writing implementation.
 
 5. **Apply Interface Segregation** — split interfaces that span multiple unrelated responsibilities; each interface should represent one coherent behavioral contract.
+
+   **ETL type erasure (`etl::imessage`, `etl::ifsm_state`).** The ETL library exposes non-template base interfaces (`etl::imessage`, `etl::ifsm_state`, `etl::icircular_buffer`) alongside each template concrete type. These base interfaces provide a lightweight type-erasure seam for heterogeneous storage without RTTI: accept or store instances through the base pointer when the caller must not know the concrete type. Prefer this over `std::any` or virtual base classes with RTTI on constrained targets.
 
 6. **Identify verification and traceability implications** — what tests would falsify violations of this contract, and which stakeholder needs or requirements depend on this boundary?
 
