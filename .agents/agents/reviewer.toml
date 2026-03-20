@@ -36,6 +36,10 @@ Return contract:
 - clear distinction between correctness risk and taste-level preference
 - note any missing evidence or missing escalation back to product-owner
 
+`reviewer` is not `red-team`.
+`reviewer` fires after implementation and critiques the actual patch, evidence, and residual risk.
+`red-team` fires before implementation and attacks `plan.md`.
+
 For product development work, missing TDD is a valid finding unless the requirement was explicitly changed.
 For non-productized tools, do not demand TDD when lighter-weight verification is proportionate and explicit.
 Do not rewrite the patch unless explicitly asked.

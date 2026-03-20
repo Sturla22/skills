@@ -18,10 +18,12 @@ Optional specialists:
 - **technical-writer** owns reader-facing clarity, doc shape, accessibility, release notes, migration/deprecation communication, and changelog quality when docs become their own lane
 - **release-manager** owns release readiness, version bump synthesis, release shape, and final release communication when release coordination becomes its own lane
 - **integration-engineer** owns reproducible integration, bench, HIL, environment evidence, and flake triage when real-environment work becomes its own lane
+- **red-team** adversarially challenges `plan.md` on medium/high-risk work before implementation starts, returning structured findings and an approve / revise / escalate recommendation to `product-owner`
 - **workflow-architect** owns evidence-based improvement of prompts, templates, skills, and roles when the operating model itself needs work
 - **researcher** owns external domain investigation — datasheets, standards, specs, errata, feasibility signals, and technology landscape surveys — when a knowledge gap must be closed before planning is possible; stops before option comparison or design begins
 
 Keep one active human-facing owner. `product-owner` stays responsible for alignment with the requester. Multiple specialists may work in parallel only when `planner` has made ownership boundaries, dependencies, and integration checkpoints explicit. Specialists are internal workers by default: they return results to `product-owner`, not straight to the requester, unless the workflow explicitly says otherwise.
+Unless the requester explicitly asks for a different role or the task is trivial enough not to need the full role flow, start with `product-owner` as the default human-facing control thread.
 
 ## Shared-understanding contract
 
@@ -134,15 +136,16 @@ Every handoff should include:
 
 1. `product-owner` establishes shared understanding with the requester.
 2. `planner` reduces ambiguous or risky work to a checkable plan and identifies safe parallel lanes when they exist.
-3. `developer` makes the smallest effective change.
-4. `verifier` checks whether the claim is actually demonstrated.
-5. `reviewer` attacks hidden risk, complexity, and weak evidence.
-6. `firmware-architect` joins when interfaces, HAL boundaries, migration shape, timing, or long-term structure matter.
-7. `technical-writer` joins when release notes, migration guides, deprecation notes, setup docs, doc-structure cleanup, or other reader-facing docs deserve a dedicated owner.
-8. `release-manager` joins when version bump, changelog finalization, release shape, release readiness, or go/no-go communication deserves a dedicated owner.
-9. `integration-engineer` joins when integration setup, HIL, flashing, bench repro, environment stability, or flaky lab signal is the bottleneck.
-10. `workflow-architect` joins when repeated workflow friction, missing guidance, or possible new skills or roles need a dedicated owner.
-11. `researcher` joins when an external knowledge gap — datasheets, specs, standards, errata, or feasibility signals — must be closed before planning can start.
+3. `red-team` joins on medium/high-risk work after `planner` writes `plan.md` and before `developer` starts, returning structured findings to `product-owner`.
+4. `developer` makes the smallest effective change.
+5. `verifier` checks whether the claim is actually demonstrated.
+6. `reviewer` attacks hidden risk, complexity, and weak evidence.
+7. `firmware-architect` joins when interfaces, HAL boundaries, migration shape, timing, or long-term structure matter.
+8. `technical-writer` joins when release notes, migration guides, deprecation notes, setup docs, doc-structure cleanup, or other reader-facing docs deserve a dedicated owner.
+9. `release-manager` joins when version bump, changelog finalization, release shape, release readiness, or go/no-go communication deserves a dedicated owner.
+10. `integration-engineer` joins when integration setup, HIL, flashing, bench repro, environment stability, or flaky lab signal is the bottleneck.
+11. `workflow-architect` joins when repeated workflow friction, missing guidance, or possible new skills or roles need a dedicated owner.
+12. `researcher` joins when an external knowledge gap — datasheets, specs, standards, errata, or feasibility signals — must be closed before planning can start.
 
 ## Default skill sequences
 
