@@ -4,7 +4,20 @@
   },
   "agent": "product-owner",
   "permissions": {
+    "allowedTools": [
+      "Read",
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "Grep",
+      "Glob",
+      "Bash",
+      "WebFetch",
+      "WebSearch"
+    ],
     "deny": [
+      "Bash(rm *)",
+      "Bash(sudo *)",
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(./secrets/**)",
