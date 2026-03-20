@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Use when a brief is ambiguous, risky, or multi-step: turns it into a verifiable execution plan with dependencies, safe parallel lanes, merge points, and recommended next owners.
-tools: Read, Grep, Glob, Edit, MultiEdit
+tools: Read, Grep, Glob, Edit, MultiEdit, Task
 model: inherit
 skills:
   - planning
