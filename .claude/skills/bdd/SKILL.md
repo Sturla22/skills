@@ -84,6 +84,12 @@ Discover rules through concrete examples, formulate them as shared scenarios, th
 - each scenario has a sensible test level
 - simulation-first opportunities are named
 
+## Relation to scenario traceability
+
+Once scenarios are stable, assign `SC-NNN` IDs and wire coverage using the
+`scenario-traceability` skill. BDD discovers and formulates the behavior;
+scenario traceability links it to the tests that demonstrate it.
+
 ## Output
 
 - business rules

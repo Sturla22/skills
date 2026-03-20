@@ -45,6 +45,7 @@ This starter repo is optimized for embedded firmware teams that want:
 - Classify the work as product development or a non-productized tool before implementation starts.
 - Product development follows TDD by default. Non-productized tools may use lighter-weight verification when the plan says so explicitly.
 - Prefer BDD-style behavior scenarios for acceptance criteria and test naming.
+- Use the `scenario-traceability` skill to keep plain-English usage scenarios linked to tests with mechanical coverage checking.
 - Make stakeholder needs, system context, and critical requirements explicit when the work is complex enough that handoffs could drift.
 - Use `requirements-and-traceability` when the main needs, constraints, or acceptance logic need durable linkage across the work.
 - Use `trade-study-and-decision-analysis` when more than one credible design or rollout option exists.

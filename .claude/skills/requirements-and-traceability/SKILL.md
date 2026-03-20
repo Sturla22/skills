@@ -68,3 +68,9 @@ Use `templates/requirements-traceability-template.md`.
 - impact analysis
 - ambiguities or orphaned requirements
 - updates to the durable trace record
+
+## Relation to scenario traceability
+
+For lightweight need → test linkage without full requirements formalism, use
+the `scenario-traceability` skill: plain-English `SC-NNN` scenarios linked to
+tests via `Covers:` comments and verified by a coverage script.
