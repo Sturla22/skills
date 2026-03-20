@@ -30,13 +30,13 @@ This version makes **`.agents/` the canonical source of truth** for role definit
 Run:
 
 ```bash
-python3 scripts/sync_agent_layouts.py
+python3 scripts/cli.py sync
 ```
 
 To check for drift without rewriting files:
 
 ```bash
-python3 scripts/sync_agent_layouts.py --check
+python3 scripts/cli.py sync --check
 ```
 
 ## What is included
@@ -243,7 +243,7 @@ For non-trivial work, the intended front door is `product-owner`: you align on t
 │   │   └── README.md
 │   └── operating-model.md
 ├── scripts/
-│   └── sync_agent_layouts.py
+│   └── cli.py
 └── templates/
     ├── adr-template.md
     ├── bug-report-template.md
@@ -263,7 +263,7 @@ For non-trivial work, the intended front door is `product-owner`: you align on t
 ## How to customize it
 
 1. Edit the canonical files under `.agents/` first.
-2. Run `python3 scripts/sync_agent_layouts.py`.
+2. Run `python3 scripts/cli.py sync`.
 3. Replace placeholder build/test commands in `.agents/project/CLAUDE.md`.
 4. Tune `.claude/settings.json`, `.claude/rules/`, `.claude/hooks/`, and `.mcp.json` to match your team's Claude workflow.
 5. Tune `.codex/config.toml` for your sandbox, approval, and role preferences.

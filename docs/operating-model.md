@@ -122,6 +122,6 @@ The same role model is shared across Claude Code, GitHub Copilot, and OpenAI Cod
 
 - Edit canonical role definitions under `.agents/agents/*.toml`
 - Edit canonical shared skills under `.agents/skills/`
-- Regenerate downstream files with `python3 scripts/sync_agent_layouts.py`
+- Regenerate downstream files with `python3 scripts/cli.py sync`
 
 Keep the role names and skill names aligned even when the native file formats differ, so prompts and handoffs stay portable.

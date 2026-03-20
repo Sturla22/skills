@@ -6,7 +6,7 @@
 <!-- 1. Add one scenario per entry. Keep the language non-technical.          -->
 <!-- 2. Assign the next available SC-NNN ID. Never renumber existing entries. -->
 <!-- 3. In each covering test add a comment: Covers: SC-NNN                   -->
-<!-- 4. Run `python scripts/check-scenario-coverage.py` to verify coverage.  -->
+<!-- 4. Run `python scripts/cli.py check-coverage` to verify coverage.  -->
 <!-- 5. Update the trace table below when you add or cover a scenario.        -->
 
 ## Scenarios
@@ -36,7 +36,7 @@ cannot be parsed). Exit 0 even when no work packets exist.
 
 **SC-006** — `python scripts/cli.py new-agent foo` creates
 `.agents/agents/foo.toml` with all required TOML fields stubbed; prints a
-reminder to run `python scripts/sync_agent_layouts.py` afterwards.
+reminder to run `python scripts/cli.py sync` afterwards.
 
 **SC-007** — `python scripts/cli.py new-skill foo` creates
 `.agents/skills/foo/SKILL.md` with required frontmatter and section headings
@@ -49,7 +49,7 @@ stubbed; prints the same sync reminder.
 
 ## Trace table
 
-<!-- Updated by hand or regenerated with: python scripts/check-scenario-coverage.py --root . -->
+<!-- Updated by hand or regenerated with: python scripts/cli.py check-coverage --root . -->
 <!-- Status: Covered | Uncovered | Partial                                    -->
 
 | ID     | Description (short)                         | Covering test(s) | Status    |

@@ -7,9 +7,9 @@ No ANSI colour codes. No interactive prompts. No pip dependencies.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -33,7 +33,6 @@ AGENTS_SKILLS_DIR = ROOT / ".agents" / "skills"
 
 SYNC_REMINDER = (
     "Reminder: run `python scripts/cli.py sync` "
-    "(or `python scripts/sync_agent_layouts.py` directly) "
     "to propagate changes to .claude/, .github/, and .codex/ layouts."
 )
 
@@ -366,18 +365,279 @@ def cmd_new_skill(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Sync helpers (formerly scripts/sync_agent_layouts.py)
+# ---------------------------------------------------------------------------
+
+CANONICAL_AGENTS = ROOT / ".agents" / "agents"
+CANONICAL_SKILLS = ROOT / ".agents" / "skills"
+CANONICAL_RULES  = ROOT / ".agents" / "rules"
+CANONICAL_PROJECT = ROOT / ".agents" / "project" / "CLAUDE.md"
+
+CLAUDE_AGENTS  = ROOT / ".claude" / "agents"
+CLAUDE_SKILLS  = ROOT / ".claude" / "skills"
+CLAUDE_RULES   = ROOT / ".claude" / "rules"
+CLAUDE_PROJECT = ROOT / ".claude" / "CLAUDE.md"
+
+COPILOT_AGENTS = ROOT / ".github" / "agents"
+CODEX_AGENTS   = ROOT / ".codex"  / "agents"
+
+CODEX_NOTE = (
+    "# GENERATED FILE. Edit the canonical source under .agents/ "
+    "and run scripts/cli.py sync\n"
+)
+
+
+def _stable_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:12]
+
+
+def _read_toml(path: Path) -> dict:
+    try:
+        import tomllib          # type: ignore[import]
+    except ImportError:
+        import tomli as tomllib  # type: ignore[import,no-redef]
+    with path.open("rb") as f:
+        return tomllib.load(f)
+
+
+def _ensure_dir(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
+
+
+def _sync_write_file(
+    path: Path, content: str, check: bool,
+    touched: list[Path], errors: list[str],
+) -> None:
+    _ensure_dir(path.parent)
+    current = path.read_text(encoding="utf-8") if path.exists() else None
+    if current == content:
+        touched.append(path)
+        return
+    if check:
+        errors.append(str(path.relative_to(ROOT)))
+        return
+    path.write_text(content, encoding="utf-8")
+    touched.append(path)
+
+
+def _format_yaml_list(values: list[str]) -> str:
+    return "\n".join(f"  - {value}" for value in values) if values else "  []"
+
+
+def _generate_claude_agent(spec: dict) -> str:
+    tools  = spec.get("tools", [])
+    skills = spec.get("skills", [])
+    lines = [
+        "---",
+        f"name: {spec['name']}",
+        f"description: {spec['description']}",
+        f"tools: {', '.join(tools)}" if tools else "tools:",
+        "model: inherit",
+        "skills:",
+        _format_yaml_list(skills),
+    ]
+    if spec.get("claude_permission_mode"):
+        lines.append(f"permissionMode: {spec['claude_permission_mode']}")
+    if spec.get("claude_max_turns") is not None:
+        lines.append(f"maxTurns: {spec['claude_max_turns']}")
+    lines.append("---")
+    return "\n".join(lines) + "\n" + spec["body"].rstrip() + "\n"
+
+
+def _generate_github_agent(spec: dict) -> str:
+    body = spec.get("github_body") or spec["body"]
+    return (
+        "---\n"
+        + f"name: {spec['name']}\n"
+        + f"description: {spec['description']}\n"
+        + "---\n"
+        + body.rstrip()
+        + "\n"
+    )
+
+
+def _generate_codex_agent(spec: dict) -> str:
+    nicknames = ", ".join(repr(n) for n in spec.get("codex_nickname_candidates", []))
+    reasoning = spec.get("codex_model_reasoning_effort", "medium")
+    sandbox   = spec.get("codex_sandbox_mode", "workspace-write")
+    return (
+        CODEX_NOTE
+        + f'name = "{spec["name"]}"\n'
+        + f'description = "{spec["description"]}"\n'
+        + f'model_reasoning_effort = "{reasoning}"\n'
+        + f'sandbox_mode = "{sandbox}"\n'
+        + f'nickname_candidates = [{nicknames}]\n'
+        + 'developer_instructions = """\n'
+        + spec["body"].rstrip()
+        + '\n"""\n'
+    )
+
+
+def _copy_skills(check: bool, touched: list[Path], errors: list[str]) -> None:
+    _ensure_dir(CLAUDE_SKILLS)
+    expected: set[str] = set()
+    for skill_dir in sorted(CANONICAL_SKILLS.iterdir()):
+        if not skill_dir.is_dir():
+            continue
+        src = skill_dir / "SKILL.md"
+        if not src.exists():
+            continue
+        dst = CLAUDE_SKILLS / skill_dir.name / "SKILL.md"
+        expected.add(str(dst.relative_to(CLAUDE_SKILLS)))
+        _sync_write_file(dst, src.read_text(encoding="utf-8"), check, touched, errors)
+    for existing in CLAUDE_SKILLS.rglob("SKILL.md"):
+        rel = str(existing.relative_to(CLAUDE_SKILLS))
+        if rel not in expected:
+            if check:
+                errors.append(str(existing.relative_to(ROOT)))
+            else:
+                existing.unlink()
+
+
+def _copy_rules(check: bool, touched: list[Path], errors: list[str]) -> None:
+    if not CANONICAL_RULES.exists():
+        return
+    _ensure_dir(CLAUDE_RULES)
+    expected: set[str] = set()
+    for src in sorted(CANONICAL_RULES.glob("*.md")):
+        dst = CLAUDE_RULES / src.name
+        expected.add(src.name)
+        _sync_write_file(dst, src.read_text(encoding="utf-8"), check, touched, errors)
+    for existing in CLAUDE_RULES.glob("*.md"):
+        if existing.name not in expected:
+            if check:
+                errors.append(str(existing.relative_to(ROOT)))
+            else:
+                existing.unlink()
+
+
+def _cleanup_files(
+    folder: Path, wanted_names: set[str], suffix: str,
+    check: bool, errors: list[str],
+) -> None:
+    _ensure_dir(folder)
+    for child in folder.iterdir():
+        if child.is_file() and child.name not in wanted_names and child.name.endswith(suffix):
+            if check:
+                errors.append(str(child.relative_to(ROOT)))
+            else:
+                child.unlink()
+
+
+def _link_skills_global() -> int:
+    global_skills = Path.home() / ".claude" / "skills"
+    global_skills.mkdir(parents=True, exist_ok=True)
+    errors = 0
+    for skill_dir in sorted(CLAUDE_SKILLS.iterdir()):
+        if not skill_dir.is_dir():
+            continue
+        target = global_skills / skill_dir.name
+        if target.is_symlink():
+            target.unlink()
+        elif target.exists():
+            print(f"skip: {skill_dir.name} (exists and is not a symlink)")
+            errors += 1
+            continue
+        target.symlink_to(skill_dir.resolve())
+        print(f"linked: {skill_dir.name}")
+    return errors
+
+
+# ---------------------------------------------------------------------------
 # Subcommand: sync
 # ---------------------------------------------------------------------------
 
 def cmd_sync(args: argparse.Namespace) -> None:
-    """Delegate to scripts/sync_agent_layouts.py."""
-    cmd = [sys.executable, str(ROOT / "scripts" / "sync_agent_layouts.py")]
-    if args.check:
-        cmd.append("--check")
     if args.link:
-        cmd.append("--link")
-    result = subprocess.run(cmd)
-    sys.exit(result.returncode)
+        sys.exit(_link_skills_global())
+
+    touched: list[Path] = []
+    errors:  list[str]  = []
+
+    if CANONICAL_PROJECT.exists():
+        _sync_write_file(
+            CLAUDE_PROJECT,
+            CANONICAL_PROJECT.read_text(encoding="utf-8"),
+            args.check, touched, errors,
+        )
+
+    expected_claude: set[str] = set()
+    expected_github: set[str] = set()
+    expected_codex:  set[str] = set()
+
+    for spec_path in sorted(CANONICAL_AGENTS.glob("*.toml")):
+        spec = _read_toml(spec_path)
+        for key in ("name", "description", "body"):
+            if key not in spec:
+                raise SystemExit(f"{spec_path} missing required field: {key}")
+
+        expected_claude.add(f'{spec["name"]}.md')
+        expected_github.add(f'{spec["name"]}.agent.md')
+        expected_codex.add(f'{spec["name"]}.toml')
+
+        _sync_write_file(CLAUDE_AGENTS  / f'{spec["name"]}.md',        _generate_claude_agent(spec),  args.check, touched, errors)
+        _sync_write_file(COPILOT_AGENTS / f'{spec["name"]}.agent.md',  _generate_github_agent(spec),  args.check, touched, errors)
+        _sync_write_file(CODEX_AGENTS   / f'{spec["name"]}.toml',      _generate_codex_agent(spec),   args.check, touched, errors)
+
+    _cleanup_files(CLAUDE_AGENTS,  expected_claude, ".md",       args.check, errors)
+    _cleanup_files(COPILOT_AGENTS, expected_github, ".agent.md", args.check, errors)
+    _cleanup_files(CODEX_AGENTS,   expected_codex,  ".toml",     args.check, errors)
+
+    _copy_skills(args.check, touched, errors)
+    _copy_rules(args.check, touched, errors)
+
+    if errors:
+        print("Generated files are out of date:")
+        for item in sorted(set(errors)):
+            print(f" - {item}")
+        sys.exit(1)
+
+    mode = "Checked" if args.check else "Updated"
+    fingerprint = _stable_hash("\n".join(sorted(str(p.relative_to(ROOT)) for p in touched)))
+    print(f"{mode} {len(touched)} generated files ({fingerprint}).")
+
+
+# ---------------------------------------------------------------------------
+# Coverage helpers (formerly scripts/check-scenario-coverage.py)
+# ---------------------------------------------------------------------------
+
+_SC_ID_PATTERN = re.compile(r"\bSC-\d+\b")
+
+
+def _collect_scenario_ids(root: Path) -> dict[str, list[str]]:
+    scenario_files: list[Path] = []
+    project_level = root / "docs" / "scenarios.md"
+    if project_level.exists():
+        scenario_files.append(project_level)
+    work_dir = root / "docs" / "work"
+    if work_dir.is_dir():
+        for wp_file in sorted(work_dir.glob("*/scenarios.md")):
+            scenario_files.append(wp_file)
+    ids: dict[str, list[str]] = {}
+    for sf in scenario_files:
+        rel = str(sf.relative_to(root))
+        for match in _SC_ID_PATTERN.finditer(sf.read_text(encoding="utf-8")):
+            ids.setdefault(match.group(), []).append(rel)
+    return ids
+
+
+def _collect_covered_ids(root: Path, tests_glob: str) -> dict[str, list[str]]:
+    covered: dict[str, list[str]] = {}
+    for test_file in sorted(root.glob(tests_glob)):
+        if not test_file.is_file():
+            continue
+        try:
+            text = test_file.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        rel = str(test_file.relative_to(root))
+        for match in _SC_ID_PATTERN.finditer(text):
+            line_start = text.rfind("\n", 0, match.start()) + 1
+            line_end   = text.find("\n", match.end())
+            line = text[line_start:] if line_end == -1 else text[line_start:line_end]
+            if "Covers:" in line:
+                covered.setdefault(match.group(), []).append(rel)
+    return covered
 
 
 # ---------------------------------------------------------------------------
@@ -385,14 +645,45 @@ def cmd_sync(args: argparse.Namespace) -> None:
 # ---------------------------------------------------------------------------
 
 def cmd_check_coverage(args: argparse.Namespace) -> None:
-    """Delegate to scripts/check-scenario-coverage.py."""
-    cmd = [sys.executable, str(ROOT / "scripts" / "check-scenario-coverage.py")]
-    if args.root:
-        cmd.extend(["--root", args.root])
-    if args.tests:
-        cmd.extend(["--tests", args.tests])
-    result = subprocess.run(cmd)
-    sys.exit(result.returncode)
+    root = Path(args.root).resolve() if args.root else ROOT
+    tests_glob = args.tests or "tests/**/*"
+
+    scenario_ids = _collect_scenario_ids(root)
+    covered_ids  = _collect_covered_ids(root, tests_glob)
+
+    sf_count = len(
+        ([root / "docs" / "scenarios.md"] if (root / "docs" / "scenarios.md").exists() else [])
+        + list((root / "docs" / "work").glob("*/scenarios.md")
+               if (root / "docs" / "work").exists() else [])
+    )
+    test_files_seen: set[str] = set()
+    for paths in covered_ids.values():
+        test_files_seen.update(paths)
+
+    print(f"Scanning {sf_count} scenario file(s), "
+          f"{len(test_files_seen)} test file(s) with coverage references...\n")
+
+    uncovered = [sc for sc in sorted(scenario_ids) if sc not in covered_ids]
+    orphaned  = [sc for sc in sorted(covered_ids)  if sc not in scenario_ids]
+
+    if uncovered:
+        print("UNCOVERED SCENARIOS:")
+        for sc in uncovered:
+            print(f"  {sc}  [{', '.join(scenario_ids[sc])}]")
+        print()
+    if orphaned:
+        print("ORPHANED REFERENCES (in tests but not defined in any scenarios file):")
+        for sc in orphaned:
+            print(f"  {sc}  {', '.join(covered_ids[sc])}")
+        print()
+
+    total   = len(scenario_ids)
+    n_cov   = total - len(uncovered)
+    status  = "OK" if not uncovered and not orphaned else "FAIL"
+    print(f"Result: {n_cov}/{total} covered, "
+          f"{len(uncovered)} uncovered, "
+          f"{len(orphaned)} orphaned — {status}")
+    sys.exit(0 if status == "OK" else 1)
 
 
 # ---------------------------------------------------------------------------

@@ -74,13 +74,14 @@ The table is informational; the script is the authoritative coverage check.
 
 ```sh
 # Check coverage from repo root (auto-discovers both scope levels):
-python scripts/check-scenario-coverage.py
+python scripts/cli.py check-coverage
 
 # Check a specific subtree (e.g. a fixture):
-python scripts/check-scenario-coverage.py --root <dir>
+python scripts/cli.py check-coverage --root <dir>
 
 # Override test glob:
-python scripts/check-scenario-coverage.py --tests "src/tests/**/*"
+python scripts/cli.py check-coverage --tests "src/tests/**/*"
+
 ```
 
 Exit 0 — all scenarios covered, no orphaned references.
@@ -92,7 +93,7 @@ Exit 1 — one or more scenarios uncovered, or a test references an undefined ID
 2. Assign `SC-NNN` IDs to each scenario before writing tests
 3. Write tests; add `Covers: SC-NNN` to each covering test
 4. Update the trace table
-5. Run `python scripts/check-scenario-coverage.py` — fix any gaps before closing
+5. Run `python scripts/cli.py check-coverage` — fix any gaps before closing
 
 ## Guardrails
 
@@ -108,7 +109,7 @@ Exit 1 — one or more scenarios uncovered, or a test references an undefined ID
 - Scenarios file exists and is readable without tooling
 - Every scenario has a unique `SC-NNN` ID
 - Every test that covers a scenario carries a `Covers: SC-NNN` comment
-- `python scripts/check-scenario-coverage.py` exits 0
+- `python scripts/cli.py check-coverage` exits 0
 
 ## Relation to other skills
 

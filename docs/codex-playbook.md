@@ -30,13 +30,13 @@ This repo includes Codex-native project files in addition to the Claude Code and
 Whenever you edit `.agents/agents/*.toml`, run:
 
 ```bash
-python3 scripts/sync_agent_layouts.py
+python3 scripts/cli.py sync
 ```
 
 To enforce this in CI:
 
 ```bash
-python3 scripts/sync_agent_layouts.py --check
+python3 scripts/cli.py sync --check
 ```
 
 ## Quick checks

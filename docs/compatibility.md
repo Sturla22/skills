@@ -8,7 +8,7 @@ This repo treats `.agents/` as canonical.
 - `.agents/skills/<skill-name>/SKILL.md` defines shared skills
 - `.agents/project/CLAUDE.md` defines Claude project instructions
 
-Run `python3 scripts/sync_agent_layouts.py` after editing canonical agent or skill files.
+Run `python3 scripts/cli.py sync` after editing canonical agent or skill files.
 
 ## Claude Code
 
@@ -69,4 +69,4 @@ The goal is not to make one giant shared prompt. Instead:
 - Start by customizing `AGENTS.md`, `.agents/project/CLAUDE.md`, `.claude/settings.json`, and `.github/copilot-instructions.md`.
 - Then tune `.claude/rules/`, `.claude/hooks/`, `.mcp.json`, and `.codex/config.toml`.
 - Only after that, tune skills and path-specific instructions to match your build, test, and firmware boundaries.
-- Use `python3 scripts/sync_agent_layouts.py --check` in CI to catch drift.
+- Use `python3 scripts/cli.py sync --check` in CI to catch drift.
