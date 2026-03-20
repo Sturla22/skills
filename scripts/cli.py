@@ -854,16 +854,18 @@ def _first_run_lines(tool: str) -> list[str]:
         "2. Regenerate and verify derived files:",
         "   `python3 scripts/cli.py sync`",
         "   `python3 scripts/cli.py sync --check`",
-        "3. Scaffold a first work packet:",
+        "3. Decide commit and PR naming policy:",
+        "   Ask whether Jira ticket IDs should prefix commit messages and pull request titles.",
+        "4. Scaffold a first work packet:",
         "   `python3 scripts/cli.py new-work onboarding-demo`",
-        "4. Fill `docs/work/onboarding-demo/brief.md`, then verify it:",
+        "5. Fill `docs/work/onboarding-demo/brief.md`, then verify it:",
         "   `python3 scripts/cli.py check-work onboarding-demo`",
     ]
 
     prompts = {
-        "codex": '5. Start Codex in the repo root and use this first prompt:\n   `codex "Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create."`',
-        "claude": '5. Start Claude in the repo root and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create."`',
-        "copilot": '5. In your IDE chat, use this first prompt:\n   `Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create.`',
+        "codex": '6. Start Codex in the repo root and use this first prompt:\n   `codex "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
+        "claude": '6. Start Claude in the repo root and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
+        "copilot": '6. In your IDE chat, use this first prompt:\n   `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create.`',
     }
 
     rendered = [line.format(tool=tool) for line in common]

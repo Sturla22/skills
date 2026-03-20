@@ -3,6 +3,9 @@
 # Prefer Conventional Commit headers when practical:
 #   feat, fix, docs, refactor, test, perf, chore
 #
+# If your repo policy requires Jira prefixes, add the ticket ID before the
+# Conventional Commit header in the form required by your team.
+#
 # Keep the subject short (50 char soft limit), imperative, and without
 # a trailing period.
 #

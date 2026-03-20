@@ -54,6 +54,7 @@ python3 scripts/cli.py check-work onboarding-demo
 
 Then:
 
+- decide whether Jira ticket IDs should prefix commit messages and PR titles
 - fill `docs/work/onboarding-demo/brief.md`
 - rerun `python3 scripts/cli.py check-work onboarding-demo`
 - start your tool and ask `product-owner` to summarize the current instructions and available skills

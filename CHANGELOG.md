@@ -9,6 +9,7 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- Setup guidance now asks adopters whether Jira ticket IDs should prefix commit messages and pull request titles, and the product-brief and commit templates now record that policy explicitly.
 - Repo-wide documentation guidance to avoid historical comments in stable docs and code comments, keeping change history in `CHANGELOG.md`, ADR supersession notes, release notes, and work packets instead.
 - `docs/copilot-vscode-playbook.md` and a tracked `.vscode/settings.json` baseline so VS Code adopters get a more concrete Copilot setup path instead of relying only on `.github/copilot-instructions.md`.
 - `scripts/cli.py doctor` to validate adopter setup across repo files, generated-file sync, Codex, Claude, and Copilot surfaces before first use.

@@ -23,6 +23,11 @@
 
 ## Constraints
 
+## Commit and PR title policy
+
+- Should Jira ticket IDs prefix commit messages?
+- Should Jira ticket IDs prefix PR titles?
+
 ## System context / external interfaces
 
 ## Acceptance criteria
