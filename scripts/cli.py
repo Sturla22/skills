@@ -825,6 +825,7 @@ def cmd_doctor(args: argparse.Namespace) -> None:
         copilot_paths = [
             ROOT / ".github" / "copilot-instructions.md",
             ROOT / ".github" / "agents",
+            ROOT / ".vscode" / "settings.json",
         ]
         for path in copilot_paths:
             ok, detail = _check_path_exists(path, str(path.relative_to(ROOT)))

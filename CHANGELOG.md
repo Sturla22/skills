@@ -9,6 +9,7 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- `docs/copilot-vscode-playbook.md` and a tracked `.vscode/settings.json` baseline so VS Code adopters get a more concrete Copilot setup path instead of relying only on `.github/copilot-instructions.md`.
 - `scripts/cli.py doctor` to validate adopter setup across repo files, generated-file sync, Codex, Claude, and Copilot surfaces before first use.
 - `scripts/cli.py first-run --tool <codex|claude|copilot>` to print a tool-specific happy path with exact next commands and the first recommended prompt.
 - README quickstart, golden-path walkthrough, and first-run troubleshooting guidance so adopters can get to a correct first packet with less inference.

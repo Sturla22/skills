@@ -38,6 +38,8 @@ python3 scripts/cli.py doctor --tool copilot
 python3 scripts/cli.py first-run --tool copilot
 ```
 
+See [docs/copilot-vscode-playbook.md](/home/sturlalange/Dev/my-claude-skills/docs/copilot-vscode-playbook.md) for the VS Code-specific baseline and workspace settings.
+
 ## Golden path
 
 If you want one end-to-end exercise that proves both the repo setup and the operating model:

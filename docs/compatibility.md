@@ -37,6 +37,7 @@ This repo uses GitHub Copilot customization layers:
 - `.github/instructions/*.instructions.md` for path-specific instructions
 - `.github/agents/*.agent.md` for custom agents
 - `AGENTS.md` as a repo-level agent instruction file
+- `.vscode/settings.json` for a workspace baseline that points Copilot features at the repo guidance when adopters use VS Code
 
 The custom agent files under `.github/agents/` are generated from `.agents/agents/*.toml`.
 
@@ -61,6 +62,7 @@ The goal is not to make one giant shared prompt. Instead:
 - `.claude/` stays compatible with Claude Code discovery
 - `.claude/settings.json`, `.claude/rules/`, `.claude/hooks/`, `.claude/output-styles/`, and `.mcp.json` make Claude Code behavior concrete without forcing those mechanics on Codex or Copilot
 - `.github/agents/` stays compatible with Copilot custom agents
+- `.vscode/settings.json` gives VS Code adopters a repo-tracked baseline for Copilot features such as code generation, review, commit-message generation, and PR-description generation
 - `.codex/agents/` stays compatible with Codex subagents
 - `.github/instructions/` adds path-specific guidance that does not belong in shared role files
 
