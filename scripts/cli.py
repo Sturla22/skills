@@ -754,12 +754,19 @@ def _doctor_check_auth(tool: str) -> tuple[str, str]:
     return "WARN", output.splitlines()[0] if output else "authentication not confirmed"
 
 
+def _doctor_optional_repo_surface(path: Path, label: str) -> tuple[str, str | None]:
+    if path.exists():
+        return "OK", None
+    return "WARN", f"not installed yet: {label}"
+
+
 def cmd_doctor(args: argparse.Namespace) -> None:
     tool = args.tool
+    mode = args.mode
     failures = 0
     warnings = 0
 
-    print(f"Doctor for {tool} in {ROOT}")
+    print(f"Doctor for {tool} ({mode}) in {ROOT}")
     print()
 
     status, detail = _doctor_check_binary("python3")
@@ -767,12 +774,17 @@ def cmd_doctor(args: argparse.Namespace) -> None:
     if status != "OK":
         failures += 1
 
-    required_paths = [
-        ROOT / "README.md",
-        ROOT / "AGENTS.md",
-        ROOT / ".agents",
-        ROOT / "scripts" / "cli.py",
-    ]
+    if mode == "existing":
+        required_paths = [
+            ROOT / ".git",
+        ]
+    else:
+        required_paths = [
+            ROOT / "README.md",
+            ROOT / "AGENTS.md",
+            ROOT / ".agents",
+            ROOT / "scripts" / "cli.py",
+        ]
     for path in required_paths:
         ok, detail = _check_path_exists(path, path.name)
         if ok:
@@ -781,12 +793,29 @@ def cmd_doctor(args: argparse.Namespace) -> None:
             _print_check("FAIL", f"repo file {path.name}", detail)
             failures += 1
 
-    code, output = _run_command(["python3", "scripts/cli.py", "sync", "--check"])
-    if code == 0:
-        _print_check("OK", "generated files in sync", output)
+    if mode == "existing":
+        canonical_layer = ROOT / ".agents"
+        if canonical_layer.exists():
+            code, output = _run_command(["python3", "scripts/cli.py", "sync", "--check"])
+            if code == 0:
+                _print_check("OK", "generated files in sync", output)
+            else:
+                _print_check("FAIL", "generated files in sync", output)
+                failures += 1
+        else:
+            _print_check(
+                "WARN",
+                "starter repo surfaces",
+                "canonical .agents layer not installed yet; copy the minimum adoption slice before rerunning sync checks",
+            )
+            warnings += 1
     else:
-        _print_check("FAIL", "generated files in sync", output)
-        failures += 1
+        code, output = _run_command(["python3", "scripts/cli.py", "sync", "--check"])
+        if code == 0:
+            _print_check("OK", "generated files in sync", output)
+        else:
+            _print_check("FAIL", "generated files in sync", output)
+            failures += 1
 
     if tool in ("codex", "all"):
         status, detail = _doctor_check_binary("codex")
@@ -800,10 +829,16 @@ def cmd_doctor(args: argparse.Namespace) -> None:
                 warnings += 1
 
         config_path = ROOT / ".codex" / "config.toml"
-        ok, detail = _check_path_exists(config_path, ".codex/config.toml")
-        _print_check("OK" if ok else "FAIL", "Codex config", detail if not ok else None)
-        if not ok:
-            failures += 1
+        if mode == "existing":
+            status, detail = _doctor_optional_repo_surface(config_path, ".codex/config.toml")
+            _print_check(status, "Codex config", detail)
+            if status == "WARN":
+                warnings += 1
+        else:
+            ok, detail = _check_path_exists(config_path, ".codex/config.toml")
+            _print_check("OK" if ok else "FAIL", "Codex config", detail if not ok else None)
+            if not ok:
+                failures += 1
 
     if tool in ("claude", "all"):
         status, detail = _doctor_check_binary("claude")
@@ -817,10 +852,16 @@ def cmd_doctor(args: argparse.Namespace) -> None:
                 warnings += 1
 
         settings_path = ROOT / ".claude" / "settings.json"
-        ok, detail = _check_path_exists(settings_path, ".claude/settings.json")
-        _print_check("OK" if ok else "FAIL", "Claude settings", detail if not ok else None)
-        if not ok:
-            failures += 1
+        if mode == "existing":
+            status, detail = _doctor_optional_repo_surface(settings_path, ".claude/settings.json")
+            _print_check(status, "Claude settings", detail)
+            if status == "WARN":
+                warnings += 1
+        else:
+            ok, detail = _check_path_exists(settings_path, ".claude/settings.json")
+            _print_check("OK" if ok else "FAIL", "Claude settings", detail if not ok else None)
+            if not ok:
+                failures += 1
 
     if tool in ("copilot", "all"):
         copilot_paths = [
@@ -829,10 +870,16 @@ def cmd_doctor(args: argparse.Namespace) -> None:
             ROOT / ".vscode" / "settings.json",
         ]
         for path in copilot_paths:
-            ok, detail = _check_path_exists(path, str(path.relative_to(ROOT)))
-            _print_check("OK" if ok else "FAIL", f"Copilot repo surface {path.relative_to(ROOT)}", detail if not ok else None)
-            if not ok:
-                failures += 1
+            if mode == "existing":
+                status, detail = _doctor_optional_repo_surface(path, str(path.relative_to(ROOT)))
+                _print_check(status, f"Copilot repo surface {path.relative_to(ROOT)}", detail)
+                if status == "WARN":
+                    warnings += 1
+            else:
+                ok, detail = _check_path_exists(path, str(path.relative_to(ROOT)))
+                _print_check("OK" if ok else "FAIL", f"Copilot repo surface {path.relative_to(ROOT)}", detail if not ok else None)
+                if not ok:
+                    failures += 1
         _print_check("WARN", "Copilot auth", "validate sign-in from your IDE or GitHub UI")
         warnings += 1
 
@@ -852,25 +899,27 @@ def _first_run_lines(tool: str, mode: str) -> list[str]:
     if mode == "existing":
         common = [
             "1. Validate the repo surface:",
-            "   `python3 scripts/cli.py doctor --tool {tool}`",
+            "   `python3 scripts/cli.py doctor --tool {tool} --mode existing`",
             "2. Decide the minimum adoption slice:",
             "   Start with instructions only, generated agents, or work packets for non-trivial tasks. Do not replace existing repo conventions wholesale.",
             "3. Inventory conventions you must preserve:",
             "   Issue tracker IDs, commit and PR title rules, release process, CI checks, docs layout, test commands, and any existing agent or instruction files.",
             "4. Decide commit and PR naming policy:",
             "   Ask whether Jira ticket IDs should prefix commit messages and pull request titles.",
-            "5. Regenerate and verify derived files:",
+            "5. Copy the minimum starter surfaces you chose into the existing repo.",
+            "   Examples: `AGENTS.md`, `.agents/project/CLAUDE.md`, `.github/copilot-instructions.md`, `.agents/agents/*.toml`, or work-packet templates.",
+            "6. If you installed the canonical `.agents` layer, regenerate and verify derived files:",
             "   `python3 scripts/cli.py sync`",
             "   `python3 scripts/cli.py sync --check`",
-            "6. Scaffold a pilot work packet for one real task:",
+            "7. Scaffold a pilot work packet for one real task when you are ready to trial the workflow:",
             "   `python3 scripts/cli.py new-work adoption-pilot`",
-            "7. Record the conventions to preserve in `docs/work/adoption-pilot/brief.md`, then verify it:",
+            "8. Record the conventions to preserve in `docs/work/adoption-pilot/brief.md`, then verify it:",
             "   `python3 scripts/cli.py check-work adoption-pilot`",
         ]
         prompts = {
-            "codex": '8. Start Codex in the existing repo and use this first prompt:\n   `codex "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
-            "claude": '8. Start Claude in the existing repo and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
-            "copilot": '8. In your IDE chat, use this first prompt:\n   `Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create.`',
+            "codex": '9. Start Codex in the existing repo and use this first prompt:\n   `codex "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
+            "claude": '9. Start Claude in the existing repo and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
+            "copilot": '9. In your IDE chat, use this first prompt:\n   `Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create.`',
         }
     else:
         common = [
@@ -1031,6 +1080,12 @@ def build_parser() -> argparse.ArgumentParser:
         choices=("all", "codex", "claude", "copilot"),
         default="all",
         help="Tooling surface to validate (default: all)",
+    )
+    p_doctor.add_argument(
+        "--mode",
+        choices=("starter", "existing"),
+        default="starter",
+        help="Validation mode (default: starter)",
     )
     p_doctor.set_defaults(func=cmd_doctor)
 

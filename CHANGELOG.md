@@ -47,6 +47,8 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Changed
 
+- The canonical behavior-preserving refactor skill is now named `refactoring`, and the existing-repo onboarding path now uses `doctor --mode existing` so adoption no longer assumes the full starter layout is already present.
+
 - Handoffs now live inside work packets and are expected to be delta records that point back to canonical context files instead of repeating the full brief and plan.
 - Bug hypotheses, verification records, and optimization scorecards now fit the shared work-packet structure so durable context stays in one place.
 - `release-manager` now treats release shape, explicit gates, artifact identity, and curated release communication as part of the role instead of only version bump and changelog handling.

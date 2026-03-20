@@ -133,6 +133,8 @@ python3 scripts/cli.py first-run --tool codex --mode existing
 - technical-writer
 - release-manager
 - integration-engineer
+- red-team
+- researcher
 - workflow-architect
 
 ### Core skills
@@ -151,6 +153,9 @@ python3 scripts/cli.py first-run --tool codex --mode existing
 - simplify-without-behavior-change
 - verification
 - docs-adr-updates
+- scenario-traceability
+- research
+- plan-red-team
 - workflow-evolution
 
 ### Embedded-specific skills

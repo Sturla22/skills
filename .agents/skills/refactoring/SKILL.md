@@ -1,11 +1,11 @@
 ---
-name: refactor-safe
+name: refactoring
 description: Perform behavior-preserving refactors with explicit invariants, staged edits, and regression gates. Use when the user asks to refactor, restructure, reorganize, or clean up code without changing external behavior.
 argument-hint: "[file-or-module-scope]"
 allowed-tools: Read, Grep, Glob, Bash
 ---
 
-# Safe Refactoring
+# Refactoring
 
 Improve structure and readability while preserving all externally observed behavior.
 

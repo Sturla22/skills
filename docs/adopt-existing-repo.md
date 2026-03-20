@@ -80,6 +80,7 @@ Avoid starting with:
 Use:
 
 ```bash
+python3 scripts/cli.py doctor --tool codex --mode existing
 python3 scripts/cli.py first-run --tool codex --mode existing
 ```
 
