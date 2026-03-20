@@ -23,6 +23,10 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 - Optional `researcher` specialist role for external domain investigation (datasheets, standards, specs, errata, feasibility signals, technology landscape surveys) when a knowledge gap must be closed before planning is possible.
 - Reusable `research` skill that structures external domain investigation into a durable, source-cited research summary and enforces a hard boundary before option comparison or task framing begins.
 - `External domain investigation` skill sequence in `AGENTS.md` covering `research` → `planning` → optional `trade-study-and-decision-analysis`.
+- Scenario traceability convention: plain-English `SC-NNN` usage scenarios at project (`docs/scenarios.md`) and work-packet (`docs/work/<work-id>/scenarios.md`) level, linked to tests via `Covers: SC-NNN` comments, with a GFM trace table and `scripts/check-scenario-coverage.py` for mechanical gap detection (exit 1 on uncovered scenarios or orphaned references).
+- `scenario-traceability` skill: guidance on when to write scenarios, ID format, test reference syntax, trace table, and script usage.
+- `templates/scenarios-template.md`: reusable template for scenario files at both scope levels.
+- `.agents/rules/` as the canonical source for path-scoped Claude rules, synced to `.claude/rules/` by `scripts/sync_agent_layouts.py` (which now includes a `copy_rules()` function alongside the existing `copy_skills()`).
 
 ### Changed
 
