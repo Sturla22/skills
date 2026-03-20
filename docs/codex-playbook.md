@@ -20,10 +20,13 @@ This repo includes Codex-native project files in addition to the Claude Code and
 ## Suggested first setup
 
 1. Install Codex CLI: `npm i -g @openai/codex`
-2. Run `codex` in the repo root and sign in.
-3. Ask Codex: `Summarize the current instructions and available skills.`
-4. Open `.codex/config.toml` and tune approvals, sandboxing, and any model defaults.
-5. Decide whether your team will run mostly in the CLI, the IDE extension, or the Codex app.
+2. Sign in: `codex login`
+3. Validate the repo surface: `python3 scripts/cli.py doctor --tool codex`
+4. Print the guided first-run sequence: `python3 scripts/cli.py first-run --tool codex`
+5. Run `codex` in the repo root.
+6. Ask Codex: `Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create.`
+7. Open `.codex/config.toml` and tune approvals, sandboxing, and any model defaults.
+8. Decide whether your team will run mostly in the CLI, the IDE extension, or the Codex app.
 
 Recommended Codex baseline for this repo:
 

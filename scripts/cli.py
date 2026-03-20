@@ -7,9 +7,12 @@ No ANSI colour codes. No interactive prompts. No pip dependencies.
 from __future__ import annotations
 
 import argparse
+import json
 import hashlib
 import os
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -57,6 +60,31 @@ def _write_new_file(dest: Path, content: str) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(content, encoding="utf-8")
     print(f"Created: {dest}")
+
+
+def _run_command(command: list[str]) -> tuple[int, str]:
+    try:
+        proc = subprocess.run(
+            command,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError as exc:
+        return 127, str(exc)
+
+    output = (proc.stdout or "").strip()
+    if not output:
+        output = (proc.stderr or "").strip()
+    return proc.returncode, output
+
+
+def _print_check(status: str, label: str, detail: str | None = None) -> None:
+    line = f"[{status}] {label}"
+    if detail:
+        line += f": {detail}"
+    print(line)
 
 
 # ---------------------------------------------------------------------------
@@ -687,6 +715,170 @@ def cmd_check_coverage(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Subcommand: doctor
+# ---------------------------------------------------------------------------
+
+def _check_path_exists(path: Path, label: str) -> tuple[bool, str]:
+    if path.exists():
+        return True, label
+    return False, f"missing: {path.relative_to(ROOT) if path.is_relative_to(ROOT) else path}"
+
+
+def _doctor_check_binary(name: str) -> tuple[str, str]:
+    resolved = shutil.which(name)
+    if not resolved:
+        return "FAIL", "not installed or not on PATH"
+    return "OK", resolved
+
+
+def _doctor_check_auth(tool: str) -> tuple[str, str]:
+    if tool == "codex":
+        code, output = _run_command(["codex", "login", "status"])
+    elif tool == "claude":
+        code, output = _run_command(["claude", "auth", "status"])
+    else:
+        return "WARN", "no auth check implemented"
+
+    if code == 0:
+        if output.startswith("{"):
+            try:
+                payload = json.loads(output)
+            except json.JSONDecodeError:
+                pass
+            else:
+                if payload.get("loggedIn") is True:
+                    auth_method = payload.get("authMethod", "unknown")
+                    return "OK", f"authenticated via {auth_method}"
+        return "OK", output.splitlines()[0] if output else "authenticated"
+    return "WARN", output.splitlines()[0] if output else "authentication not confirmed"
+
+
+def cmd_doctor(args: argparse.Namespace) -> None:
+    tool = args.tool
+    failures = 0
+    warnings = 0
+
+    print(f"Doctor for {tool} in {ROOT}")
+    print()
+
+    status, detail = _doctor_check_binary("python3")
+    _print_check(status, "python3", detail)
+    if status != "OK":
+        failures += 1
+
+    required_paths = [
+        ROOT / "README.md",
+        ROOT / "AGENTS.md",
+        ROOT / ".agents",
+        ROOT / "scripts" / "cli.py",
+    ]
+    for path in required_paths:
+        ok, detail = _check_path_exists(path, path.name)
+        if ok:
+            _print_check("OK", f"repo file {path.relative_to(ROOT)}")
+        else:
+            _print_check("FAIL", f"repo file {path.name}", detail)
+            failures += 1
+
+    code, output = _run_command(["python3", "scripts/cli.py", "sync", "--check"])
+    if code == 0:
+        _print_check("OK", "generated files in sync", output)
+    else:
+        _print_check("FAIL", "generated files in sync", output)
+        failures += 1
+
+    if tool in ("codex", "all"):
+        status, detail = _doctor_check_binary("codex")
+        _print_check(status, "codex CLI", detail)
+        if status != "OK":
+            failures += 1
+        else:
+            status, detail = _doctor_check_auth("codex")
+            _print_check(status, "codex auth", detail)
+            if status == "WARN":
+                warnings += 1
+
+        config_path = ROOT / ".codex" / "config.toml"
+        ok, detail = _check_path_exists(config_path, ".codex/config.toml")
+        _print_check("OK" if ok else "FAIL", "Codex config", detail if not ok else None)
+        if not ok:
+            failures += 1
+
+    if tool in ("claude", "all"):
+        status, detail = _doctor_check_binary("claude")
+        _print_check(status, "claude CLI", detail)
+        if status != "OK":
+            failures += 1
+        else:
+            status, detail = _doctor_check_auth("claude")
+            _print_check(status, "claude auth", detail)
+            if status == "WARN":
+                warnings += 1
+
+        settings_path = ROOT / ".claude" / "settings.json"
+        ok, detail = _check_path_exists(settings_path, ".claude/settings.json")
+        _print_check("OK" if ok else "FAIL", "Claude settings", detail if not ok else None)
+        if not ok:
+            failures += 1
+
+    if tool in ("copilot", "all"):
+        copilot_paths = [
+            ROOT / ".github" / "copilot-instructions.md",
+            ROOT / ".github" / "agents",
+        ]
+        for path in copilot_paths:
+            ok, detail = _check_path_exists(path, str(path.relative_to(ROOT)))
+            _print_check("OK" if ok else "FAIL", f"Copilot repo surface {path.relative_to(ROOT)}", detail if not ok else None)
+            if not ok:
+                failures += 1
+        _print_check("WARN", "Copilot auth", "validate sign-in from your IDE or GitHub UI")
+        warnings += 1
+
+    print()
+    if failures:
+        print(f"Doctor result: FAIL ({failures} failing check(s), {warnings} warning(s))")
+        sys.exit(1)
+
+    print(f"Doctor result: OK ({warnings} warning(s))")
+
+
+# ---------------------------------------------------------------------------
+# Subcommand: first-run
+# ---------------------------------------------------------------------------
+
+def _first_run_lines(tool: str) -> list[str]:
+    common = [
+        "1. Validate the repo surface:",
+        "   `python3 scripts/cli.py doctor --tool {tool}`",
+        "2. Regenerate and verify derived files:",
+        "   `python3 scripts/cli.py sync`",
+        "   `python3 scripts/cli.py sync --check`",
+        "3. Scaffold a first work packet:",
+        "   `python3 scripts/cli.py new-work onboarding-demo`",
+        "4. Fill `docs/work/onboarding-demo/brief.md`, then verify it:",
+        "   `python3 scripts/cli.py check-work onboarding-demo`",
+    ]
+
+    prompts = {
+        "codex": '5. Start Codex in the repo root and use this first prompt:\n   `codex "Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create."`',
+        "claude": '5. Start Claude in the repo root and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create."`',
+        "copilot": '5. In your IDE chat, use this first prompt:\n   `Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create.`',
+    }
+
+    rendered = [line.format(tool=tool) for line in common]
+    rendered.append(prompts[tool])
+    return rendered
+
+
+def cmd_first_run(args: argparse.Namespace) -> None:
+    tool = args.tool
+    print(f"First-run guide for {tool}")
+    print()
+    for line in _first_run_lines(tool):
+        print(line)
+
+
+# ---------------------------------------------------------------------------
 # Argument parser
 # ---------------------------------------------------------------------------
 
@@ -800,6 +992,32 @@ def build_parser() -> argparse.ArgumentParser:
         help="Glob for test files relative to root (default: tests/**/*)",
     )
     p_check_coverage.set_defaults(func=cmd_check_coverage)
+
+    # doctor
+    p_doctor = sub.add_parser(
+        "doctor",
+        help="Check whether the local setup is ready for adoption",
+    )
+    p_doctor.add_argument(
+        "--tool",
+        choices=("all", "codex", "claude", "copilot"),
+        default="all",
+        help="Tooling surface to validate (default: all)",
+    )
+    p_doctor.set_defaults(func=cmd_doctor)
+
+    # first-run
+    p_first_run = sub.add_parser(
+        "first-run",
+        help="Print the recommended first-run sequence for a tool",
+    )
+    p_first_run.add_argument(
+        "--tool",
+        choices=("codex", "claude", "copilot"),
+        required=True,
+        help="Tooling surface to guide",
+    )
+    p_first_run.set_defaults(func=cmd_first_run)
 
     return parser
 

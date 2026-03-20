@@ -66,6 +66,16 @@ docs/work/<work-id>/
 - `templates/optimization-scorecard-template.md` -> `docs/work/<work-id>/evidence/optimization-scorecard.md`
 - `templates/workflow-experiment-template.md` -> `docs/workflow-experiments/<experiment-id>.md`
 
+## Fastest correct start
+
+For adopters learning the workflow, prefer this sequence:
+
+1. `python3 scripts/cli.py doctor --tool all`
+2. `python3 scripts/cli.py new-work <work-id>`
+3. Fill `brief.md`
+4. `python3 scripts/cli.py check-work <work-id>`
+5. Hand the work to `product-owner` or `planner` from a validated packet instead of from ad hoc chat context
+
 ## Non-intrusive structure
 
 - Keep durable task context under `docs/work/`.

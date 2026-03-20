@@ -2,6 +2,14 @@
 
 This repo includes a concrete Claude Code runtime layer in addition to the shared `.agents/` model.
 
+## Suggested first setup
+
+1. Sign in: `claude auth login`
+2. Validate the repo surface: `python3 scripts/cli.py doctor --tool claude`
+3. Print the guided first-run sequence: `python3 scripts/cli.py first-run --tool claude`
+4. Start Claude in the repo root.
+5. Ask: `Use product-owner to summarize the current instructions and available skills, then tell me the next owner and the first durable artifact to create.`
+
 ## What is tool-native here
 
 Shared portable workflow logic lives under:

@@ -8,6 +8,63 @@ A starter repo for a **roles + skills** workflow that works across:
 
 Releases of this starter repo aim to follow **Semantic Versioning**, and notable changes are tracked in [CHANGELOG.md](/home/sturlalange/Dev/my-claude-skills/CHANGELOG.md).
 
+## 5-minute quickstart
+
+Pick the tool you want to adopt first, then use the repo CLI to validate the setup before you start tuning prompts or roles.
+
+### Codex
+
+```bash
+npm i -g @openai/codex
+codex login
+python3 scripts/cli.py doctor --tool codex
+python3 scripts/cli.py first-run --tool codex
+```
+
+### Claude Code
+
+```bash
+claude auth login
+python3 scripts/cli.py doctor --tool claude
+python3 scripts/cli.py first-run --tool claude
+```
+
+### GitHub Copilot
+
+Open the repo in your IDE, confirm Copilot is signed in there, then run:
+
+```bash
+python3 scripts/cli.py doctor --tool copilot
+python3 scripts/cli.py first-run --tool copilot
+```
+
+## Golden path
+
+If you want one end-to-end exercise that proves both the repo setup and the operating model:
+
+```bash
+python3 scripts/cli.py doctor --tool all
+python3 scripts/cli.py sync
+python3 scripts/cli.py sync --check
+python3 scripts/cli.py new-work onboarding-demo
+python3 scripts/cli.py check-work onboarding-demo
+```
+
+Then:
+
+- fill `docs/work/onboarding-demo/brief.md`
+- rerun `python3 scripts/cli.py check-work onboarding-demo`
+- start your tool and ask `product-owner` to summarize the current instructions and available skills
+
+## Troubleshooting
+
+- `python3 scripts/cli.py doctor --tool <tool>` fails on the CLI binary: install that tool and make sure it is on `PATH`
+- auth check warns or fails: run `codex login`, `claude auth login`, or verify Copilot sign-in in your IDE
+- generated files are out of sync: run `python3 scripts/cli.py sync`, then rerun `python3 scripts/cli.py sync --check`
+- skills or generated agents seem stale: edit canonical files under `.agents/`, not generated files, then rerun `sync`
+- Claude hooks or settings do not take effect: confirm the repo is trusted and that `.claude/settings.json` is being loaded
+- Copilot behavior does not match the repo: confirm your IDE honors `AGENTS.md`, `.github/copilot-instructions.md`, and `.github/agents/`
+
 This version is biased toward **embedded firmware** and **safety-aware engineering habits**:
 - preserve behavior unless intentionally changing it
 - prefer simulation before hardware when possible
@@ -37,6 +94,18 @@ To check for drift without rewriting files:
 
 ```bash
 python3 scripts/cli.py sync --check
+```
+
+To validate the local setup before adopting the repo workflow:
+
+```bash
+python3 scripts/cli.py doctor --tool all
+```
+
+To print the exact first-run sequence for one tool:
+
+```bash
+python3 scripts/cli.py first-run --tool codex
 ```
 
 ## What is included

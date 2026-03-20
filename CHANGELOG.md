@@ -9,6 +9,9 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- `scripts/cli.py doctor` to validate adopter setup across repo files, generated-file sync, Codex, Claude, and Copilot surfaces before first use.
+- `scripts/cli.py first-run --tool <codex|claude|copilot>` to print a tool-specific happy path with exact next commands and the first recommended prompt.
+- README quickstart, golden-path walkthrough, and first-run troubleshooting guidance so adopters can get to a correct first packet with less inference.
 - Semantic versioning and changelog policy for this starter repo.
 - Durable work-packet structure under `docs/work/<work-id>/` with canonical `brief.md`, `plan.md`, `status.md`, `evidence/`, and `handoffs/`.
 - Reusable `work-plan` and `work-status` templates.
