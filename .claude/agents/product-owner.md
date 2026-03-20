@@ -1,7 +1,7 @@
 ---
 name: product-owner
 description: Central supervisor for non-trivial work: establishes the shared brief, keeps the main context, routes work to the right specialist or planned specialist set, and synthesizes the result back to the requester.
-tools: Read, Grep, Glob, Edit, MultiEdit
+tools: Read, Grep, Glob, Edit, MultiEdit, Bash
 model: inherit
 skills:
   - planning
