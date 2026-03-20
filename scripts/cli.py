@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -31,7 +32,8 @@ AGENTS_AGENTS_DIR = ROOT / ".agents" / "agents"
 AGENTS_SKILLS_DIR = ROOT / ".agents" / "skills"
 
 SYNC_REMINDER = (
-    "Reminder: run `python scripts/sync_agent_layouts.py` "
+    "Reminder: run `python scripts/cli.py sync` "
+    "(or `python scripts/sync_agent_layouts.py` directly) "
     "to propagate changes to .claude/, .github/, and .codex/ layouts."
 )
 
@@ -364,6 +366,36 @@ def cmd_new_skill(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Subcommand: sync
+# ---------------------------------------------------------------------------
+
+def cmd_sync(args: argparse.Namespace) -> None:
+    """Delegate to scripts/sync_agent_layouts.py."""
+    cmd = [sys.executable, str(ROOT / "scripts" / "sync_agent_layouts.py")]
+    if args.check:
+        cmd.append("--check")
+    if args.link:
+        cmd.append("--link")
+    result = subprocess.run(cmd)
+    sys.exit(result.returncode)
+
+
+# ---------------------------------------------------------------------------
+# Subcommand: check-coverage
+# ---------------------------------------------------------------------------
+
+def cmd_check_coverage(args: argparse.Namespace) -> None:
+    """Delegate to scripts/check-scenario-coverage.py."""
+    cmd = [sys.executable, str(ROOT / "scripts" / "check-scenario-coverage.py")]
+    if args.root:
+        cmd.extend(["--root", args.root])
+    if args.tests:
+        cmd.extend(["--tests", args.tests])
+    result = subprocess.run(cmd)
+    sys.exit(result.returncode)
+
+
+# ---------------------------------------------------------------------------
 # Argument parser
 # ---------------------------------------------------------------------------
 
@@ -441,6 +473,42 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p_new_skill.add_argument("name", metavar="<name>", help="Skill name (used as directory name)")
     p_new_skill.set_defaults(func=cmd_new_skill)
+
+    # sync
+    p_sync = sub.add_parser(
+        "sync",
+        help="Sync canonical .agents/ sources to .claude/, .github/, and .codex/",
+    )
+    p_sync.add_argument(
+        "--check",
+        action="store_true",
+        help="Exit non-zero if generated files are out of date (dry-run)",
+    )
+    p_sync.add_argument(
+        "--link",
+        action="store_true",
+        help="Symlink .claude/skills/* into ~/.claude/skills/ instead of syncing",
+    )
+    p_sync.set_defaults(func=cmd_sync)
+
+    # check-coverage
+    p_check_coverage = sub.add_parser(
+        "check-coverage",
+        help="Check that every SC-NNN scenario is covered by at least one test",
+    )
+    p_check_coverage.add_argument(
+        "--root",
+        metavar="<dir>",
+        default=None,
+        help="Repo root to resolve paths from (default: repo root of this script)",
+    )
+    p_check_coverage.add_argument(
+        "--tests",
+        metavar="<glob>",
+        default=None,
+        help="Glob for test files relative to root (default: tests/**/*)",
+    )
+    p_check_coverage.set_defaults(func=cmd_check_coverage)
 
     return parser
 
