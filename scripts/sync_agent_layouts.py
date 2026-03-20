@@ -9,10 +9,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL_AGENTS = ROOT / ".agents" / "agents"
 CANONICAL_SKILLS = ROOT / ".agents" / "skills"
+CANONICAL_RULES = ROOT / ".agents" / "rules"
 CANONICAL_PROJECT = ROOT / ".agents" / "project" / "CLAUDE.md"
 
 CLAUDE_AGENTS = ROOT / ".claude" / "agents"
 CLAUDE_SKILLS = ROOT / ".claude" / "skills"
+CLAUDE_RULES = ROOT / ".claude" / "rules"
 CLAUDE_PROJECT = ROOT / ".claude" / "CLAUDE.md"
 
 COPILOT_AGENTS = ROOT / ".github" / "agents"
@@ -126,6 +128,24 @@ def copy_skills(check: bool, touched: list[Path], errors: list[str]) -> None:
                 existing.unlink()
 
 
+def copy_rules(check: bool, touched: list[Path], errors: list[str]) -> None:
+    """Copy *.md files from .agents/rules/ to .claude/rules/, cleaning up strays."""
+    if not CANONICAL_RULES.exists():
+        return
+    ensure_dir(CLAUDE_RULES)
+    expected = set()
+    for src in sorted(CANONICAL_RULES.glob("*.md")):
+        dst = CLAUDE_RULES / src.name
+        expected.add(src.name)
+        write_file(dst, src.read_text(encoding="utf-8"), check, touched, errors)
+    for existing in CLAUDE_RULES.glob("*.md"):
+        if existing.name not in expected:
+            if check:
+                errors.append(str(existing.relative_to(ROOT)))
+            else:
+                existing.unlink()
+
+
 def cleanup_files(folder: Path, wanted_names: set[str], suffix: str, check: bool, errors: list[str]) -> None:
     ensure_dir(folder)
     for child in folder.iterdir():
@@ -195,6 +215,7 @@ def main() -> int:
     cleanup_files(CODEX_AGENTS, expected_codex, ".toml", args.check, errors)
 
     copy_skills(args.check, touched, errors)
+    copy_rules(args.check, touched, errors)
 
     if errors:
         print("Generated files are out of date:")
