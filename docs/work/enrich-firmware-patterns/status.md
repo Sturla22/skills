@@ -3,7 +3,7 @@
 **Work ID:** enrich-firmware-patterns
 **Last updated:** 2026-03-20
 **Current owner:** product-owner (awaiting Q1 clarification before developer handoff)
-**State:** planning complete — one open question before implementation starts
+**State:** complete
 
 ---
 
@@ -11,13 +11,15 @@
 
 Research approved by requester. Plan produced and written. One product-owner clarification needed before lanes A–E can start.
 
-## Open question
+## What was done
 
-**Q1:** Should `firmware-migration/SKILL.md` receive any pattern enrichment, or is the mapping in `plan.md` section 5 complete? (The research surfaced no pattern with a strong natural home there; RAII maps more cleanly to `hardware-abstraction`.)
+All five lanes executed and verified. Lane D (interface-contract-design) ran serially after A/B/C/E as planned. Structural grep check passed for all 17 required terms across 5 skills. Sync script confirmed propagation to all 61 generated files. CHANGELOG.md updated.
 
-## Next action
+## Residual risk
 
-Answer Q1, then hand off to developer(s) to execute lanes A, B, C, E in parallel.
+- Lane agent worktrees were not isolated (all changes landed in main tree); isolation should be investigated for future parallel work to avoid mid-flight conflicts.
+- No hardware-level verification — all additions are guidance text; real-world fitness depends on practitioner judgment when applying the patterns.
+- ETL MISRA gap: caveats are documented in skills but ETL itself remains un-audited for safety-critical use.
 
 ## Work packet files
 
