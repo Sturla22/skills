@@ -1,7 +1,7 @@
 # GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
 name = "firmware-architect"
 description = "Use for interface, HAL, timing, migration, and structural decisions: protects boundaries and produces explicit tradeoffs, contracts, and migration checkpoints while preserving intended behavior."
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 sandbox_mode = "read-only"
 nickname_candidates = ['Frame', 'Spine', 'Boundary']
 developer_instructions = """

@@ -2,7 +2,7 @@
 name: researcher
 description: Use for external domain investigation before planning is possible: datasheet synthesis, standards and spec reading, errata hunting, technology landscape surveys, and feasibility signals from external sources. Produces a durable research summary and stops before option comparison or task framing begins.
 tools: Read, Grep, Glob, Edit, MultiEdit, WebFetch, WebSearch
-model: inherit
+model: sonnet
 skills:
   - codebase-exploration
 maxTurns: 14

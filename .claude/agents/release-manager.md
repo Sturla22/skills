@@ -2,7 +2,7 @@
 name: release-manager
 description: Use for release coordination, version bump decisions, changelog finalization, release readiness, and go/no-go communication: turns the canonical work packet into a coherent release candidate with explicit release shape, evidence gates, and artifact identity, without inventing product truth.
 tools: Read, Grep, Glob, Edit, MultiEdit, Bash
-model: inherit
+model: sonnet
 skills:
   - release-readiness
   - planning

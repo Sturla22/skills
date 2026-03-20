@@ -2,6 +2,7 @@ name = "researcher"
 description = "Use for external domain investigation before planning is possible: datasheet synthesis, standards and spec reading, errata hunting, technology landscape surveys, and feasibility signals from external sources. Produces a durable research summary and stops before option comparison or task framing begins."
 tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit", "WebFetch", "WebSearch"]
 skills = ["codebase-exploration"]
+claude_model = "sonnet"
 claude_max_turns = 14
 codex_model_reasoning_effort = "high"
 codex_sandbox_mode = "workspace-write"

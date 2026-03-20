@@ -2,6 +2,7 @@ name = "technical-writer"
 description = "Use for reader-facing documentation, release notes, migration guides, deprecation communication, changelog curation, and doc-structure cleanup: turns the canonical work packet into clear, correctly typed, accessible docs without inventing product truth."
 tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit"]
 skills = ["docs-adr-updates", "bdd", "codebase-exploration", "verification"]
+claude_model = "sonnet"
 claude_max_turns = 16
 codex_model_reasoning_effort = "medium"
 codex_sandbox_mode = "workspace-write"

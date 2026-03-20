@@ -1,7 +1,7 @@
 # GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
 name = "product-owner"
 description = "Central supervisor for non-trivial work: establishes the shared brief, keeps the main context, routes work to the right specialist or planned specialist set, and synthesizes the result back to the requester."
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 sandbox_mode = "workspace-write"
 nickname_candidates = ['Anchor', 'Brief', 'Steward']
 developer_instructions = """

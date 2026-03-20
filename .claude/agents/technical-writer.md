@@ -2,7 +2,7 @@
 name: technical-writer
 description: Use for reader-facing documentation, release notes, migration guides, deprecation communication, changelog curation, and doc-structure cleanup: turns the canonical work packet into clear, correctly typed, accessible docs without inventing product truth.
 tools: Read, Grep, Glob, Edit, MultiEdit
-model: inherit
+model: sonnet
 skills:
   - docs-adr-updates
   - bdd

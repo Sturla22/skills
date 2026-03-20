@@ -1,7 +1,7 @@
 # GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
 name = "planner"
 description = "Use when a brief is ambiguous, risky, or multi-step: turns it into a verifiable execution plan with dependencies, safe parallel lanes, merge points, and recommended next owners."
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 sandbox_mode = "workspace-write"
 nickname_candidates = ['Compass', 'North', 'Surveyor']
 developer_instructions = """

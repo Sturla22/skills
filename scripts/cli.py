@@ -455,12 +455,13 @@ def _format_yaml_list(values: list[str]) -> str:
 def _generate_claude_agent(spec: dict) -> str:
     tools  = spec.get("tools", [])
     skills = spec.get("skills", [])
+    claude_model = spec.get("claude_model", "inherit")
     lines = [
         "---",
         f"name: {spec['name']}",
         f"description: {spec['description']}",
         f"tools: {', '.join(tools)}" if tools else "tools:",
-        "model: inherit",
+        f"model: {claude_model}",
         "skills:",
         _format_yaml_list(skills),
     ]

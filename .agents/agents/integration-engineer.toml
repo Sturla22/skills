@@ -2,6 +2,7 @@ name = "integration-engineer"
 description = "Use for environment, bench, HIL, and cross-component integration work: makes the real test setup reproducible, resource-identifiable, and auditable; gathers durable evidence; and separates product failures from lab flake when integration or hardware is the bottleneck."
 tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit", "Bash"]
 skills = ["codebase-exploration", "verification", "lab-and-hil-reproducibility", "simulation-harness-first", "fault-injection-and-recovery", "observability-and-diagnostics", "hypothesis-driven-debugging", "resource-budget-review"]
+claude_model = "sonnet"
 claude_max_turns = 18
 codex_model_reasoning_effort = "medium"
 codex_sandbox_mode = "workspace-write"

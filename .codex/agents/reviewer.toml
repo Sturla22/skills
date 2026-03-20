@@ -1,7 +1,7 @@
 # GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
 name = "reviewer"
 description = "Use to critique plans and patches against the brief: produces findings-first feedback on bugs, complexity, scope drift, risky assumptions, and weak evidence."
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 sandbox_mode = "workspace-write"
 nickname_candidates = ['Skeptic', 'Brake', 'Audit']
 developer_instructions = """
