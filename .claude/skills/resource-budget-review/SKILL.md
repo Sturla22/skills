@@ -41,6 +41,9 @@ If the goal is to actively reduce a specific cost or footprint rather than revie
 - **Blocking time and latency** — mutex holds, busy-wait, DMA wait; avoid blocking APIs in high-priority tasks
 - **Logging overhead** — bytes per event, frequency, storage impact; deferred/TRICE-style logging for hot paths
 - **Power / battery implications** — measure active vs sleep current; GPIO-marked waveforms on Joulescope/PPK2
+- **Memory pool (fixed-block allocator)** — account for fixed acquire/release overhead on every allocation path; block size must cover the worst-case object size across all users; check `etl::pool` capacity against worst-case concurrent acquisition count; verify pool is not exhausted under peak concurrency
+- **Double buffer / ping-pong buffer** — double-buffer RAM cost is 2x the single-buffer size; swap synchronization overhead must be accounted for; DMA alignment requirements apply to both buffers independently
+- **Active Object queue depth and task stack depth** — queue depth and task stack depth are first-class resource review items; size by workload analysis on the deployment target; no platform-agnostic rule exists — cross-reference `simulation-harness-first` for workload-sizing guidance
 
 ## CI enforcement pattern
 ```bash
