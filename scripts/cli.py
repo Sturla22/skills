@@ -847,26 +847,49 @@ def cmd_doctor(args: argparse.Namespace) -> None:
 # Subcommand: first-run
 # ---------------------------------------------------------------------------
 
-def _first_run_lines(tool: str) -> list[str]:
-    common = [
-        "1. Validate the repo surface:",
-        "   `python3 scripts/cli.py doctor --tool {tool}`",
-        "2. Regenerate and verify derived files:",
-        "   `python3 scripts/cli.py sync`",
-        "   `python3 scripts/cli.py sync --check`",
-        "3. Decide commit and PR naming policy:",
-        "   Ask whether Jira ticket IDs should prefix commit messages and pull request titles.",
-        "4. Scaffold a first work packet:",
-        "   `python3 scripts/cli.py new-work onboarding-demo`",
-        "5. Fill `docs/work/onboarding-demo/brief.md`, then verify it:",
-        "   `python3 scripts/cli.py check-work onboarding-demo`",
-    ]
-
-    prompts = {
-        "codex": '6. Start Codex in the repo root and use this first prompt:\n   `codex "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
-        "claude": '6. Start Claude in the repo root and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
-        "copilot": '6. In your IDE chat, use this first prompt:\n   `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create.`',
-    }
+def _first_run_lines(tool: str, mode: str) -> list[str]:
+    if mode == "existing":
+        common = [
+            "1. Validate the repo surface:",
+            "   `python3 scripts/cli.py doctor --tool {tool}`",
+            "2. Decide the minimum adoption slice:",
+            "   Start with instructions only, generated agents, or work packets for non-trivial tasks. Do not replace existing repo conventions wholesale.",
+            "3. Inventory conventions you must preserve:",
+            "   Issue tracker IDs, commit and PR title rules, release process, CI checks, docs layout, test commands, and any existing agent or instruction files.",
+            "4. Decide commit and PR naming policy:",
+            "   Ask whether Jira ticket IDs should prefix commit messages and pull request titles.",
+            "5. Regenerate and verify derived files:",
+            "   `python3 scripts/cli.py sync`",
+            "   `python3 scripts/cli.py sync --check`",
+            "6. Scaffold a pilot work packet for one real task:",
+            "   `python3 scripts/cli.py new-work adoption-pilot`",
+            "7. Record the conventions to preserve in `docs/work/adoption-pilot/brief.md`, then verify it:",
+            "   `python3 scripts/cli.py check-work adoption-pilot`",
+        ]
+        prompts = {
+            "codex": '8. Start Codex in the existing repo and use this first prompt:\n   `codex "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
+            "claude": '8. Start Claude in the existing repo and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
+            "copilot": '8. In your IDE chat, use this first prompt:\n   `Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create.`',
+        }
+    else:
+        common = [
+            "1. Validate the repo surface:",
+            "   `python3 scripts/cli.py doctor --tool {tool}`",
+            "2. Regenerate and verify derived files:",
+            "   `python3 scripts/cli.py sync`",
+            "   `python3 scripts/cli.py sync --check`",
+            "3. Decide commit and PR naming policy:",
+            "   Ask whether Jira ticket IDs should prefix commit messages and pull request titles.",
+            "4. Scaffold a first work packet:",
+            "   `python3 scripts/cli.py new-work onboarding-demo`",
+            "5. Fill `docs/work/onboarding-demo/brief.md`, then verify it:",
+            "   `python3 scripts/cli.py check-work onboarding-demo`",
+        ]
+        prompts = {
+            "codex": '6. Start Codex in the repo root and use this first prompt:\n   `codex "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
+            "claude": '6. Start Claude in the repo root and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
+            "copilot": '6. In your IDE chat, use this first prompt:\n   `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create.`',
+        }
 
     rendered = [line.format(tool=tool) for line in common]
     rendered.append(prompts[tool])
@@ -875,9 +898,10 @@ def _first_run_lines(tool: str) -> list[str]:
 
 def cmd_first_run(args: argparse.Namespace) -> None:
     tool = args.tool
-    print(f"First-run guide for {tool}")
+    mode = args.mode
+    print(f"First-run guide for {tool} ({mode})")
     print()
-    for line in _first_run_lines(tool):
+    for line in _first_run_lines(tool, mode):
         print(line)
 
 
@@ -1019,6 +1043,12 @@ def build_parser() -> argparse.ArgumentParser:
         choices=("codex", "claude", "copilot"),
         required=True,
         help="Tooling surface to guide",
+    )
+    p_first_run.add_argument(
+        "--mode",
+        choices=("starter", "existing"),
+        default="starter",
+        help="Onboarding mode to guide (default: starter)",
     )
     p_first_run.set_defaults(func=cmd_first_run)
 

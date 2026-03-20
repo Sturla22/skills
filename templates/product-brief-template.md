@@ -28,6 +28,14 @@
 - Should Jira ticket IDs prefix commit messages?
 - Should Jira ticket IDs prefix PR titles?
 
+## Existing conventions to preserve
+
+- Existing issue tracker, commit, or PR conventions:
+- Existing release or branching process:
+- Existing docs, ADR, or architecture layout:
+- Existing build, test, and CI expectations:
+- Existing agent, instruction, or automation files:
+
 ## System context / external interfaces
 
 ## Acceptance criteria

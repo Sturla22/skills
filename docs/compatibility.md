@@ -70,6 +70,7 @@ The goal is not to make one giant shared prompt. Instead:
 
 - Start by validating the repo surface with `python3 scripts/cli.py doctor --tool all`.
 - Use `python3 scripts/cli.py first-run --tool codex`, `--tool claude`, or `--tool copilot` to give adopters one exact happy path per tool.
+- For existing repositories, use `python3 scripts/cli.py first-run --tool <tool> --mode existing` and preserve the repo's current issue, commit, PR, release, docs, and CI conventions unless there is a deliberate migration decision.
 - Then customize `AGENTS.md`, `.agents/project/CLAUDE.md`, `.claude/settings.json`, and `.github/copilot-instructions.md`.
 - After that, tune `.claude/rules/`, `.claude/hooks/`, `.mcp.json`, and `.codex/config.toml`.
 - Only after that, tune skills and path-specific instructions to match your build, test, and firmware boundaries.

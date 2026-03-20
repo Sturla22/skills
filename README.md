@@ -12,6 +12,8 @@ Releases of this starter repo aim to follow **Semantic Versioning**, and notable
 
 Pick the tool you want to adopt first, then use the repo CLI to validate the setup before you start tuning prompts or roles.
 
+If you are adopting this into an existing repository instead of starting from this starter layout, see [docs/adopt-existing-repo.md](/home/sturlalange/Dev/my-claude-skills/docs/adopt-existing-repo.md) and use `python3 scripts/cli.py first-run --tool <tool> --mode existing`.
+
 ### Codex
 
 ```bash
@@ -109,6 +111,12 @@ To print the exact first-run sequence for one tool:
 
 ```bash
 python3 scripts/cli.py first-run --tool codex
+```
+
+For an existing repository adoption path:
+
+```bash
+python3 scripts/cli.py first-run --tool codex --mode existing
 ```
 
 ## What is included
