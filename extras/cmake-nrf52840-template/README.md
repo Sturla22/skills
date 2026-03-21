@@ -30,6 +30,38 @@ ctest --preset test-host-debug
 
 This builds the domain test and runs a negative configure test that is expected to fail when `domain` links directly to `platform`.
 
+## Static analysis
+
+The starter’s enforced baseline is `clang-tidy`.
+
+For editor diagnostics, point your C++ tooling at the preset-specific compile database that matches the surface you are editing:
+
+- `build/host-debug/compile_commands.json` for `libs/domain/` and `tests/host/`
+- `build/nrf52840-debug/compile_commands.json` for `libs/platform/`, `src/main.cpp`, and `src/startup_nrf52840.c`
+
+To use the repo’s `pre-commit` hook, install it once:
+
+```bash
+python3 -m pip install --user pre-commit
+make install-pre-commit
+```
+
+The hook runs the same repo-owned analyzer command used in CI. You can also run it manually:
+
+```bash
+make check-static-analysis
+```
+
+Or through the framework directly:
+
+```bash
+python3 -m pre_commit run --all-files static-analysis
+```
+
+That command configures both presets and runs `clang-tidy` across the host and target translation units. It also injects the Arm GNU C++ standard-library include paths needed for target-side C++ analysis.
+
+The substantive analyzer logic lives in the repo-owned Python entrypoint [`tools/ci/check-static-analysis.py`](/home/sturlalange/Dev/my-claude-skills/tools/ci/check-static-analysis.py), which matches the repo preference for Python once CI automation grows beyond a short shell wrapper.
+
 ## Cross-build for nRF52840
 
 ```bash

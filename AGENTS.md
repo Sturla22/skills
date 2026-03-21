@@ -263,6 +263,7 @@ Every handoff should include:
 - Do not run an open-ended autonomous loop without explicit budget and stop states.
 - Do not run parallel write lanes in one shared dirty tree when isolated worktrees would make ownership and integration clearer.
 - Prefer simple CI configuration that delegates substantive setup and verification logic to repo-tracked scripts or Make targets under `tools/` instead of embedding long shell sequences in workflow files.
+- Prefer Python over Bash for repo-owned automation once the logic grows beyond a short shell wrapper. Keep shell for small wrappers around package managers or linear command sequences.
 - Do not skip TDD on product development work without making that decision explicit and visible.
 - Do not treat behavior scenarios, the test pyramid, or simulation-first as optional on product development work without an explicit reason.
 - Do not confuse verification with validation.

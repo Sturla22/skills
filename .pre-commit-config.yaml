@@ -1,0 +1,12 @@
+minimum_pre_commit_version: 3.7.0
+
+repos:
+  - repo: local
+    hooks:
+      - id: static-analysis
+        name: C++ static analysis
+        entry: make check-static-analysis
+        language: system
+        pass_filenames: false
+        files: >-
+          ^(extras/cmake-nrf52840-template/|tools/ci/check-static-analysis\.py|Makefile|\.pre-commit-config\.yaml)$
