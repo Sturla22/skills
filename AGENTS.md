@@ -20,7 +20,7 @@ Optional specialists:
 - **integration-engineer** owns reproducible integration, bench, HIL, environment evidence, and flake triage when real-environment work becomes its own lane
 - **red-team** adversarially challenges `plan.md` on medium/high-risk work before implementation starts, returning structured findings and an approve / revise / escalate recommendation to `product-owner`
 - **workflow-architect** owns evidence-based improvement of prompts, templates, skills, and roles when the operating model itself needs work
-- **researcher** owns external domain investigation — datasheets, standards, specs, errata, feasibility signals, and technology landscape surveys — when a knowledge gap must be closed before planning is possible; stops before option comparison or design begins
+- **researcher** owns external domain investigation — datasheets, standards, specs, errata, feasibility signals, and technology landscape surveys — when work references an external component, standard, SDK, or library whose current state is not already characterized in the codebase; fires reactively on that reference, not only when planning is completely blocked; stops before option comparison or design begins
 
 Keep one active human-facing owner. `product-owner` stays responsible for alignment with the requester. Multiple specialists may work in parallel only when `planner` has made ownership boundaries, dependencies, and integration checkpoints explicit. Specialists are internal workers by default: they return results to `product-owner`, not straight to the requester, unless the workflow explicitly says otherwise.
 Unless the requester explicitly asks for a different role or the task is trivial enough not to need the full role flow, start with `product-owner` as the default human-facing control thread.
@@ -153,35 +153,37 @@ Every handoff should include:
 9. `release-manager` joins when version bump, changelog finalization, release shape, release readiness, or go/no-go communication deserves a dedicated owner.
 10. `integration-engineer` joins when integration setup, HIL, flashing, bench repro, environment stability, or flaky lab signal is the bottleneck.
 11. `workflow-architect` joins when repeated workflow friction, missing guidance, or possible new skills or roles need a dedicated owner.
-12. `researcher` joins when an external knowledge gap — datasheets, specs, standards, errata, or feasibility signals — must be closed before planning can start.
+12. `researcher` joins when work references a specific external component, standard, SDK, or library not already characterized in the codebase — not only when planning is completely blocked, but reactively whenever external assumptions have not been verified against current authoritative sources.
 
 ## Default skill sequences
 
 ### Product feature work
 1. `codebase-exploration`
-2. `planning`
-3. `requirements-and-traceability`
-4. `risk-catalog` when safety- or reliability-sensitive requirements exist
-5. `bdd`
-6. `trade-study-and-decision-analysis` when multiple credible options exist
-7. `interface-contract-design`
-8. `simulation-harness-first`
-9. `tdd`
-10. `validation-planning` when stakeholder fit needs separate evidence
-11. `verification`
-12. `resource-budget-review`
-13. `docs-adr-updates`
+2. `research` when the work references an external component, standard, or library not already characterized in the codebase
+3. `planning`
+4. `requirements-and-traceability`
+5. `risk-catalog` when safety- or reliability-sensitive requirements exist
+6. `bdd`
+7. `trade-study-and-decision-analysis` when multiple credible options exist
+8. `interface-contract-design`
+9. `simulation-harness-first`
+10. `tdd`
+11. `validation-planning` when stakeholder fit needs separate evidence
+12. `verification`
+13. `resource-budget-review`
+14. `docs-adr-updates`
 
 ### Product bug work
 1. `codebase-exploration`
-2. `hypothesis-driven-debugging`
-3. `requirements-and-traceability` when expected behavior or ownership is unclear
-4. `risk-catalog` when the bug surfaces a failure mode worth cataloging permanently
-5. `bdd`
-6. `simulation-harness-first`
-7. `tdd`
-8. `verification`
-9. `fault-injection-and-recovery`
+2. `research` when the bug involves a specific external component, MCU family, vendor SDK, or protocol not already characterized in the codebase
+3. `hypothesis-driven-debugging`
+4. `requirements-and-traceability` when expected behavior or ownership is unclear
+5. `risk-catalog` when the bug surfaces a failure mode worth cataloging permanently
+6. `bdd`
+7. `simulation-harness-first`
+8. `tdd`
+9. `verification`
+10. `fault-injection-and-recovery`
 
 ### Product performance / endurance optimization
 1. `codebase-exploration`
@@ -216,11 +218,12 @@ Every handoff should include:
 ### System definition / concept trade
 1. `requirements-and-traceability`
 2. `risk-catalog` when safety- or reliability-sensitive requirements exist
-3. `planning`
-4. `trade-study-and-decision-analysis`
-5. `interface-contract-design`
-6. `validation-planning`
-7. `docs-adr-updates`
+3. `research` when the work references an external component, standard, or library not already characterized in the codebase
+4. `planning`
+5. `trade-study-and-decision-analysis`
+6. `interface-contract-design`
+7. `validation-planning`
+8. `docs-adr-updates`
 
 ### Workflow evolution
 1. `codebase-exploration`
@@ -241,13 +244,14 @@ Every handoff should include:
 
 ### Platform migration
 1. `codebase-exploration`
-2. `planning`
-3. `firmware-migration`
-4. `hardware-abstraction`
-5. `verification`
-6. `safety-risk-scan`
-7. `risk-catalog` to promote high-severity migration findings to the permanent catalog
-8. `resource-budget-review`
+2. `research` when the target MCU family, vendor SDK, or hardware peripheral is not already characterized in the codebase
+3. `planning`
+4. `firmware-migration`
+5. `hardware-abstraction`
+6. `verification`
+7. `safety-risk-scan`
+8. `risk-catalog` to promote high-severity migration findings to the permanent catalog
+9. `resource-budget-review`
 
 ## Behavioral defaults
 
@@ -268,6 +272,7 @@ Every handoff should include:
 - Prefer **remove before add**, **inline before abstract**, **merge before split**, and **specialize before generalize**.
 - For bug work, persist hypotheses and discriminating checks under the work packet instead of only in chat.
 - For workflow changes, prefer one small mutable surface, an explicit evaluation window, and a keep / revise / revert decision.
+- When work references a specific external component, standard, SDK, or library not already characterized in the codebase, invoke `researcher` to fetch current docs, errata, or ecosystem state before planning commits to assumptions about that external thing.
 - State what was not tested on real hardware.
 - When uncertain, tighten the shared understanding, reduce the next step, and add instrumentation.
 - Do not add historical comments to stable docs or code comments unless the file is explicitly for history, release communication, or migration tracking.
