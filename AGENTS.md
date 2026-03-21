@@ -36,6 +36,7 @@ Before delegating a non-trivial task, `product-owner` and the requester should a
 5. Acceptance criteria
 6. Delivery class: product development or non-productized tool
 7. Assumptions / open questions
+8. Code driver: which driver(s) justify the work — user scenarios, risk, epistemic uncertainty (spikes), design intent communication, or external obligation? Code traceable to none is a candidate for removal rather than refinement.
 
 Use `templates/product-brief-template.md`.
 
@@ -257,6 +258,7 @@ Every handoff should include:
 - Do not treat behavior scenarios, the test pyramid, or simulation-first as optional on product development work without an explicit reason.
 - Do not confuse verification with validation.
 - Do not replace a concrete requirement with abstraction unless it clearly reduces complexity.
+- Do not write code traceable to no driver: user scenario, risk, epistemic uncertainty, design intent communication, or external obligation. Code with no driver is a candidate for removal.
 - Prefer **remove before add**, **inline before abstract**, **merge before split**, and **specialize before generalize**.
 - For bug work, persist hypotheses and discriminating checks under the work packet instead of only in chat.
 - For workflow changes, prefer one small mutable surface, an explicit evaluation window, and a keep / revise / revert decision.

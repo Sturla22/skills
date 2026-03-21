@@ -99,6 +99,7 @@ Bring in **workflow-architect** when:
 
 ## Anti-patterns
 
+- writing code that cannot be justified by any driver: user scenario, risk, epistemic uncertainty, design intent communication, or external obligation
 - delegating before restating the real problem
 - copying the same scope, assumptions, and risks into every artifact instead of using one canonical work packet
 - letting every specialist improvise its own handoff format

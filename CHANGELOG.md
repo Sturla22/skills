@@ -9,6 +9,7 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- Code-driver model woven through the repo: five named drivers (user scenarios, risk, epistemic uncertainty, design intent communication, external obligation) plus a deletion test ("code traceable to no driver is a candidate for removal"). Appears in the `AGENTS.md` shared-understanding contract and behavioral defaults, the `product-brief-template.md` `## Code drivers` section, the `operating-model.md` anti-patterns list, and the `simplify-without-behavior-change` skill's essential-vs-accidental distinction step.
 - `docs/adopt-existing-repo.md`, `first-run --mode existing`, and brief-template prompts for preserving existing repo conventions so teams can adopt this workflow incrementally instead of as a greenfield replacement.
 - Setup guidance now asks adopters whether Jira ticket IDs should prefix commit messages and pull request titles, and the product-brief and commit templates now record that policy explicitly.
 - Repo-wide documentation guidance to avoid historical comments in stable docs and code comments, keeping change history in `CHANGELOG.md`, ADR supersession notes, release notes, and work packets instead.

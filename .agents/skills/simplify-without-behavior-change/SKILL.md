@@ -37,6 +37,7 @@ Eliminate accidental complexity. Essential complexity (required by the problem) 
 2. **State the behavior that must remain** — write it down before touching anything.
 
 3. **Distinguish essential from accidental** — for each complex element, ask:
+   - What driver does this element serve — user scenario, risk, epistemic uncertainty, design intent communication, or external obligation? If none, it is accidental.
    - Is this required by the problem domain, or by our solution?
    - What would happen if we removed it? Would a user-visible requirement break?
    - Is this here because of a real past failure, or a hypothetical future one?
