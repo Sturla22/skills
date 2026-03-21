@@ -72,6 +72,7 @@ See `docs/firmware-playbook.md` → **Project Layout** for the full Pitchfork sp
 - Use `lab-and-hil-reproducibility` when bench or HIL evidence needs setup identity, repeatable steps, and honest flake classification.
 - Use `workflow-evolution` when the process itself needs evidence-based improvement and the smallest intervention must be chosen deliberately.
 - When evolving the workflow, prefer one small mutable surface, an explicit evaluation window, and a keep / revise / revert decision recorded under `docs/workflow-experiments/`.
+- Prefer simple CI YAML that delegates substantive setup and check logic to repo-tracked scripts or Make targets under `tools/`.
 - Prefer isolated worktrees for planner-approved parallel write lanes, and keep the lane plus worktree or isolation state visible in `plan.md` and `status.md`.
 - Use `.mcp.json` for project-shared MCP servers, and keep secrets in environment variables rather than in repo-tracked config.
 - Use headless `claude -p` flows for planning, review, verification synthesis, and CI-friendly reporting when that helps.

@@ -1,6 +1,7 @@
 PYTHON ?= python3
+CI_TOOLS_DIR := tools/ci
 
-.PHONY: sync-agents check-agents link smoke-cli test check-layout
+.PHONY: sync-agents check-agents link smoke-cli test check-layout ci-bootstrap-ubuntu check-cmake-starter ci-checks
 
 sync-agents:
 	$(PYTHON) tools/cli.py sync
@@ -19,3 +20,11 @@ test:
 
 check-layout:
 	$(PYTHON) tools/cli.py check-layout
+
+ci-bootstrap-ubuntu:
+	$(CI_TOOLS_DIR)/bootstrap-ubuntu.sh
+
+check-cmake-starter:
+	$(CI_TOOLS_DIR)/check-cmake-starter.sh
+
+ci-checks: check-agents smoke-cli test check-layout check-cmake-starter

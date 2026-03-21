@@ -386,6 +386,7 @@ For non-trivial work, the intended front door is `product-owner`: you align on t
 11. Store durable task context under `docs/work/<work-id>/` instead of scattering it across chat and repeated handoff summaries.
 12. Optionally set a commit template with `git config commit.template docs/templates/git-commit-template.txt`.
 13. Keep `CHANGELOG.md` current for notable unreleased changes and choose the SemVer bump deliberately at release time.
+14. Keep CI workflow YAML thin. Put substantive setup and check logic in repo-tracked scripts or Make targets under `tools/`, then call those entrypoints from GitHub Actions.
 
 ## Suggested firmware workflow
 
