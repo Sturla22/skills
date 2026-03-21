@@ -25,6 +25,7 @@ This starter repo is optimized for embedded firmware teams that want:
 - Primary configure: `cmake -S . -B build`
 - Primary build: `cmake --build build`
 - Primary test: `ctest --test-dir build --output-on-failure`
+- C/C++ formatting: `make format-cpp`
 - Lint / static analysis: `make check-static-analysis`
 - Host simulation tests: `TODO`
 - Hardware integration tests: `TODO`

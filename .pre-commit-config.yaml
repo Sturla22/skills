@@ -3,6 +3,12 @@ minimum_pre_commit_version: 3.7.0
 repos:
   - repo: local
     hooks:
+      - id: clang-format
+        name: C/C++ formatting
+        entry: python3 tools/dev/run_clang_format.py
+        language: system
+        files: >-
+          ^extras/cmake-nrf52840-template/.*\.(c|cc|cpp|cxx|h|hpp)$
       - id: static-analysis
         name: C++ static analysis
         entry: make check-static-analysis

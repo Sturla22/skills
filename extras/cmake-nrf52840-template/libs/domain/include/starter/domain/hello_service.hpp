@@ -9,4 +9,4 @@ class HelloService
 public:
     void greet(contracts::Console& console) const;
 };
-}  // namespace starter::domain
+} // namespace starter::domain

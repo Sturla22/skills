@@ -16,7 +16,7 @@ public:
 
     std::string last_line;
 };
-}  // namespace
+} // namespace
 
 int main()
 {

@@ -6,4 +6,4 @@ void HelloService::greet(contracts::Console& console) const
 {
     console.write_line("Hello, nRF52840!");
 }
-}  // namespace starter::domain
+} // namespace starter::domain

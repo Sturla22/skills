@@ -7,6 +7,7 @@ if ! python3 -c 'import pytest, pre_commit' >/dev/null 2>&1; then
 fi
 
 if command -v clang-tidy >/dev/null 2>&1 \
+  && command -v clang-format >/dev/null 2>&1 \
   && command -v arm-none-eabi-gcc >/dev/null 2>&1 \
   && command -v arm-none-eabi-g++ >/dev/null 2>&1 \
   && command -v arm-none-eabi-objcopy >/dev/null 2>&1 \
@@ -16,6 +17,7 @@ fi
 
 sudo apt-get update
 sudo apt-get install -y \
+  clang-format \
   clang-tidy \
   binutils-arm-none-eabi \
   gcc-arm-none-eabi \

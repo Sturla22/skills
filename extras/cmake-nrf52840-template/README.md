@@ -62,6 +62,24 @@ That command configures both presets and runs `clang-tidy` across the host and t
 
 The substantive analyzer logic lives in the repo-owned Python entrypoint [`tools/ci/check-static-analysis.py`](/home/sturlalange/Dev/my-claude-skills/tools/ci/check-static-analysis.py), which matches the repo preference for Python once CI automation grows beyond a short shell wrapper.
 
+## Formatting
+
+The starter also has a checked-in `.clang-format` profile.
+
+Format the starter C/C++ files in place with:
+
+```bash
+make format-cpp
+```
+
+Check formatting without modifying files with:
+
+```bash
+make check-clang-format
+```
+
+The `pre-commit` hook auto-formats changed starter C/C++ files with the same profile before the static-analysis hook runs.
+
 ## Cross-build for nRF52840
 
 ```bash

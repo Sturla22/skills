@@ -1,0 +1,10 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: None
+NamespaceIndentation: None
+SortIncludes: false
+AccessModifierOffset: -4
+PointerAlignment: Left
+ColumnLimit: 0
+Cpp11BracedListStyle: false

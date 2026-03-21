@@ -10,4 +10,4 @@ void SemihostConsole::write_line(const char* message)
     std::fputc('\n', stdout);
     std::fflush(stdout);
 }
-}  // namespace starter::platform
+} // namespace starter::platform

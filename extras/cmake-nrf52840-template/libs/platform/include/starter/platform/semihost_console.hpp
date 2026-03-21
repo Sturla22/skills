@@ -9,4 +9,4 @@ class SemihostConsole final : public contracts::Console
 public:
     void write_line(const char* message) override;
 };
-}  // namespace starter::platform
+} // namespace starter::platform

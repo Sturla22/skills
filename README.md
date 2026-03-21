@@ -176,6 +176,7 @@ python3 tools/cli.py first-run --tool codex --mode existing
 
 ### Embedded build starter
 - `extras/cmake-nrf52840-template/`: a concrete CMake firmware starter with checked-in presets, configure-time architecture enforcement, a `gcc-arm-none-eabi` toolchain example, host-side verification, and a minimal nRF52840 hello-world target
+- `make format-cpp` and `make check-clang-format`: repo-owned `clang-format` entrypoints for the starter C/C++ sources
 - `make check-static-analysis`: repo-owned `clang-tidy` baseline for the CMake starter, intended to be the same command used for local gating and CI
 - `.pre-commit-config.yaml` plus `make install-pre-commit`: optional `pre-commit` framework wiring so local commits can run the same static-analysis gate automatically
 
