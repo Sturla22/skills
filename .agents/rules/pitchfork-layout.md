@@ -48,6 +48,20 @@ This project follows the [Pitchfork C++ project layout](https://vector-of-bool.g
 - RTOS port or OS abstraction layer: `libs/os/` or `libs/rtos/`
 - Linker scripts, startup files, and vector tables: `src/` or a dedicated `libs/startup/`
 
+## Layout checker
+
+```sh
+python scripts/cli.py check-layout
+python scripts/cli.py check-layout --root <dir>
+```
+
+Exit 0 — no violations. Exit 1 — one or more of:
+- source/header files (`.c`, `.cpp`, `.h`, `.hpp`, …) at repo root
+- test files (`test_*`, `*_test`, `*_spec`) found under `src/`, `include/`, or `libs/` instead of `tests/`
+- `libs/<name>/` subdirectory with no `src/` inside
+
+Run this before merging any structural change to the source tree.
+
 ## Rules for planner and developer
 
 - When planning a new module, explicitly name which Pitchfork directory each new file goes in before writing any code.

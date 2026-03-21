@@ -794,6 +794,77 @@ def cmd_check_coverage(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Subcommand: check-layout
+# ---------------------------------------------------------------------------
+
+_SOURCE_EXTS = frozenset({".c", ".cpp", ".cc", ".cxx", ".h", ".hpp", ".hh"})
+_TEST_NAME_PATTERN = re.compile(
+    r"^(test_.+|.+_test|.+_spec)\.(c|cpp|cc|cxx|py)$", re.IGNORECASE
+)
+
+
+def cmd_check_layout(args: argparse.Namespace) -> None:
+    root = Path(args.root).resolve() if args.root else ROOT
+    violations: list[tuple[str, str, str]] = []  # (check-id, path, message)
+
+    # Check 1: no source/header files at repo root
+    for item in sorted(root.iterdir()):
+        if item.is_file() and item.suffix.lower() in _SOURCE_EXTS:
+            violations.append((
+                "root-source",
+                str(item.relative_to(root)),
+                "source/header at repo root — move to src/, include/, or libs/<name>/src/",
+            ))
+
+    # Check 2: no test files outside tests/
+    for src_top in ("src", "include", "libs"):
+        search_dir = root / src_top
+        if not search_dir.is_dir():
+            continue
+        for f in sorted(search_dir.rglob("*")):
+            if f.is_file() and _TEST_NAME_PATTERN.match(f.name):
+                violations.append((
+                    "test-outside-tests",
+                    str(f.relative_to(root)),
+                    "test file outside tests/ — move to the mirrored path under tests/",
+                ))
+
+    # Check 3: each libs/<name>/ must have a src/ subdirectory
+    libs_dir = root / "libs"
+    if libs_dir.is_dir():
+        for sublib in sorted(libs_dir.iterdir()):
+            if sublib.is_dir() and not sublib.name.startswith("."):
+                if not (sublib / "src").is_dir():
+                    violations.append((
+                        "libs-no-src",
+                        str(sublib.relative_to(root)),
+                        "sub-library has no src/ — add libs/<name>/src/",
+                    ))
+
+    # Report grouped by check type
+    if violations:
+        labels = {
+            "root-source":        "SOURCE/HEADER AT REPO ROOT:",
+            "test-outside-tests": "TEST FILES OUTSIDE tests/:",
+            "libs-no-src":        "SUB-LIBRARIES MISSING src/:",
+        }
+        by_check: dict[str, list[tuple[str, str]]] = {}
+        for check, path, msg in violations:
+            by_check.setdefault(check, []).append((path, msg))
+        for check, items in by_check.items():
+            print(labels.get(check, check.upper() + ":"))
+            for path, msg in items:
+                print(f"  {path}")
+                print(f"    → {msg}")
+            print()
+
+    total = len(violations)
+    status = "OK" if total == 0 else "FAIL"
+    print(f"Result: {total} violation(s) — {status}")
+    sys.exit(0 if status == "OK" else 1)
+
+
+# ---------------------------------------------------------------------------
 # Subcommand: doctor
 # ---------------------------------------------------------------------------
 
@@ -1166,6 +1237,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="Glob for test files relative to root (default: tests/**/*)",
     )
     p_check_risks.set_defaults(func=cmd_check_risks)
+
+    # check-layout
+    p_check_layout = sub.add_parser(
+        "check-layout",
+        help="Check that the project follows the Pitchfork C++ layout",
+    )
+    p_check_layout.add_argument(
+        "--root",
+        metavar="<dir>",
+        default=None,
+        help="Repo root to check (default: repo root of this script)",
+    )
+    p_check_layout.set_defaults(func=cmd_check_layout)
 
     # doctor
     p_doctor = sub.add_parser(
