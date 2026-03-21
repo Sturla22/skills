@@ -35,7 +35,7 @@ Choose deliberately when more than one credible path exists.
 
 7. **Recommend one option and state why** — include the consequences, migration implications, and what must be true for the recommendation to remain valid.
 
-Use `templates/trade-study-template.md`.
+Use `docs/templates/trade-study-template.md`.
 
 ## Guardrails
 - Do not compare options at different abstraction levels.

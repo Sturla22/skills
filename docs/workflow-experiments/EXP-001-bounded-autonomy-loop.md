@@ -22,7 +22,7 @@ That makes two bad outcomes likely:
   - `.agents/project/CLAUDE.md`
   - `AGENTS.md`
   - `README.md`
-  - `templates/reusable-prompts.md`
+  - `docs/templates/reusable-prompts.md`
 - What keeps going wrong:
   - no durable repo-native pattern exists for fixed-budget autonomous iteration
 - Current cost:
@@ -37,7 +37,7 @@ If the repo adds a `bounded-autonomy-loop` skill plus a durable loop-log templat
 - Type: `skill`
 - Exact artifact(s) to change:
   - `.agents/skills/bounded-autonomy-loop/SKILL.md`
-  - `templates/bounded-autonomy-loop-template.md`
+  - `docs/templates/bounded-autonomy-loop-template.md`
   - the minimum role, prompt, and docs surfaces needed so the skill is discoverable and bounded correctly
 - Why this is the smallest plausible intervention:
   - a prompt-only tweak would be too easy to miss

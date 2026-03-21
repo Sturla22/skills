@@ -1,4 +1,4 @@
-# GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
+# GENERATED FILE. Edit the canonical source under .agents/ and run tools/cli.py sync
 name = "red-team"
 description = "Use to adversarially challenge a completed `plan.md` on medium/high-risk work before implementation starts, returning structured findings and a clear recommendation to product-owner."
 model_reasoning_effort = "xhigh"

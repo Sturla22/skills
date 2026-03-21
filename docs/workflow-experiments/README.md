@@ -40,4 +40,4 @@ Treat workflow changes like small, testable experiments instead of permanent phi
 
 ## Template
 
-- `templates/workflow-experiment-template.md` -> `docs/workflow-experiments/<experiment-id>.md`
+- `docs/templates/workflow-experiment-template.md` -> `docs/workflow-experiments/<experiment-id>.md`

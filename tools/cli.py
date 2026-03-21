@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""scripts/cli.py — scaffolding and inspection CLI for this repo.
+"""tools/cli.py — scaffolding and inspection CLI for this repo.
 
 All subcommands exit 0 on success, non-zero on error.
 No ANSI colour codes. No interactive prompts. No pip dependencies.
@@ -29,13 +29,13 @@ def _repo_root() -> Path:
 
 
 ROOT = _repo_root()
-TEMPLATES_DIR = ROOT / "templates"
+TEMPLATES_DIR = ROOT / "docs" / "templates"
 DOCS_WORK_DIR = ROOT / "docs" / "work"
 AGENTS_AGENTS_DIR = ROOT / ".agents" / "agents"
 AGENTS_SKILLS_DIR = ROOT / ".agents" / "skills"
 
 SYNC_REMINDER = (
-    "Reminder: run `python scripts/cli.py sync` "
+    "Reminder: run `python tools/cli.py sync` "
     "to propagate changes to .claude/, .github/, and .codex/ layouts."
 )
 
@@ -411,7 +411,7 @@ CODEX_AGENTS   = ROOT / ".codex"  / "agents"
 
 CODEX_NOTE = (
     "# GENERATED FILE. Edit the canonical source under .agents/ "
-    "and run scripts/cli.py sync\n"
+    "and run tools/cli.py sync\n"
 )
 
 
@@ -963,7 +963,7 @@ def cmd_doctor(args: argparse.Namespace) -> None:
     if mode == "existing":
         canonical_layer = ROOT / ".agents"
         if canonical_layer.exists():
-            code, output = _run_command(["python3", "scripts/cli.py", "sync", "--check"])
+            code, output = _run_command(["python3", "tools/cli.py", "sync", "--check"])
             if code == 0:
                 _print_check("OK", "generated files in sync", output)
             else:
@@ -977,7 +977,7 @@ def cmd_doctor(args: argparse.Namespace) -> None:
             )
             warnings += 1
     else:
-        code, output = _run_command(["python3", "scripts/cli.py", "sync", "--check"])
+        code, output = _run_command(["python3", "tools/cli.py", "sync", "--check"])
         if code == 0:
             _print_check("OK", "generated files in sync", output)
         else:
@@ -1066,7 +1066,7 @@ def _first_run_lines(tool: str, mode: str) -> list[str]:
     if mode == "existing":
         common = [
             "1. Validate the repo surface:",
-            "   `python3 scripts/cli.py doctor --tool {tool} --mode existing`",
+            "   `python3 tools/cli.py doctor --tool {tool} --mode existing`",
             "2. Decide the minimum adoption slice:",
             "   Start with instructions only, generated agents, or work packets for non-trivial tasks. Do not replace existing repo conventions wholesale.",
             "3. Inventory conventions you must preserve:",
@@ -1076,12 +1076,12 @@ def _first_run_lines(tool: str, mode: str) -> list[str]:
             "5. Copy the minimum starter surfaces you chose into the existing repo.",
             "   Examples: `AGENTS.md`, `.agents/project/CLAUDE.md`, `.github/copilot-instructions.md`, `.agents/agents/*.toml`, or work-packet templates.",
             "6. If you installed the canonical `.agents` layer, regenerate and verify derived files:",
-            "   `python3 scripts/cli.py sync`",
-            "   `python3 scripts/cli.py sync --check`",
+            "   `python3 tools/cli.py sync`",
+            "   `python3 tools/cli.py sync --check`",
             "7. Scaffold a pilot work packet for one real task when you are ready to trial the workflow:",
-            "   `python3 scripts/cli.py new-work adoption-pilot`",
+            "   `python3 tools/cli.py new-work adoption-pilot`",
             "8. Record the conventions to preserve in `docs/work/adoption-pilot/brief.md`, then verify it:",
-            "   `python3 scripts/cli.py check-work adoption-pilot`",
+            "   `python3 tools/cli.py check-work adoption-pilot`",
         ]
         prompts = {
             "codex": '9. Start Codex in the existing repo and use this first prompt:\n   `codex "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
@@ -1091,16 +1091,16 @@ def _first_run_lines(tool: str, mode: str) -> list[str]:
     else:
         common = [
             "1. Validate the repo surface:",
-            "   `python3 scripts/cli.py doctor --tool {tool}`",
+            "   `python3 tools/cli.py doctor --tool {tool}`",
             "2. Regenerate and verify derived files:",
-            "   `python3 scripts/cli.py sync`",
-            "   `python3 scripts/cli.py sync --check`",
+            "   `python3 tools/cli.py sync`",
+            "   `python3 tools/cli.py sync --check`",
             "3. Decide commit and PR naming policy:",
             "   Ask whether Jira ticket IDs should prefix commit messages and pull request titles.",
             "4. Scaffold a first work packet:",
-            "   `python3 scripts/cli.py new-work onboarding-demo`",
+            "   `python3 tools/cli.py new-work onboarding-demo`",
             "5. Fill `docs/work/onboarding-demo/brief.md`, then verify it:",
-            "   `python3 scripts/cli.py check-work onboarding-demo`",
+            "   `python3 tools/cli.py check-work onboarding-demo`",
         ]
         prompts = {
             "codex": '6. Start Codex in the repo root and use this first prompt:\n   `codex "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',

@@ -12,7 +12,7 @@ Improve the process based on evidence, not vibes.
 
 1. **Collect durable evidence** — read the relevant work packets, handoffs, prompts, role files, skills, and docs. Favor repeated patterns over isolated complaints.
    ```
-   Glob("docs/work/**"), Read("AGENTS.md"), Glob(".agents/agents/*.toml"), Glob(".agents/skills/*/SKILL.md"), Read("templates/reusable-prompts.md")
+   Glob("docs/work/**"), Read("AGENTS.md"), Glob(".agents/agents/*.toml"), Glob(".agents/skills/*/SKILL.md"), Read("docs/templates/reusable-prompts.md")
    ```
 
 2. **State the recurring problem** — summarize the friction operationally:
@@ -37,7 +37,7 @@ Improve the process based on evidence, not vibes.
    - the success signals
    - the failure signals or revert triggers
 
-Use `templates/workflow-experiment-template.md` and store the record under `docs/workflow-experiments/`.
+Use `docs/templates/workflow-experiment-template.md` and store the record under `docs/workflow-experiments/`.
 
 6. **Apply the escalation ladder explicitly** — write down why lower-cost fixes are insufficient before creating a new role. The default order is:
    - prompt or template

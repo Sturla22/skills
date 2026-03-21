@@ -31,7 +31,7 @@ Do not start with elapsed time when a more direct cost signal is available.
 Keep a durable optimization record on disk.
 
 - Create or reuse the work packet under `docs/work/<work-id>/`.
-- Use `templates/optimization-scorecard-template.md`.
+- Use `docs/templates/optimization-scorecard-template.md`.
 - Update the scorecard when the representative scenarios, baseline, current measurements, or tradeoffs change.
 - Keep raw measurements visible alongside any weighted score.
 

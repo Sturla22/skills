@@ -1,4 +1,4 @@
-# GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
+# GENERATED FILE. Edit the canonical source under .agents/ and run tools/cli.py sync
 name = "verifier"
 description = "Use to independently prove or disprove a delegated claim: attempts falsification first, then returns a verdict, evidence, residual risk, and gaps in coverage."
 model_reasoning_effort = "high"

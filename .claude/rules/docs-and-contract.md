@@ -4,7 +4,7 @@ paths:
   - "README.md"
   - "CHANGELOG.md"
   - "docs/**/*.md"
-  - "templates/**/*.md"
+  - "docs/docs/templates/**/*.md"
 ---
 
 # Docs and Contract Files

@@ -5,8 +5,8 @@ paths:
   - ".agents/skills/planning/SKILL.md"
   - "docs/operating-model.md"
   - "docs/work/**/*.md"
-  - "templates/work-plan-template.md"
-  - "templates/work-status-template.md"
+  - "docs/templates/work-plan-template.md"
+  - "docs/templates/work-status-template.md"
 ---
 
 # Parallel Lanes and Worktrees

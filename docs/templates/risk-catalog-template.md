@@ -5,7 +5,7 @@
 <!-- 1. Add one risk per ## section. Include FMEA fields and link requirements. -->
 <!-- 2. Assign the next available RK-NNN ID. Never renumber existing entries.   -->
 <!-- 3. In each mitigating test add a comment: Mitigates: RK-NNN               -->
-<!-- 4. Run `python scripts/cli.py check-risks` to verify mitigation coverage.  -->
+<!-- 4. Run `python tools/cli.py check-risks` to verify mitigation coverage.  -->
 <!-- 5. Feed high-severity findings from safety-risk-scan into new entries here. -->
 
 ## RK-001 — [Short title]
@@ -29,7 +29,7 @@
 **Residual risk:** What remains after mitigation.
 
 **Mitigating test(s):**
-<!-- Updated by hand or by running: python scripts/cli.py check-risks -->
+<!-- Updated by hand or by running: python tools/cli.py check-risks -->
 
 ---
 

@@ -51,8 +51,8 @@ This project follows the [Pitchfork C++ project layout](https://vector-of-bool.g
 ## Layout checker
 
 ```sh
-python scripts/cli.py check-layout
-python scripts/cli.py check-layout --root <dir>
+python tools/cli.py check-layout
+python tools/cli.py check-layout --root <dir>
 ```
 
 Exit 0 — no violations. Exit 1 — one or more of:

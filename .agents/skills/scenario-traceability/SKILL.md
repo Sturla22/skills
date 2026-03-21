@@ -22,7 +22,7 @@ IDs. Link each scenario to the tests that cover it. Verify coverage mechanically
 | Project-wide | `docs/scenarios.md` |
 | Per feature / work packet | `docs/work/<work-id>/scenarios.md` |
 
-Use `templates/scenarios-template.md` for both. IDs are independent per file;
+Use `docs/templates/scenarios-template.md` for both. IDs are independent per file;
 the file path provides scope context.
 
 ## ID format
@@ -74,13 +74,13 @@ The table is informational; the script is the authoritative coverage check.
 
 ```sh
 # Check coverage from repo root (auto-discovers both scope levels):
-python scripts/cli.py check-coverage
+python tools/cli.py check-coverage
 
 # Check a specific subtree (e.g. a fixture):
-python scripts/cli.py check-coverage --root <dir>
+python tools/cli.py check-coverage --root <dir>
 
 # Override test glob:
-python scripts/cli.py check-coverage --tests "src/tests/**/*"
+python tools/cli.py check-coverage --tests "src/tests/**/*"
 
 ```
 
@@ -89,11 +89,11 @@ Exit 1 — one or more scenarios uncovered, or a test references an undefined ID
 
 ## Process
 
-1. Create or update the scenarios file using `templates/scenarios-template.md`
+1. Create or update the scenarios file using `docs/templates/scenarios-template.md`
 2. Assign `SC-NNN` IDs to each scenario before writing tests
 3. Write tests; add `Covers: SC-NNN` to each covering test
 4. Update the trace table
-5. Run `python scripts/cli.py check-coverage` — fix any gaps before closing
+5. Run `python tools/cli.py check-coverage` — fix any gaps before closing
 
 ## Guardrails
 
@@ -109,7 +109,7 @@ Exit 1 — one or more scenarios uncovered, or a test references an undefined ID
 - Scenarios file exists and is readable without tooling
 - Every scenario has a unique `SC-NNN` ID
 - Every test that covers a scenario carries a `Covers: SC-NNN` comment
-- `python scripts/cli.py check-coverage` exits 0
+- `python tools/cli.py check-coverage` exits 0
 
 ## Relation to other skills
 

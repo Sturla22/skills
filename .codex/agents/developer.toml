@@ -1,4 +1,4 @@
-# GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
+# GENERATED FILE. Edit the canonical source under .agents/ and run tools/cli.py sync
 name = "developer"
 description = "Use when the brief and plan are stable and code or docs must change: implements the smallest effective change and returns a concise implementation handoff."
 model_reasoning_effort = "medium"

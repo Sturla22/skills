@@ -1,4 +1,4 @@
-# GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
+# GENERATED FILE. Edit the canonical source under .agents/ and run tools/cli.py sync
 name = "researcher"
 description = "Use for external domain investigation before planning is possible: datasheet synthesis, standards and spec reading, errata hunting, technology landscape surveys, and feasibility signals from external sources. Produces a durable research summary and stops before option comparison or task framing begins."
 model_reasoning_effort = "high"

@@ -38,7 +38,7 @@ Keep system intent connected to the work instead of letting it dissolve into sca
 
 8. **Keep the trace lightweight and alive** — update the trace record when requirements split, merge, get superseded, or become invalid. A small accurate trace is better than a large stale one.
 
-Use `templates/requirements-traceability-template.md`.
+Use `docs/templates/requirements-traceability-template.md`.
 
 ## Guardrails
 - Do not turn every observation into a requirement.

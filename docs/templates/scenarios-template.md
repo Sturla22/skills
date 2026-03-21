@@ -8,7 +8,7 @@
 <!-- 1. Add one scenario per entry. Keep the language non-technical.          -->
 <!-- 2. Assign the next available SC-NNN ID. Never renumber existing entries. -->
 <!-- 3. In each covering test add a comment: Covers: SC-NNN                   -->
-<!-- 4. Run `python scripts/cli.py check-coverage` to verify coverage.  -->
+<!-- 4. Run `python tools/cli.py check-coverage` to verify coverage.  -->
 <!-- 5. Update the trace table below when you add or cover a scenario.        -->
 
 ## Scenarios
@@ -23,7 +23,7 @@ reports a recoverable fault, and continues operating on the last known good valu
 
 ## Trace table
 
-<!-- Updated by hand or regenerated with: python scripts/cli.py check-coverage --root . -->
+<!-- Updated by hand or regenerated with: python tools/cli.py check-coverage --root . -->
 <!-- Status: Covered | Uncovered | Partial                                    -->
 
 | ID     | Description (short)                  | Covering test(s)                    | Status    |

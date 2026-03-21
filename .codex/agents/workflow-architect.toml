@@ -1,4 +1,4 @@
-# GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
+# GENERATED FILE. Edit the canonical source under .agents/ and run tools/cli.py sync
 name = "workflow-architect"
 description = "Use for evidence-based improvement of the roles-and-skills system itself: reviews durable work artifacts, identifies recurring friction, and runs bounded workflow experiments, preferring prompt, template, or tool-native runtime tweaks before new skills or roles."
 model_reasoning_effort = "medium"

@@ -56,24 +56,24 @@ docs/work/<work-id>/
 
 ## Templates
 
-- `templates/product-brief-template.md` -> `docs/work/<work-id>/brief.md`
-- `templates/work-plan-template.md` -> `docs/work/<work-id>/plan.md`
-- `templates/work-status-template.md` -> `docs/work/<work-id>/status.md`
-- `templates/bounded-autonomy-loop-template.md` -> `docs/work/<work-id>/evidence/bounded-autonomy-loop.md`
-- `templates/handoff-template.md` -> `docs/work/<work-id>/handoffs/<sequence>-<from>-to-<to>.md`
-- `templates/verification-template.md` -> `docs/work/<work-id>/evidence/verification.md`
-- `templates/hypothesis-template.md` -> `docs/work/<work-id>/evidence/hypotheses/HYP-001-short-title.md`
-- `templates/optimization-scorecard-template.md` -> `docs/work/<work-id>/evidence/optimization-scorecard.md`
-- `templates/workflow-experiment-template.md` -> `docs/workflow-experiments/<experiment-id>.md`
+- `docs/templates/product-brief-template.md` -> `docs/work/<work-id>/brief.md`
+- `docs/templates/work-plan-template.md` -> `docs/work/<work-id>/plan.md`
+- `docs/templates/work-status-template.md` -> `docs/work/<work-id>/status.md`
+- `docs/templates/bounded-autonomy-loop-template.md` -> `docs/work/<work-id>/evidence/bounded-autonomy-loop.md`
+- `docs/templates/handoff-template.md` -> `docs/work/<work-id>/handoffs/<sequence>-<from>-to-<to>.md`
+- `docs/templates/verification-template.md` -> `docs/work/<work-id>/evidence/verification.md`
+- `docs/templates/hypothesis-template.md` -> `docs/work/<work-id>/evidence/hypotheses/HYP-001-short-title.md`
+- `docs/templates/optimization-scorecard-template.md` -> `docs/work/<work-id>/evidence/optimization-scorecard.md`
+- `docs/templates/workflow-experiment-template.md` -> `docs/workflow-experiments/<experiment-id>.md`
 
 ## Fastest correct start
 
 For adopters learning the workflow, prefer this sequence:
 
-1. `python3 scripts/cli.py doctor --tool all`
-2. `python3 scripts/cli.py new-work <work-id>`
+1. `python3 tools/cli.py doctor --tool all`
+2. `python3 tools/cli.py new-work <work-id>`
 3. Fill `brief.md`
-4. `python3 scripts/cli.py check-work <work-id>`
+4. `python3 tools/cli.py check-work <work-id>`
 5. Hand the work to `product-owner` or `planner` from a validated packet instead of from ad hoc chat context
 
 ## Non-intrusive structure

@@ -27,7 +27,7 @@ This is an execution mode, not a substitute for `product-owner`, `planner`, `tdd
 ## Tracking convention
 
 - Create or reuse the work packet under `docs/work/<work-id>/`.
-- Use `templates/bounded-autonomy-loop-template.md`.
+- Use `docs/templates/bounded-autonomy-loop-template.md`.
 - Store the loop record at `docs/work/<work-id>/evidence/bounded-autonomy-loop.md`.
 - Update the loop record each iteration or checkpoint with what changed, what checks ran, and why the loop continues or stops.
 

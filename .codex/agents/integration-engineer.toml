@@ -1,4 +1,4 @@
-# GENERATED FILE. Edit the canonical source under .agents/ and run scripts/cli.py sync
+# GENERATED FILE. Edit the canonical source under .agents/ and run tools/cli.py sync
 name = "integration-engineer"
 description = "Use for environment, bench, HIL, and cross-component integration work: makes the real test setup reproducible, resource-identifiable, and auditable; gathers durable evidence; and separates product failures from lab flake when integration or hardware is the bottleneck."
 model_reasoning_effort = "medium"

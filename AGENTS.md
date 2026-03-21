@@ -38,7 +38,7 @@ Before delegating a non-trivial task, `product-owner` and the requester should a
 7. Assumptions / open questions
 8. Code driver: which driver(s) justify the work — user scenarios, risk, epistemic uncertainty (spikes), design intent communication, or external obligation? Code traceable to none is a candidate for removal rather than refinement.
 
-Use `templates/product-brief-template.md`.
+Use `docs/templates/product-brief-template.md`.
 
 ## Durable work packet
 
@@ -92,7 +92,7 @@ Store bounded process-improvement experiments separately under `docs/workflow-ex
 
 Store every handoff as an in-repo Markdown file under `docs/work/<work-id>/handoffs/`.
 Use a non-intrusive file name such as `001-product-owner-to-planner.md`.
-Use `templates/handoff-template.md`.
+Use `docs/templates/handoff-template.md`.
 
 Every handoff should include:
 

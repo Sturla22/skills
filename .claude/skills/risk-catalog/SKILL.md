@@ -28,7 +28,7 @@ mitigations. Stable `RK-NNN` IDs survive across work packets and releases.
 |---|---|
 | Project-wide (only) | `docs/risks.md` |
 
-Use `templates/risk-catalog-template.md`. Risk IDs are project-scoped; there is no
+Use `docs/templates/risk-catalog-template.md`. Risk IDs are project-scoped; there is no
 per-work-packet risk file. Per-work-packet FMEA analysis lives in
 `docs/work/<work-id>/evidence/` and feeds the catalog; it does not replace it.
 
@@ -69,9 +69,9 @@ A single risk may be covered by multiple tests.
 ## Coverage script
 
 ```sh
-python scripts/cli.py check-risks
-python scripts/cli.py check-risks --root <dir>
-python scripts/cli.py check-risks --tests "src/tests/**/*"
+python tools/cli.py check-risks
+python tools/cli.py check-risks --root <dir>
+python tools/cli.py check-risks --tests "src/tests/**/*"
 ```
 
 Exit 0 — all cataloged risks have at least one `Mitigates:` test annotation,
@@ -84,7 +84,7 @@ Exit 1 — one or more risks unmitigated, or a test references an undefined `RK-
 2. Add a `## RK-NNN — <short title>` section to `docs/risks.md`; fill all FMEA fields
 3. Populate "Requirements threatened" with the relevant requirement or scenario IDs
 4. Write or update mitigating tests; add `Mitigates: RK-NNN` to each
-5. Run `python scripts/cli.py check-risks` — resolve all gaps before closing the work
+5. Run `python tools/cli.py check-risks` — resolve all gaps before closing the work
 
 ## Guardrails
 
@@ -98,7 +98,7 @@ Exit 1 — one or more risks unmitigated, or a test references an undefined `RK-
 - All promoted FMEA findings have `RK-NNN` IDs in `docs/risks.md`
 - Requirements linkages are filled for each entry
 - Every non-retired cataloged risk has at least one `Mitigates:` test annotation
-- `python scripts/cli.py check-risks` exits 0
+- `python tools/cli.py check-risks` exits 0
 
 ## Output
 

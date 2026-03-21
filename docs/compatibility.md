@@ -8,7 +8,7 @@ This repo treats `.agents/` as canonical.
 - `.agents/skills/<skill-name>/SKILL.md` defines shared skills
 - `.agents/project/CLAUDE.md` defines Claude project instructions
 
-Run `python3 scripts/cli.py sync` after editing canonical agent or skill files.
+Run `python3 tools/cli.py sync` after editing canonical agent or skill files.
 
 ## Claude Code
 
@@ -68,10 +68,10 @@ The goal is not to make one giant shared prompt. Instead:
 
 ## Suggested adaptation strategy
 
-- Start by validating the repo surface with `python3 scripts/cli.py doctor --tool all`.
-- Use `python3 scripts/cli.py first-run --tool codex`, `--tool claude`, or `--tool copilot` to give adopters one exact happy path per tool.
-- For existing repositories, use `python3 scripts/cli.py doctor --tool <tool> --mode existing` followed by `python3 scripts/cli.py first-run --tool <tool> --mode existing`, and preserve the repo's current issue, commit, PR, release, docs, and CI conventions unless there is a deliberate migration decision.
+- Start by validating the repo surface with `python3 tools/cli.py doctor --tool all`.
+- Use `python3 tools/cli.py first-run --tool codex`, `--tool claude`, or `--tool copilot` to give adopters one exact happy path per tool.
+- For existing repositories, use `python3 tools/cli.py doctor --tool <tool> --mode existing` followed by `python3 tools/cli.py first-run --tool <tool> --mode existing`, and preserve the repo's current issue, commit, PR, release, docs, and CI conventions unless there is a deliberate migration decision.
 - Then customize `AGENTS.md`, `.agents/project/CLAUDE.md`, `.claude/settings.json`, and `.github/copilot-instructions.md`.
 - After that, tune `.claude/rules/`, `.claude/hooks/`, `.mcp.json`, and `.codex/config.toml`.
 - Only after that, tune skills and path-specific instructions to match your build, test, and firmware boundaries.
-- Use `python3 scripts/cli.py sync --check` in CI to catch drift.
+- Use `python3 tools/cli.py sync --check` in CI to catch drift.

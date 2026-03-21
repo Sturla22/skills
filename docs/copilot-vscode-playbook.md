@@ -22,8 +22,8 @@ This repo can shape GitHub Copilot in VS Code, but it cannot enforce runtime beh
 1. Install or update the GitHub Copilot and GitHub Copilot Chat extensions in VS Code.
 2. Sign in to GitHub from VS Code and confirm Copilot is active.
 3. Open this repository as the workspace root.
-4. Run `python3 scripts/cli.py doctor --tool copilot`.
-5. Run `python3 scripts/cli.py first-run --tool copilot`.
+4. Run `python3 tools/cli.py doctor --tool copilot`.
+5. Run `python3 tools/cli.py first-run --tool copilot`.
 6. Decide whether Jira ticket IDs should prefix commit messages and pull request titles in this repo.
 7. In Copilot Chat, ask: `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create.`
 

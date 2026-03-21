@@ -29,7 +29,7 @@ Verification asks whether we built it right. Validation asks whether we built th
 
 7. **Record what remains outside validation** — be honest about what this plan will not prove, especially if only a lightweight validation approach is practical.
 
-Use `templates/validation-template.md`.
+Use `docs/templates/validation-template.md`.
 
 ## Guardrails
 - Do not substitute passing automated tests for validation.

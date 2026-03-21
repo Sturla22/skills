@@ -8,7 +8,7 @@ allowed-tools: Read, Grep, Glob, Edit
 
 Attack the plan, not the people. The job is to surface the issues that optimistic planning leaves behind while the cost to fix them is still low.
 
-Use `templates/red-team-findings-template.md`.
+Use `docs/templates/red-team-findings-template.md`.
 
 ## Process
 

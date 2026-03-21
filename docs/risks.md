@@ -5,7 +5,7 @@
 <!-- 1. Add one risk per ## section. Include FMEA fields and link requirements. -->
 <!-- 2. Assign the next available RK-NNN ID. Never renumber existing entries.   -->
 <!-- 3. In each mitigating test add a comment: Mitigates: RK-NNN               -->
-<!-- 4. Run `python scripts/cli.py check-risks` to verify mitigation coverage.  -->
+<!-- 4. Run `python tools/cli.py check-risks` to verify mitigation coverage.  -->
 <!-- 5. Feed high-severity findings from safety-risk-scan into new entries here. -->
 
 ## RK-001 — Interrupted NVM write corrupts device state

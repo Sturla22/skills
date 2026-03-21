@@ -12,23 +12,23 @@ Releases of this starter repo aim to follow **Semantic Versioning**, and notable
 
 Pick the tool you want to adopt first, then use the repo CLI to validate the setup before you start tuning prompts or roles.
 
-If you are adopting this into an existing repository instead of starting from this starter layout, see [docs/adopt-existing-repo.md](/home/sturlalange/Dev/my-claude-skills/docs/adopt-existing-repo.md) and use `python3 scripts/cli.py first-run --tool <tool> --mode existing`.
+If you are adopting this into an existing repository instead of starting from this starter layout, see [docs/adopt-existing-repo.md](/home/sturlalange/Dev/my-claude-skills/docs/adopt-existing-repo.md) and use `python3 tools/cli.py first-run --tool <tool> --mode existing`.
 
 ### Codex
 
 ```bash
 npm i -g @openai/codex
 codex login
-python3 scripts/cli.py doctor --tool codex
-python3 scripts/cli.py first-run --tool codex
+python3 tools/cli.py doctor --tool codex
+python3 tools/cli.py first-run --tool codex
 ```
 
 ### Claude Code
 
 ```bash
 claude auth login
-python3 scripts/cli.py doctor --tool claude
-python3 scripts/cli.py first-run --tool claude
+python3 tools/cli.py doctor --tool claude
+python3 tools/cli.py first-run --tool claude
 ```
 
 ### GitHub Copilot
@@ -36,8 +36,8 @@ python3 scripts/cli.py first-run --tool claude
 Open the repo in your IDE, confirm Copilot is signed in there, then run:
 
 ```bash
-python3 scripts/cli.py doctor --tool copilot
-python3 scripts/cli.py first-run --tool copilot
+python3 tools/cli.py doctor --tool copilot
+python3 tools/cli.py first-run --tool copilot
 ```
 
 See [docs/copilot-vscode-playbook.md](/home/sturlalange/Dev/my-claude-skills/docs/copilot-vscode-playbook.md) for the VS Code-specific baseline and workspace settings.
@@ -47,25 +47,25 @@ See [docs/copilot-vscode-playbook.md](/home/sturlalange/Dev/my-claude-skills/doc
 If you want one end-to-end exercise that proves both the repo setup and the operating model:
 
 ```bash
-python3 scripts/cli.py doctor --tool all
-python3 scripts/cli.py sync
-python3 scripts/cli.py sync --check
-python3 scripts/cli.py new-work onboarding-demo
-python3 scripts/cli.py check-work onboarding-demo
+python3 tools/cli.py doctor --tool all
+python3 tools/cli.py sync
+python3 tools/cli.py sync --check
+python3 tools/cli.py new-work onboarding-demo
+python3 tools/cli.py check-work onboarding-demo
 ```
 
 Then:
 
 - decide whether Jira ticket IDs should prefix commit messages and PR titles
 - fill `docs/work/onboarding-demo/brief.md`
-- rerun `python3 scripts/cli.py check-work onboarding-demo`
+- rerun `python3 tools/cli.py check-work onboarding-demo`
 - start your tool and ask `product-owner` to summarize the current instructions and available skills
 
 ## Troubleshooting
 
-- `python3 scripts/cli.py doctor --tool <tool>` fails on the CLI binary: install that tool and make sure it is on `PATH`
+- `python3 tools/cli.py doctor --tool <tool>` fails on the CLI binary: install that tool and make sure it is on `PATH`
 - auth check warns or fails: run `codex login`, `claude auth login`, or verify Copilot sign-in in your IDE
-- generated files are out of sync: run `python3 scripts/cli.py sync`, then rerun `python3 scripts/cli.py sync --check`
+- generated files are out of sync: run `python3 tools/cli.py sync`, then rerun `python3 tools/cli.py sync --check`
 - skills or generated agents seem stale: edit canonical files under `.agents/`, not generated files, then rerun `sync`
 - Claude hooks or settings do not take effect: confirm the repo is trusted and that `.claude/settings.json` is being loaded
 - Copilot behavior does not match the repo: confirm your IDE honors `AGENTS.md`, `.github/copilot-instructions.md`, and `.github/agents/`
@@ -92,31 +92,31 @@ This version is biased toward **embedded firmware** and **safety-aware engineeri
 Run:
 
 ```bash
-python3 scripts/cli.py sync
+python3 tools/cli.py sync
 ```
 
 To check for drift without rewriting files:
 
 ```bash
-python3 scripts/cli.py sync --check
+python3 tools/cli.py sync --check
 ```
 
 To validate the local setup before adopting the repo workflow:
 
 ```bash
-python3 scripts/cli.py doctor --tool all
+python3 tools/cli.py doctor --tool all
 ```
 
 To print the exact first-run sequence for one tool:
 
 ```bash
-python3 scripts/cli.py first-run --tool codex
+python3 tools/cli.py first-run --tool codex
 ```
 
 For an existing repository adoption path:
 
 ```bash
-python3 scripts/cli.py first-run --tool codex --mode existing
+python3 tools/cli.py first-run --tool codex --mode existing
 ```
 
 ## What is included
@@ -171,8 +171,8 @@ python3 scripts/cli.py first-run --tool codex --mode existing
 - fault-injection-and-recovery
 
 ### Reusable templates and prompts
-- task, product-brief, work-plan, work-status, requirements-traceability, trade-study, validation, workflow-experiment, bounded-autonomy-loop, handoff, hypothesis, optimization-scorecard, verification, ADR, and git-commit templates under `templates/`
-- a starter prompt library in `templates/reusable-prompts.md`
+- task, product-brief, work-plan, work-status, requirements-traceability, trade-study, validation, workflow-experiment, bounded-autonomy-loop, handoff, hypothesis, optimization-scorecard, verification, ADR, and git-commit templates under `docs/templates/`
+- a starter prompt library in `docs/templates/reusable-prompts.md`
 
 ### Claude-native runtime extras
 - `.claude/settings.json` with a repo-level default `product-owner` front door, Plan Mode default, secret-deny starter list, and starter hooks
@@ -333,31 +333,31 @@ For non-trivial work, the intended front door is `product-owner`: you align on t
 │   ├── codex-playbook.md
 │   ├── compatibility.md
 │   ├── firmware-playbook.md
+│   ├── templates/
+│   │   ├── adr-template.md
+│   │   ├── bug-report-template.md
+│   │   ├── codex-global-agents-template.md
+│   │   ├── git-commit-template.txt
+│   │   ├── handoff-template.md
+│   │   ├── hypothesis-template.md
+│   │   ├── optimization-scorecard-template.md
+│   │   ├── product-brief-template.md
+│   │   ├── reusable-prompts.md
+│   │   ├── task-template.md
+│   │   ├── work-plan-template.md
+│   │   ├── work-status-template.md
+│   │   └── verification-template.md
 │   ├── work/
 │   │   └── README.md
 │   └── operating-model.md
-├── scripts/
-│   └── cli.py
-└── templates/
-    ├── adr-template.md
-    ├── bug-report-template.md
-    ├── codex-global-agents-template.md
-    ├── git-commit-template.txt
-    ├── handoff-template.md
-    ├── hypothesis-template.md
-    ├── optimization-scorecard-template.md
-    ├── product-brief-template.md
-    ├── reusable-prompts.md
-    ├── task-template.md
-    ├── work-plan-template.md
-    ├── work-status-template.md
-    └── verification-template.md
+└── tools/
+    └── cli.py
 ```
 
 ## How to customize it
 
 1. Edit the canonical files under `.agents/` first.
-2. Run `python3 scripts/cli.py sync`.
+2. Run `python3 tools/cli.py sync`.
 3. Replace placeholder build/test commands in `.agents/project/CLAUDE.md`.
 4. Tune `.claude/settings.json`, `.claude/rules/`, `.claude/hooks/`, and `.mcp.json` to match your team's Claude workflow.
 5. Tune `.codex/config.toml` for your sandbox, approval, and role preferences.
@@ -369,9 +369,9 @@ For non-trivial work, the intended front door is `product-owner`: you align on t
    - hardware integration tests
 7. Add project-specific architecture constraints in `docs/firmware-playbook.md`.
 8. Keep `AGENTS.md` short and stable. Put detailed guidance in skills, Claude rules, hooks, and path-specific instructions.
-9. Reuse and adapt prompts from `templates/reusable-prompts.md` instead of rewriting task prompts from scratch.
+9. Reuse and adapt prompts from `docs/templates/reusable-prompts.md` instead of rewriting task prompts from scratch.
 10. Store durable task context under `docs/work/<work-id>/` instead of scattering it across chat and repeated handoff summaries.
-11. Optionally set a commit template with `git config commit.template templates/git-commit-template.txt`.
+11. Optionally set a commit template with `git config commit.template docs/templates/git-commit-template.txt`.
 12. Keep `CHANGELOG.md` current for notable unreleased changes and choose the SemVer bump deliberately at release time.
 
 ## Suggested firmware workflow

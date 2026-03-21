@@ -36,7 +36,7 @@ Use when the team wants a better prompting surface first.
 Use when the team wants stable role entry points across tools.
 
 - add `.agents/agents/*.toml`
-- run `python3 scripts/cli.py sync`
+- run `python3 tools/cli.py sync`
 - review generated files without forcing workflow changes on every task
 
 ### Level 3: Work packets for non-trivial tasks
@@ -80,8 +80,8 @@ Avoid starting with:
 Use:
 
 ```bash
-python3 scripts/cli.py doctor --tool codex --mode existing
-python3 scripts/cli.py first-run --tool codex --mode existing
+python3 tools/cli.py doctor --tool codex --mode existing
+python3 tools/cli.py first-run --tool codex --mode existing
 ```
 
 Replace `codex` with `claude` or `copilot` as needed.

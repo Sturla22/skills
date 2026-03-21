@@ -15,7 +15,7 @@ Persist the investigation on disk.
 - Create or reuse the work packet under `docs/work/<work-id>/`.
 - Store one file per hypothesis under `docs/work/<work-id>/evidence/hypotheses/`.
 - Name files like `HYP-001-short-title.md`, `HYP-002-timeout-path.md`.
-- Use `templates/hypothesis-template.md`.
+- Use `docs/templates/hypothesis-template.md`.
 - Update the file every time you run a discriminating check: what was tested, how it was tested, and the result.
 
 ## Process (TRAFFIC)
