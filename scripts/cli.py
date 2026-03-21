@@ -801,6 +801,13 @@ _SOURCE_EXTS = frozenset({".c", ".cpp", ".cc", ".cxx", ".h", ".hpp", ".hh"})
 _TEST_NAME_PATTERN = re.compile(
     r"^(test_.+|.+_test|.+_spec)\.(c|cpp|cc|cxx|py)$", re.IGNORECASE
 )
+# PFL-recognised non-dot top-level directories.
+# Dot directories (e.g. .agents/, .claude/, .github/) are outside PFL scope and
+# are intentionally excluded from this check.
+_PFL_DIRS = frozenset({
+    "src", "include", "libs", "tests", "extras",
+    "data", "tools", "docs", "external", "build",
+})
 
 
 def cmd_check_layout(args: argparse.Namespace) -> None:
@@ -841,12 +848,23 @@ def cmd_check_layout(args: argparse.Namespace) -> None:
                         "sub-library has no src/ — add libs/<name>/src/",
                     ))
 
+    # Check 4: no unknown non-dot top-level directories.
+    # Dot directories are skipped — they are outside PFL scope by definition.
+    for item in sorted(root.iterdir()):
+        if item.is_dir() and not item.name.startswith(".") and item.name not in _PFL_DIRS:
+            violations.append((
+                "unknown-dir",
+                str(item.relative_to(root)),
+                "directory not in PFL recognised set — move to tools/, docs/, data/, or extras/",
+            ))
+
     # Report grouped by check type
     if violations:
         labels = {
             "root-source":        "SOURCE/HEADER AT REPO ROOT:",
             "test-outside-tests": "TEST FILES OUTSIDE tests/:",
             "libs-no-src":        "SUB-LIBRARIES MISSING src/:",
+            "unknown-dir":        "UNKNOWN TOP-LEVEL DIRECTORIES:",
         }
         by_check: dict[str, list[tuple[str, str]]] = {}
         for check, path, msg in violations:
