@@ -161,25 +161,27 @@ Every handoff should include:
 1. `codebase-exploration`
 2. `planning`
 3. `requirements-and-traceability`
-4. `bdd`
-5. `trade-study-and-decision-analysis` when multiple credible options exist
-6. `interface-contract-design`
-7. `simulation-harness-first`
-8. `tdd`
-9. `validation-planning` when stakeholder fit needs separate evidence
-10. `verification`
-11. `resource-budget-review`
-12. `docs-adr-updates`
+4. `risk-catalog` when safety- or reliability-sensitive requirements exist
+5. `bdd`
+6. `trade-study-and-decision-analysis` when multiple credible options exist
+7. `interface-contract-design`
+8. `simulation-harness-first`
+9. `tdd`
+10. `validation-planning` when stakeholder fit needs separate evidence
+11. `verification`
+12. `resource-budget-review`
+13. `docs-adr-updates`
 
 ### Product bug work
 1. `codebase-exploration`
 2. `hypothesis-driven-debugging`
 3. `requirements-and-traceability` when expected behavior or ownership is unclear
-4. `bdd`
-5. `simulation-harness-first`
-6. `tdd`
-7. `verification`
-8. `fault-injection-and-recovery`
+4. `risk-catalog` when the bug surfaces a failure mode worth cataloging permanently
+5. `bdd`
+6. `simulation-harness-first`
+7. `tdd`
+8. `verification`
+9. `fault-injection-and-recovery`
 
 ### Product performance / endurance optimization
 1. `codebase-exploration`
@@ -213,11 +215,12 @@ Every handoff should include:
 
 ### System definition / concept trade
 1. `requirements-and-traceability`
-2. `planning`
-3. `trade-study-and-decision-analysis`
-4. `interface-contract-design`
-5. `validation-planning`
-6. `docs-adr-updates`
+2. `risk-catalog` when safety- or reliability-sensitive requirements exist
+3. `planning`
+4. `trade-study-and-decision-analysis`
+5. `interface-contract-design`
+6. `validation-planning`
+7. `docs-adr-updates`
 
 ### Workflow evolution
 1. `codebase-exploration`
@@ -243,7 +246,8 @@ Every handoff should include:
 4. `hardware-abstraction`
 5. `verification`
 6. `safety-risk-scan`
-7. `resource-budget-review`
+7. `risk-catalog` to promote high-severity migration findings to the permanent catalog
+8. `resource-budget-review`
 
 ## Behavioral defaults
 
