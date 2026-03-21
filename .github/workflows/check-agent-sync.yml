@@ -1,12 +1,13 @@
-name: Check agent sync
+name: Check generated surfaces
 
 on:
   pull_request:
   push:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
-  check-agent-sync:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,4 +15,8 @@ jobs:
         with:
           python-version: '3.x'
       - name: Verify generated agent files are up to date
-        run: python3 scripts/sync_agent_layouts.py --check
+        run: make check-agents
+      - name: Smoke-test CLI entrypoint
+        run: make smoke-cli
+      - name: Run Python tests
+        run: make test
