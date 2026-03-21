@@ -174,6 +174,9 @@ python3 tools/cli.py first-run --tool codex --mode existing
 - task, product-brief, work-plan, work-status, requirements-traceability, trade-study, validation, workflow-experiment, bounded-autonomy-loop, handoff, hypothesis, optimization-scorecard, verification, ADR, and git-commit templates under `docs/templates/`
 - a starter prompt library in `docs/templates/reusable-prompts.md`
 
+### Embedded build starter
+- `extras/cmake-nrf52840-template/`: a concrete CMake firmware starter with checked-in presets, configure-time architecture enforcement, a `gcc-arm-none-eabi` toolchain example, host-side verification, and a minimal nRF52840 hello-world target
+
 ### Claude-native runtime extras
 - `.claude/settings.json` with a repo-level default `product-owner` front door, Plan Mode default, secret-deny starter list, and starter hooks
 - `.claude/rules/` for modular path-scoped Claude Code rules
@@ -350,6 +353,15 @@ For non-trivial work, the intended front door is `product-owner`: you align on t
 │   ├── work/
 │   │   └── README.md
 │   └── operating-model.md
+├── extras/
+│   └── cmake-nrf52840-template/
+│       ├── CMakeLists.txt
+│       ├── CMakePresets.json
+│       ├── cmake/
+│       ├── ld/
+│       ├── libs/
+│       ├── src/
+│       └── tests/
 └── tools/
     └── cli.py
 ```
@@ -367,12 +379,13 @@ For non-trivial work, the intended front door is `product-owner`: you align on t
    - Unity / CppUTest / GoogleTest
    - host simulation harnesses
    - hardware integration tests
-7. Add project-specific architecture constraints in `docs/firmware-playbook.md`.
-8. Keep `AGENTS.md` short and stable. Put detailed guidance in skills, Claude rules, hooks, and path-specific instructions.
-9. Reuse and adapt prompts from `docs/templates/reusable-prompts.md` instead of rewriting task prompts from scratch.
-10. Store durable task context under `docs/work/<work-id>/` instead of scattering it across chat and repeated handoff summaries.
-11. Optionally set a commit template with `git config commit.template docs/templates/git-commit-template.txt`.
-12. Keep `CHANGELOG.md` current for notable unreleased changes and choose the SemVer bump deliberately at release time.
+7. Start from `extras/cmake-nrf52840-template/` when you want a concrete embedded CMake baseline instead of inventing one from scratch.
+8. Add project-specific architecture constraints in `docs/firmware-playbook.md`.
+9. Keep `AGENTS.md` short and stable. Put detailed guidance in skills, Claude rules, hooks, and path-specific instructions.
+10. Reuse and adapt prompts from `docs/templates/reusable-prompts.md` instead of rewriting task prompts from scratch.
+11. Store durable task context under `docs/work/<work-id>/` instead of scattering it across chat and repeated handoff summaries.
+12. Optionally set a commit template with `git config commit.template docs/templates/git-commit-template.txt`.
+13. Keep `CHANGELOG.md` current for notable unreleased changes and choose the SemVer bump deliberately at release time.
 
 ## Suggested firmware workflow
 

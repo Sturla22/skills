@@ -39,6 +39,19 @@ Choose one and apply it consistently across the project:
 `developer` places files there and flags misplaced files as structural debt to fix in a separate tidy commit.
 See `.claude/rules/pitchfork-layout.md` for the full rule set applied to source paths.
 
+## Build System Default
+
+This starter repo standardizes on **CMake** for concrete embedded build examples and starter layouts.
+
+Why this is the default here:
+
+- checked-in **CMake Presets** keep host and cross builds reproducible
+- **toolchain files** make `gcc-arm-none-eabi` configuration explicit instead of shell-local
+- **CTest** gives a simple host-side verification path before hardware work
+- the target graph is visible enough to enforce a small architecture policy at configure time
+
+Use [`extras/cmake-nrf52840-template/`](/home/sturlalange/Dev/my-claude-skills/extras/cmake-nrf52840-template) as the concrete starting point when you want a copyable embedded CMake baseline.
+
 ## Strong defaults
 
 - Name interfaces in terms of **capabilities**, not vendor details, when the abstraction is intended to survive platform migration.

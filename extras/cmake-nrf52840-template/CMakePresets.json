@@ -1,0 +1,53 @@
+{
+  "version": 4,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "host-debug",
+      "displayName": "Host Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/host-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "TEMPLATE_BUILD_FIRMWARE": "OFF",
+        "TEMPLATE_BUILD_HOST_TESTS": "ON"
+      }
+    },
+    {
+      "name": "nrf52840-debug",
+      "displayName": "nRF52840 Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/nrf52840-debug",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/gcc-arm-none-eabi.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "TEMPLATE_BUILD_FIRMWARE": "ON",
+        "TEMPLATE_BUILD_HOST_TESTS": "OFF",
+        "TEMPLATE_ENABLE_SEMIHOSTING": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "build-host-debug",
+      "configurePreset": "host-debug"
+    },
+    {
+      "name": "build-nrf52840-debug",
+      "configurePreset": "nrf52840-debug"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test-host-debug",
+      "configurePreset": "host-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}
