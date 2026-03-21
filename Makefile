@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: sync-agents check-agents link smoke-cli test
+.PHONY: sync-agents check-agents link smoke-cli test check-layout
 
 sync-agents:
 	$(PYTHON) scripts/cli.py sync
@@ -16,3 +16,6 @@ smoke-cli:
 
 test:
 	$(PYTHON) -m pytest -q
+
+check-layout:
+	$(PYTHON) scripts/cli.py check-layout

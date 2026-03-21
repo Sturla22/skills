@@ -24,3 +24,5 @@ jobs:
         run: make smoke-cli
       - name: Run Python tests
         run: make test
+      - name: Check Pitchfork layout
+        run: make check-layout
