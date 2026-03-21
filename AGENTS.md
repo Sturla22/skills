@@ -263,6 +263,7 @@ Every handoff should include:
 - Do not confuse verification with validation.
 - Do not replace a concrete requirement with abstraction unless it clearly reduces complexity.
 - Do not write code traceable to no driver: user scenario, risk, epistemic uncertainty, design intent communication, or external obligation. Code with no driver is a candidate for removal.
+- Do not place source files, headers, tests, or sub-libraries outside the Pitchfork C++ layout (`src/`, `include/`, `libs/`, `tests/`, `external/`) without naming the exception and its justification.
 - Prefer **remove before add**, **inline before abstract**, **merge before split**, and **specialize before generalize**.
 - For bug work, persist hypotheses and discriminating checks under the work packet instead of only in chat.
 - For workflow changes, prefer one small mutable surface, an explicit evaluation window, and a keep / revise / revert decision.

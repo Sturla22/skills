@@ -9,6 +9,7 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- Pitchfork C++ project layout directive: `CLAUDE.md` key directories updated to the Pitchfork shape (`src/`, `include/`, `libs/`, `tests/`, `external/`, `tools/`, `data/`, `extras/`, `build/`); working rule added requiring Pitchfork compliance; `AGENTS.md` behavioral default added; `planning` skill guardrail added requiring planner to name target Pitchfork directory for every new file; path-scoped `.agents/rules/pitchfork-layout.md` provides the full spec (directory map, header placement choice, embedded conventions, planner/developer rules) active whenever source paths are in context; `docs/firmware-playbook.md` gains a **Project Layout** reference section.
 - Project-level risk catalog: `RK-NNN` IDs in `docs/risks.md`, linked to requirements
   threatened and mitigating tests via `Mitigates: RK-NNN` comments. `scripts/cli.py
   check-risks` provides mechanical mitigation coverage checking (exit 1 on unmitigated

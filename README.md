@@ -394,11 +394,10 @@ When parallel lanes are approved, prefer isolated worktrees and keep lane names 
 6. `interface-contract-design`
 7. `simulation-harness-first`
 8. `tdd`
-9. implementation
-10. `validation-planning` when stakeholder fit needs separate evidence
-11. `verification`
-12. `resource-budget-review`
-13. `docs-adr-updates`
+9. `validation-planning` when stakeholder fit needs separate evidence
+10. `verification`
+11. `resource-budget-review`
+12. `docs-adr-updates`
 
 ### Product bug fix
 1. `codebase-exploration`

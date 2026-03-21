@@ -72,6 +72,7 @@ Produce a low-risk, checkable plan.
 - Do not parallelize steps that share the same write surface unless boundaries are explicit and conflict risk is acceptable.
 - Do not parallelize write-heavy lanes without naming the isolation plan when isolated worktrees would materially reduce conflict.
 - For embedded projects: plan HAL boundary definition in the first step to decouple firmware development from hardware availability.
+- For embedded projects: name the target Pitchfork directory (`src/`, `include/`, `libs/<name>/`, `tests/`) for every new file or module in the plan before implementation starts. Flag misplaced files as structural debt in a separate tidy step.
 
 ## When planning stalls
 - **Scope is unclear** — narrow to one concrete deliverable and plan that first.

@@ -29,15 +29,21 @@ This starter repo is optimized for embedded firmware teams that want:
 - Host simulation tests: `TODO`
 - Hardware integration tests: `TODO`
 
-### Key directories
-- Application code: `src/`
-- HAL / platform: `platform/`
-- Drivers: `drivers/`
+### Key directories (Pitchfork layout)
+- Public headers: `include/`  _(separate header placement; omit if using merged placement where headers live alongside source in `src/`)_
+- Application source: `src/`
+- Sub-libraries (HAL, BSP, drivers, …): `libs/`
 - Tests: `tests/`
-- Docs / ADRs: `docs/`
+- External / vendored dependencies: `external/`
+- Build artifacts: `build/`  _(not tracked in VCS)_
+- Docs / ADRs / work packets: `docs/`
+- Dev tooling and scripts: `tools/`
+
+See `docs/firmware-playbook.md` → **Project Layout** for the full Pitchfork spec and embedded-specific notes.
 
 ## Working rules
 
+- Follow the [Pitchfork C++ project layout](https://vector-of-bool.github.io/2018/09/16/layout-survey.html): `src/`, `include/`, `libs/`, `tests/`, `external/`, `tools/`, `data/`, `docs/`. See the **Project Layout** section in `docs/firmware-playbook.md`. Do not create new top-level source directories without a documented reason.
 - Start non-trivial work with a shared-understanding brief in `docs/work/<work-id>/brief.md` or an equivalent durable summary.
 - In Claude Code, let `.claude/settings.json` default the main thread to `product-owner` and Plan Mode unless there is a deliberate local override.
 - Let `product-owner` own the human-facing thread and delegate explicitly; parallel specialists are fine when the planner has defined boundaries, dependencies, and integration checkpoints.

@@ -2,6 +2,43 @@
 
 Use this as the place to encode repo-specific engineering norms.
 
+## Project Layout (Pitchfork)
+
+This repo follows the [Pitchfork C++ project layout](https://vector-of-bool.github.io/2018/09/16/layout-survey.html).
+
+| Directory | Purpose |
+|---|---|
+| `src/` | Source files; private headers; public headers if using merged placement |
+| `include/` | Public headers only — use for separate header placement |
+| `libs/` | Sub-libraries: HAL, BSP, drivers, OS abstraction, each with its own `src/` |
+| `tests/` | All test source; mirrors the source layout where practical |
+| `external/` | Vendored or submodule third-party dependencies — do not modify directly |
+| `tools/` | Build scripts, code generators, CI helpers |
+| `data/` | Static data: configs, calibration tables, test fixtures |
+| `extras/` | Examples, benchmarks, integration demos — not required by the main build |
+| `docs/` | Documentation, ADRs, work packets |
+| `build/` | Build artifacts — not tracked in VCS |
+
+### Header placement
+
+Choose one and apply it consistently across the project:
+
+- **Merged** (simpler; preferred for single-library firmware): public and private headers alongside source in `src/`
+- **Separate** (preferred when the public API is a stable, versioned contract): public headers in `include/<project-name>/`, private headers in `src/`
+
+### Embedded conventions
+
+- HAL, BSP, and driver layers are sub-libraries under `libs/`: `libs/hal/`, `libs/bsp/`, `libs/drivers/<name>/`
+- RTOS port or OS abstraction: `libs/os/` or `libs/rtos/`
+- Linker scripts, startup files, vector tables: `src/` or `libs/startup/`
+- Platform-specific code lives inside a sub-library, not as a sibling of `src/`
+
+### Enforcement
+
+`planner` names the target Pitchfork directory for every new file before implementation starts.
+`developer` places files there and flags misplaced files as structural debt to fix in a separate tidy commit.
+See `.claude/rules/pitchfork-layout.md` for the full rule set applied to source paths.
+
 ## Strong defaults
 
 - Name interfaces in terms of **capabilities**, not vendor details, when the abstraction is intended to survive platform migration.
