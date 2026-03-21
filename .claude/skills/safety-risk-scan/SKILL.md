@@ -77,3 +77,14 @@ Surface hazardous or reliability-critical failure modes early.
 - mitigations
 - remaining gaps (blocking vs. non-blocking)
 - required tests
+
+## Relation to risk catalog
+
+This skill produces per-work-packet FMEA findings. Promote a finding to
+`docs/risks.md` using the `risk-catalog` skill when any of these apply:
+
+- Severity S ≥ 8
+- The failure mode is systemic (affects multiple work packets or subsystems)
+- No concrete mitigation is assigned within this work packet
+
+The scan output is the analysis; the catalog is the durable record.

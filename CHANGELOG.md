@@ -9,6 +9,20 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- Project-level risk catalog: `RK-NNN` IDs in `docs/risks.md`, linked to requirements
+  threatened and mitigating tests via `Mitigates: RK-NNN` comments. `scripts/cli.py
+  check-risks` provides mechanical mitigation coverage checking (exit 1 on unmitigated
+  risks or orphaned references), mirroring the `SC-NNN` / `check-coverage` pattern.
+  `safety-risk-scan` is discovery (per work packet); the catalog is the persistent home
+  (promote when S ≥ 8 or systemic). `Risks (RK-NNN)` column added to
+  `templates/requirements-traceability-template.md` for bidirectional linkage.
+- `risk-catalog` skill, `templates/risk-catalog-template.md`, and
+  `.agents/rules/risk-catalog.md` for maintaining the catalog, wiring risks to
+  requirements and tests, and enforcing `RK-NNN` ID stability.
+- `tests/fixtures/risk-catalog/` three-fixture test suite (`all-covered`, `gap`,
+  `orphan`) mirroring the `scenario-traceability` fixture pattern.
+- `risk-catalog` added to product feature, product bug, platform migration, and system
+  definition skill sequences in `AGENTS.md`.
 - Code-driver model woven through the repo: five named drivers (user scenarios, risk, epistemic uncertainty, design intent communication, external obligation) plus a deletion test ("code traceable to no driver is a candidate for removal"). Appears in the `AGENTS.md` shared-understanding contract and behavioral defaults, the `product-brief-template.md` `## Code drivers` section, the `operating-model.md` anti-patterns list, and the `simplify-without-behavior-change` skill's essential-vs-accidental distinction step.
 - `docs/adopt-existing-repo.md`, `first-run --mode existing`, and brief-template prompts for preserving existing repo conventions so teams can adopt this workflow incrementally instead of as a greenfield replacement.
 - Setup guidance now asks adopters whether Jira ticket IDs should prefix commit messages and pull request titles, and the product-brief and commit templates now record that policy explicitly.

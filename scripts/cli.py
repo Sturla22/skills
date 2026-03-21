@@ -631,6 +631,7 @@ def cmd_sync(args: argparse.Namespace) -> None:
 # ---------------------------------------------------------------------------
 
 _SC_ID_PATTERN = re.compile(r"\bSC-\d+\b")
+_RK_ID_PATTERN = re.compile(r"\bRK-\d+\b")
 
 
 def _collect_scenario_ids(root: Path) -> dict[str, list[str]]:
@@ -667,6 +668,83 @@ def _collect_covered_ids(root: Path, tests_glob: str) -> dict[str, list[str]]:
             if "Covers:" in line:
                 covered.setdefault(match.group(), []).append(rel)
     return covered
+
+
+# ---------------------------------------------------------------------------
+# Risk helpers
+# ---------------------------------------------------------------------------
+
+def _collect_risk_ids(root: Path) -> dict[str, set[str]]:
+    ids: dict[str, set[str]] = {}
+    catalog = root / "docs" / "risks.md"
+    if not catalog.exists():
+        return ids
+    rel = str(catalog.relative_to(root))
+    for match in _RK_ID_PATTERN.finditer(catalog.read_text(encoding="utf-8")):
+        ids.setdefault(match.group(), set()).add(rel)
+    return ids
+
+
+def _collect_mitigated_ids(root: Path, tests_glob: str) -> dict[str, list[str]]:
+    mitigated: dict[str, list[str]] = {}
+    for test_file in sorted(root.glob(tests_glob)):
+        if not test_file.is_file():
+            continue
+        try:
+            text = test_file.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        rel = str(test_file.relative_to(root))
+        for match in _RK_ID_PATTERN.finditer(text):
+            line_start = text.rfind("\n", 0, match.start()) + 1
+            line_end   = text.find("\n", match.end())
+            line = text[line_start:] if line_end == -1 else text[line_start:line_end]
+            if "Mitigates:" in line:
+                mitigated.setdefault(match.group(), []).append(rel)
+    return mitigated
+
+
+# ---------------------------------------------------------------------------
+# Subcommand: check-risks
+# ---------------------------------------------------------------------------
+
+def cmd_check_risks(args: argparse.Namespace) -> None:
+    root = Path(args.root).resolve() if args.root else ROOT
+    tests_glob = args.tests or "tests/**/*"
+
+    risk_ids      = _collect_risk_ids(root)
+    mitigated_ids = _collect_mitigated_ids(root, tests_glob)
+
+    catalog_exists = (root / "docs" / "risks.md").exists()
+    test_files_seen: set[str] = set()
+    for paths in mitigated_ids.values():
+        test_files_seen.update(paths)
+
+    catalog_status = "found" if catalog_exists else "not found"
+    print(f"Scanning catalog ({catalog_status}), "
+          f"{len(test_files_seen)} test file(s) with mitigation references...\n")
+
+    unmitigated = [rk for rk in sorted(risk_ids)      if rk not in mitigated_ids]
+    orphaned    = [rk for rk in sorted(mitigated_ids)  if rk not in risk_ids]
+
+    if unmitigated:
+        print("UNMITIGATED RISKS:")
+        for rk in unmitigated:
+            print(f"  {rk}  [{', '.join(sorted(risk_ids[rk]))}]")
+        print()
+    if orphaned:
+        print("ORPHANED REFERENCES (in tests but not in docs/risks.md):")
+        for rk in orphaned:
+            print(f"  {rk}  {', '.join(mitigated_ids[rk])}")
+        print()
+
+    total  = len(risk_ids)
+    n_mit  = total - len(unmitigated)
+    status = "OK" if not unmitigated and not orphaned else "FAIL"
+    print(f"Result: {n_mit}/{total} mitigated, "
+          f"{len(unmitigated)} unmitigated, "
+          f"{len(orphaned)} orphaned — {status}")
+    sys.exit(0 if status == "OK" else 1)
 
 
 # ---------------------------------------------------------------------------
@@ -1069,6 +1147,25 @@ def build_parser() -> argparse.ArgumentParser:
         help="Glob for test files relative to root (default: tests/**/*)",
     )
     p_check_coverage.set_defaults(func=cmd_check_coverage)
+
+    # check-risks
+    p_check_risks = sub.add_parser(
+        "check-risks",
+        help="Check that every RK-NNN risk in docs/risks.md is mitigated by at least one test",
+    )
+    p_check_risks.add_argument(
+        "--root",
+        metavar="<dir>",
+        default=None,
+        help="Repo root to resolve paths from (default: repo root of this script)",
+    )
+    p_check_risks.add_argument(
+        "--tests",
+        metavar="<glob>",
+        default=None,
+        help="Glob for test files relative to root (default: tests/**/*)",
+    )
+    p_check_risks.set_defaults(func=cmd_check_risks)
 
     # doctor
     p_doctor = sub.add_parser(

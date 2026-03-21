@@ -14,8 +14,8 @@
 
 ## Requirements trace
 
-| ID | Type | Requirement / constraint | Source | Acceptance criterion / scenario | Design / interface touchpoint | Verification method | Validation evidence | Downstream impact / affected artifacts | Status | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ID | Type | Requirement / constraint | Source | Acceptance criterion / scenario | Risks (RK-NNN) | Design / interface touchpoint | Verification method | Validation evidence | Downstream impact / affected artifacts | Status | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 ## Impact analysis
 
