@@ -10,6 +10,8 @@ Close a specific external knowledge gap and return a durable, scoped summary.
 
 ## Process
 
+1. **Write partial findings early** — write partial findings to the output file within the first 3 tool uses. Refine incrementally. Never accumulate all findings in context before writing. If turns exhaust, the output file should already contain the most valuable findings collected so far.
+
 1. **Restate the research question precisely** — before searching, write the question in one or two sentences. If it is compound, split it into sub-questions and note the dependency order.
 
 2. **Identify minimum necessary sources** — prefer primary sources:

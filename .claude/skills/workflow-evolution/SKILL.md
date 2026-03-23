@@ -51,6 +51,10 @@ Use `docs/templates/workflow-experiment-template.md` and store the record under 
 
 9. **Close the loop explicitly** — after the evaluation window, decide whether to keep, revise, or revert the change. A workflow experiment is incomplete without that decision.
 
+## Optimization loops
+
+For performance, memory, or endurance optimization work, consider an autonomous experiment loop (Karpathy autoresearch pattern): define a measurable objective (e.g. reduce flash usage by X%), give the agent a narrow write surface, run the automated check after each attempt, keep improvements and revert regressions, repeat within a fixed iteration budget. Use `bounded-autonomy-loop` as the safety framework.
+
 ## Guardrails
 - Do not create a new role for a one-off pain point.
 - Do not use workflow work to smuggle in unrelated product decisions.
@@ -66,6 +70,7 @@ Use `docs/templates/workflow-experiment-template.md` and store the record under 
 - **Two interventions seem plausible** — choose the more reversible one first.
 - **A new role seems tempting** — try to prove a skill or template is insufficient.
 - **The change is broad** — land the smallest slice that can be tested in real usage.
+- **AI effectiveness is low despite good process** — AI-friendly code structure (clear naming, discriminating test names, explicit invariants in comments) is a legitimate hypothesis to test under the existing experiment framework. It may improve AI effectiveness on the codebase without harming human readability.
 
 ## Done-when
 - the recurring friction is stated clearly

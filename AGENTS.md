@@ -4,6 +4,8 @@ This repository uses a **roles over skills** model.
 
 ## Role boundaries
 
+Agents make better decisions when focused on a single objective. Role boundaries prevent an agent from satisfying the planner's completeness goal and the developer's simplicity goal in the same session — they pull in opposite directions. The handoff is the explicit moment where objectives change.
+
 Core flow roles:
 
 - **product-owner** owns the human-facing control thread, shared understanding, success criteria, and delegation
@@ -154,6 +156,14 @@ Every handoff should include:
 10. `integration-engineer` joins when integration setup, HIL, flashing, bench repro, environment stability, or flaky lab signal is the bottleneck.
 11. `workflow-architect` joins when repeated workflow friction, missing guidance, or possible new skills or roles need a dedicated owner.
 12. `researcher` joins when work references a specific external component, standard, SDK, or library not already characterized in the codebase — not only when planning is completely blocked, but reactively whenever external assumptions have not been verified against current authoritative sources.
+
+## Skill tiers
+
+Skills in this repo fall into three tiers:
+
+- **Canonical** — version-controlled under `.agents/skills/`, synced by `tools/cli.py sync`, part of the documented repo contract
+- **Team-installed** — added via `npx skills add` or similar, checked into `.claude/skills/` or equivalent, useful but not part of the contract
+- **Personal** — stored globally (`~/.claude/skills/`) or gitignored, individual productivity, no team expectation
 
 ## Default skill sequences
 

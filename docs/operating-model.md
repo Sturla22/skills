@@ -117,6 +117,20 @@ Bring in **workflow-architect** when:
 - changing multiple workflow surfaces at once with no way to tell what actually helped
 - turning a bounded autonomy loop into an unbounded retry habit on ambiguous work
 
+## Context engineering
+
+This repo practices context engineering — the system automatically provides the right context to every AI session via three layers:
+
+1. **Project rules** (`CLAUDE.md`, `AGENTS.md`, `copilot-instructions.md`) — loaded automatically by each tool; encode architecture rules, coding constraints, testing requirements, and build commands
+2. **Skills** (`.agents/skills/`) — reusable structured capabilities that encode how to do specific kinds of work; the AI activates them when relevant
+3. **Work packets** (`docs/work/<id>/`) — durable task context that survives session boundaries; brief, plan, status, evidence, and handoffs in one place
+
+The goal is that the right context is always available without the engineer having to remember to provide it. Skills are particularly valuable when the AI has little training data on your domain, or when you want work done a very specific way.
+
+## Agent failure notes
+
+When an agent produces an unexpected or harmful action, file a brief failure note under `docs/workflow-experiments/` before the session ends. Three fields: what was expected, what happened, what guardrail was added. The workflow-architect reviews these alongside workflow experiment records.
+
 ## Cross-tool note
 
 The same role model is shared across Claude Code, GitHub Copilot, and OpenAI Codex.

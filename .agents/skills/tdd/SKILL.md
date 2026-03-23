@@ -18,9 +18,36 @@ TDD is the implementation loop. Use `bdd` to define the behavior and shared lang
 - Prefer BDD-style behavior scenarios and names even when tests are not written in formal Given/When/Then syntax.
 - Prefer the bottom of the test pyramid first: unit or host-simulation tests before broader or hardware-only checks when the claim allows it.
 
-## Process (Canon TDD — 5 steps)
+## Process
 
-1. **Write a behavior list** — brainstorm behavioral scenarios and edge cases before writing any test. Add newly discovered cases to the list during development; pick from it deliberately. One test at a time.
+### Step 0 — Plan before writing any test
+
+Before writing a single test or line of production code, confirm with the planner or user:
+- What the public interface will look like
+- Which behaviors are most important to test (you cannot test everything — focus on critical paths and complex logic)
+- Opportunities for deep modules: small interface, large implementation
+- Acknowledgement of scope: list the behaviors to test; get explicit approval before starting
+
+This prevents writing tests against imagined behavior.
+
+### Vertical slices — not horizontal
+
+Write one test, implement it, then move to the next. Do NOT write all tests first and implement after — that is horizontal slicing and produces tests that test imagined behavior rather than actual behavior.
+
+```
+WRONG (horizontal slicing):
+  RED:   test1, test2, test3
+  GREEN: impl1, impl2, impl3
+
+RIGHT (vertical — tracer bullets):
+  RED->GREEN: test1->impl1
+  RED->GREEN: test2->impl2
+  ...
+```
+
+### Steps 1–5 (Canon TDD)
+
+1. **Write a behavior list** — brainstorm behavioral scenarios and edge cases. Add newly discovered cases to the list during development; pick from it deliberately. One test at a time.
    - Prefer BDD-style behavior statements or Given/When/Then notes as the source for the next test.
 
 2. **Read the area under test** — understand the existing API, types, and test conventions before writing a test.
@@ -42,6 +69,15 @@ TDD is the implementation loop. Use `bdd` to define the behavior and shared lang
 
 6. **Refactor only while green** — rename, extract, simplify; re-run after each move. Never refactor in the same step as making a test pass (red → green → refactor are separate mental modes).
 
+### Per-cycle checklist
+
+Before moving to the next test, confirm:
+- [ ] Test describes behavior, not implementation
+- [ ] Test uses the public interface only
+- [ ] Test would survive an internal refactor
+- [ ] Production code is minimal for this one test
+- [ ] No speculative features were added
+
 ## Three laws (nano-cycle — enforced second by second)
 1. No production code without a failing test.
 2. No more test than is sufficient to fail (including compile failure).
@@ -54,6 +90,7 @@ TDD is the implementation loop. Use `bdd` to define the behavior and shared lang
 - If writing a test is painful, that is a design signal — the production code may need simplification first.
 - Never make private methods public to test them directly — test through the public interface.
 - If you are skipping TDD because the work is a non-productized tool, say so explicitly and define the replacement verification approach.
+- **Mock at system boundaries only** — external I/O, hardware peripherals, time, and randomness. Do NOT mock internal modules or collaborators; doing so couples tests to implementation and breaks on any internal refactor.
 
 ## TDD anti-patterns to avoid
 - **The Liar** — test passes but doesn't verify what it claims (assertion always true).
@@ -68,18 +105,7 @@ TDD is the implementation loop. Use `bdd` to define the behavior and shared lang
 - Prefer running executable behavior scenarios in host simulation before on-target checks when the claim does not depend on real hardware.
 - `git bisect` applies binary search over commit history to isolate a regressing commit.
 
-### Ring buffer / SPSC
-TDD idiom: test producer/consumer separation by exercising the buffer with one writer and one reader double; assert full/empty detection at boundary conditions (capacity, capacity−1, and 0 elements).
-
-Guardrail: "Lock-free SPSC ring buffer correctness requires `std::atomic` with `memory_order_acquire`/`memory_order_release`; `volatile` alone is insufficient. On Cortex-M0/M0+ without `LDREX`/`STREX`, disable interrupts instead of relying on lock-free atomics."
-
-### Table-driven FSM
-TDD idiom: one test per row of the transition table; a missing row is a test failure; table consistency must be maintained alongside tests. The table is the specification — any undocumented transition that passes in production is a latent defect.
-
-### `std::variant`-based FSM
-TDD idiom: `std::visit` with the overload pattern makes exhaustive event handling a compile-time check; write a test that verifies unhandled event types fail to compile (use a `static_assert` or a deliberately incomplete overload set that triggers a compile-time error).
-
-Toolchain note: "`std::variant`-based FSMs require C++17; confirm toolchain support and `-fno-exceptions` configuration before using on constrained targets."
+See [REFERENCE.md](REFERENCE.md) for idioms and guardrails specific to ring buffers, SPSC queues, and FSM variants.
 
 ## Failure Classification
 
