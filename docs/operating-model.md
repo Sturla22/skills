@@ -33,6 +33,12 @@ Treat integration and V&V as continuous signals inside each iteration, not as a 
 - Keep handoffs delta-focused: point to canonical packet files and describe only what changed.
 - Prefer isolated worktrees for planner-approved parallel write lanes when the tool supports them.
 
+## Commit handling
+
+- Treat a bare requester instruction to `commit` as permission to create one or more logical commits.
+- Keep the existing atomic-commit standard: do not combine unrelated logical changes into one umbrella commit unless the requester explicitly asks for that tradeoff.
+- Do not treat this rule as permission to rewrite already shared history without explicit coordination.
+
 ## Escalation rules
 
 Bring in **planner** early when:

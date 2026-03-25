@@ -110,6 +110,7 @@ Every handoff should include:
 ## Git commit rules
 
 - Prefer one logical change per commit. Split structural cleanup from behavioral changes.
+- When a requester says `commit` without specifying granularity, interpret that as permission to create one or more logical commits. Do not collapse unrelated logical changes into one umbrella commit unless the requester explicitly asks for a single combined commit.
 - Commit when one logical change is complete enough to review and the relevant local checks for that slice have passed.
 - Prefer committing at stable checkpoints: after a passing tidy step, after a passing refactor leaf, after the smallest verified behavior change, or after a documented docs-only update.
 - Switch hats between commits. Do not mix tidy, refactor, feature, bug-fix, and broad docs churn in the same commit unless the user explicitly wants that tradeoff.
