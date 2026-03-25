@@ -27,6 +27,23 @@ This repo can shape GitHub Copilot in VS Code, but it cannot enforce runtime beh
 6. Decide whether Jira ticket IDs should prefix commit messages and pull request titles in this repo.
 7. In Copilot Chat, ask: `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then create or update the canonical work packet under docs/work/onboarding-demo/ and tell me the next owner. Treat ~/.copilot/session-state/ as scratch only, not as the work packet.`
 
+## Copilot CLI launcher
+
+If you want a repeatable CLI entrypoint that starts Copilot with the repo's intended `product-owner` front door, use:
+
+```bash
+python3 tools/dev/start_copilot_product_owner.py
+```
+
+You can pass normal Copilot CLI flags through the launcher. For example:
+
+```bash
+python3 tools/dev/start_copilot_product_owner.py --resume
+python3 tools/dev/start_copilot_product_owner.py -i "Summarize the current instructions and ask me for the desired outcome."
+```
+
+The launcher intentionally owns agent selection, so it rejects explicit `--agent` overrides.
+
 ## Workspace baseline
 
 [`settings.json`](/home/sturlalange/Dev/my-claude-skills/.vscode/settings.json) makes the repo guidance more visible to Copilot features in VS Code:

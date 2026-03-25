@@ -42,6 +42,12 @@ python3 tools/cli.py first-run --tool copilot
 
 See [docs/copilot-vscode-playbook.md](/home/sturlalange/Dev/my-claude-skills/docs/copilot-vscode-playbook.md) for the VS Code-specific baseline and workspace settings.
 
+For a repo-owned CLI entrypoint that starts Copilot with the `product-owner` custom agent selected:
+
+```bash
+python3 tools/dev/start_copilot_product_owner.py
+```
+
 ## Golden path
 
 If you want one end-to-end exercise that proves both the repo setup and the operating model:
