@@ -1,6 +1,6 @@
 ---
 name: developer
-description: Use when the brief and plan are stable and code or docs must change: implements the smallest effective change and returns a concise implementation handoff.
+description: "Use when the brief and plan are stable and code or docs must change: implements the smallest effective change and returns a concise implementation handoff."
 tools: Read, Grep, Glob, Edit, MultiEdit, Bash
 model: sonnet
 skills:

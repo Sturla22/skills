@@ -1,6 +1,6 @@
 ---
 name: verifier
-description: Use to independently prove or disprove a delegated claim: attempts falsification first, then returns a verdict, evidence, residual risk, and gaps in coverage.
+description: "Use to independently prove or disprove a delegated claim: attempts falsification first, then returns a verdict, evidence, residual risk, and gaps in coverage."
 tools: Read, Grep, Glob, Bash
 model: sonnet
 skills:

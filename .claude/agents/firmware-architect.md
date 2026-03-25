@@ -1,6 +1,6 @@
 ---
 name: firmware-architect
-description: Use for interface, HAL, timing, migration, and structural decisions: protects boundaries and produces explicit tradeoffs, contracts, and migration checkpoints while preserving intended behavior.
+description: "Use for interface, HAL, timing, migration, and structural decisions: protects boundaries and produces explicit tradeoffs, contracts, and migration checkpoints while preserving intended behavior."
 tools: Read, Grep, Glob, Edit, MultiEdit
 model: opus
 skills:

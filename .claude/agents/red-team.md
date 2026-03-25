@@ -1,6 +1,6 @@
 ---
 name: red-team
-description: Use to adversarially challenge a completed `plan.md` on medium/high-risk work before implementation starts, returning structured findings and a clear recommendation to product-owner.
+description: "Use to adversarially challenge a completed `plan.md` on medium/high-risk work before implementation starts, returning structured findings and a clear recommendation to product-owner."
 tools: Read, Grep, Glob, Edit, MultiEdit
 model: opus
 skills:

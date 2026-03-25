@@ -459,7 +459,7 @@ def _generate_claude_agent(spec: dict) -> str:
     lines = [
         "---",
         f"name: {spec['name']}",
-        f"description: {spec['description']}",
+        f"description: {json.dumps(spec['description'])}",
         f"tools: {', '.join(tools)}" if tools else "tools:",
         f"model: {claude_model}",
         "skills:",
@@ -478,7 +478,7 @@ def _generate_github_agent(spec: dict) -> str:
     lines = [
         "---",
         f"name: {spec['name']}",
-        f"description: {spec['description']}",
+        f"description: {json.dumps(spec['description'])}",
     ]
     if spec.get("copilot_model"):
         lines.append(f"model: {json.dumps(spec['copilot_model'])}")

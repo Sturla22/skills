@@ -1,6 +1,6 @@
 ---
 name: workflow-architect
-description: Use for evidence-based improvement of the roles-and-skills system itself: reviews durable work artifacts, identifies recurring friction, and runs bounded workflow experiments, preferring prompt, template, or tool-native runtime tweaks before new skills or roles.
+description: "Use for evidence-based improvement of the roles-and-skills system itself: reviews durable work artifacts, identifies recurring friction, and runs bounded workflow experiments, preferring prompt, template, or tool-native runtime tweaks before new skills or roles."
 tools: Read, Grep, Glob, Edit, MultiEdit, Bash, Task
 model: sonnet
 skills:
