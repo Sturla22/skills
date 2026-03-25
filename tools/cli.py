@@ -950,7 +950,7 @@ def cmd_doctor(args: argparse.Namespace) -> None:
             ROOT / "README.md",
             ROOT / "AGENTS.md",
             ROOT / ".agents",
-            ROOT / "scripts" / "cli.py",
+            ROOT / "tools" / "cli.py",
         ]
     for path in required_paths:
         ok, detail = _check_path_exists(path, path.name)
@@ -1033,6 +1033,7 @@ def cmd_doctor(args: argparse.Namespace) -> None:
     if tool in ("copilot", "all"):
         copilot_paths = [
             ROOT / ".github" / "copilot-instructions.md",
+            ROOT / ".github" / "instructions",
             ROOT / ".github" / "agents",
             ROOT / ".vscode" / "settings.json",
         ]

@@ -68,7 +68,7 @@ Then:
 - generated files are out of sync: run `python3 tools/cli.py sync`, then rerun `python3 tools/cli.py sync --check`
 - skills or generated agents seem stale: edit canonical files under `.agents/`, not generated files, then rerun `sync`
 - Claude hooks or settings do not take effect: confirm the repo is trusted and that `.claude/settings.json` is being loaded
-- Copilot behavior does not match the repo: confirm your IDE honors `AGENTS.md`, `.github/copilot-instructions.md`, and `.github/agents/`
+- Copilot behavior does not match the repo: confirm your IDE honors `AGENTS.md`, `.github/copilot-instructions.md`, `.github/instructions/`, and `.github/agents/`
 
 This version is biased toward **embedded firmware** and **safety-aware engineering habits**:
 - preserve behavior unless intentionally changing it

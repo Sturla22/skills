@@ -41,6 +41,17 @@ This repo can shape GitHub Copilot in VS Code, but it cannot enforce runtime beh
 - pull request description generation gets repo instructions plus a verification and risk reminder
 - `chat.agent.maxRequests = 6` leaves some headroom for agentic work without pushing toward unbounded request trees
 
+## Shipped instruction layers
+
+This repo ships the Copilot path-specific instruction layer that the workspace baseline already enables:
+
+- `.github/instructions/tests.instructions.md` for test files
+- `.github/instructions/firmware.instructions.md` for C/C++, HAL-adjacent, and firmware config files
+- `.github/instructions/docs.instructions.md` for `README.md`, docs, and ADRs
+- `.github/instructions/build-system.instructions.md` for CMake and board/toolchain config files
+
+Keep these files small and path-focused. Put cross-cutting workflow guidance in `AGENTS.md` or `.github/copilot-instructions.md` instead.
+
 ## Recommended operating shape
 
 - Keep `AGENTS.md` short and durable.
@@ -55,8 +66,9 @@ To verify the repo guidance is being picked up in VS Code:
 
 1. Open Copilot Chat in this workspace.
 2. Ask a question that should trigger the role model, for example: `Which role should own the next step for a non-trivial bug in this repo?`
-3. Inspect the response references and confirm `AGENTS.md` or `.github/copilot-instructions.md` appear.
-4. Try one custom agent from `.github/agents/` and confirm Copilot offers it in the agent picker.
+3. Inspect the response references and confirm `AGENTS.md`, `.github/copilot-instructions.md`, or a matching `.github/instructions/*.instructions.md` file appears.
+4. Open a file that should match one of the shipped instruction files, ask a file-specific question, and confirm the matching instruction file is referenced.
+5. Try one custom agent from `.github/agents/` and confirm Copilot offers it in the agent picker.
 
 ## Limits
 

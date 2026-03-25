@@ -2,6 +2,12 @@
 
 Read `AGENTS.md` first for the operating model.
 
+## Copilot repo surfaces
+
+- Use `AGENTS.md` for the shared roles-over-skills operating model.
+- Use `.github/instructions/*.instructions.md` for path-specific guidance on tests, firmware, docs, and build-system files.
+- Use `.github/agents/*.agent.md` when a custom specialist is a better fit than the default chat thread.
+
 ## Repo-wide defaults
 
 - Start non-trivial tasks by restating shared understanding, scope, non-goals, constraints, and acceptance criteria.

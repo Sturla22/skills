@@ -9,6 +9,7 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- Copilot support now treats the existing path-specific instruction files under `.github/instructions/` as a first-class part of the repo-tracked support surface. `tools/cli.py doctor --tool copilot`, `docs/copilot-vscode-playbook.md`, `docs/compatibility.md`, `README.md`, and `.github/copilot-instructions.md` now surface and verify that layer more explicitly.
 - `make check-static-analysis`, `tools/ci/check-static-analysis.py`, and `extras/cmake-nrf52840-template/.clang-tidy` establish the repo's first concrete C++ static-analysis baseline for the starter. The recommendation for this repo is now: use preset-specific compile databases in-editor, use `make check-static-analysis` for local gating, and keep CI on the same repo-owned command instead of introducing a separate analyzer service or thicker workflow YAML.
 - Repo guidance now states a script-language preference: when repo-owned automation grows beyond a short shell wrapper, prefer Python over Bash. Small wrappers around package installs or linear command sequences may stay in shell.
 - `.pre-commit-config.yaml`, `make install-pre-commit`, `make run-pre-commit`, and `make check-pre-commit-config` now wire the `pre-commit` framework into the repo. The local `static-analysis` hook runs `make check-static-analysis`, while CI still runs the analyzer directly and only validates the hook config.
