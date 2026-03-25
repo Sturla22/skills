@@ -4,6 +4,7 @@ tools = ["Read", "Grep", "Glob", "Bash"]
 skills = ["bdd", "verification", "requirements-and-traceability", "validation-planning", "tdd", "hypothesis-driven-debugging", "simulation-harness-first", "lab-and-hil-reproducibility", "release-readiness", "safety-risk-scan", "resource-budget-review", "fault-injection-and-recovery", "operation-cost-optimization"]
 claude_model = "sonnet"
 claude_max_turns = 16
+copilot_model = "claude-sonnet-4.6"
 codex_model_reasoning_effort = "high"
 codex_sandbox_mode = "workspace-write"
 codex_nickname_candidates = ["Proof", "Probe", "Gauge"]

@@ -4,6 +4,7 @@ tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit", "Bash"]
 skills = ["bdd", "tidy-first", "tdd", "bounded-autonomy-loop", "refactoring", "simplify-without-behavior-change", "hardware-abstraction", "simulation-harness-first", "observability-and-diagnostics", "operation-cost-optimization", "docs-adr-updates"]
 claude_model = "sonnet"
 claude_max_turns = 20
+copilot_model = "gpt-5.4-mini"
 codex_model_reasoning_effort = "medium"
 codex_sandbox_mode = "workspace-write"
 codex_nickname_candidates = ["Builder", "Patch", "Maker"]

@@ -5,6 +5,7 @@ skills = ["interface-contract-design", "requirements-and-traceability", "trade-s
 claude_permission_mode = "plan"
 claude_model = "opus"
 claude_max_turns = 16
+copilot_model = "gpt-5.4"
 codex_model_reasoning_effort = "xhigh"
 codex_sandbox_mode = "read-only"
 codex_nickname_candidates = ["Frame", "Spine", "Boundary"]

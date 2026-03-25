@@ -4,6 +4,7 @@ tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit"]
 skills = ["plan-red-team", "codebase-exploration", "verification", "bdd"]
 claude_model = "opus"
 claude_max_turns = 12
+copilot_model = "claude-opus-4.6"
 codex_model_reasoning_effort = "xhigh"
 codex_sandbox_mode = "workspace-write"
 codex_nickname_candidates = ["Breaker", "Probe", "Counterexample"]

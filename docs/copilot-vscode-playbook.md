@@ -13,7 +13,7 @@ This repo can shape GitHub Copilot in VS Code, but it cannot enforce runtime beh
 ## What still lives in the adopter's IDE or account
 
 - GitHub sign-in and Copilot entitlement
-- model selection and any user-level preferences
+- default non-agent chat model selection and any user-level preferences
 - which VS Code extensions are installed and enabled
 - whether personal or organization instructions override repo guidance
 
@@ -25,7 +25,7 @@ This repo can shape GitHub Copilot in VS Code, but it cannot enforce runtime beh
 4. Run `python3 tools/cli.py doctor --tool copilot`.
 5. Run `python3 tools/cli.py first-run --tool copilot`.
 6. Decide whether Jira ticket IDs should prefix commit messages and pull request titles in this repo.
-7. In Copilot Chat, ask: `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create.`
+7. In Copilot Chat, ask: `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then create or update the canonical work packet under docs/work/onboarding-demo/ and tell me the next owner. Treat ~/.copilot/session-state/ as scratch only, not as the work packet.`
 
 ## Workspace baseline
 
@@ -40,6 +40,31 @@ This repo can shape GitHub Copilot in VS Code, but it cannot enforce runtime beh
 - commit message generation gets repo instructions plus a Conventional Commit reminder
 - pull request description generation gets repo instructions plus a verification and risk reminder
 - `chat.agent.maxRequests = 6` leaves some headroom for agentic work without pushing toward unbounded request trees
+
+## Role-level model selection
+
+Custom Copilot agents can pin a model in `.github/agents/*.agent.md` with the `model:` frontmatter property.
+
+In this repo, those files are generated from `.agents/agents/*.toml`, so role-level Copilot model preferences must be set in the canonical role specs and then propagated with:
+
+```bash
+python3 tools/cli.py sync
+python3 tools/cli.py sync --check
+```
+
+Current repo policy is explicit across roles:
+
+- non-review high-reasoning roles use `gpt-5.4`
+- other non-review roles use `gpt-5.4-mini`
+- high-reasoning review roles use `claude-opus-4.6`
+- other review roles use `claude-sonnet-4.6`
+
+In the current role set, that means:
+
+- `product-owner`, `planner`, `firmware-architect`, and `researcher` use `gpt-5.4`
+- `developer`, `integration-engineer`, `release-manager`, `technical-writer`, and `workflow-architect` use `gpt-5.4-mini`
+- `reviewer` and `red-team` use `claude-opus-4.6`
+- `verifier` uses `claude-sonnet-4.6`
 
 ## Shipped instruction layers
 
@@ -57,6 +82,8 @@ Keep these files small and path-focused. Put cross-cutting workflow guidance in 
 - Keep `AGENTS.md` short and durable.
 - Keep broadly applicable Copilot guidance in `.github/copilot-instructions.md`.
 - Use `.github/instructions/*.instructions.md` when folder-specific guidance would otherwise bloat repo-wide instructions.
+- For non-trivial tasks, require durable truth to live under `docs/work/<work-id>/`, not in `~/.copilot/session-state/`.
+- If Copilot creates a session-local plan as part of its own runtime, mirror the durable parts into `brief.md`, `plan.md`, `status.md`, and `evidence/` instead of treating the session file as canonical.
 - Treat `.vscode/settings.json` as a baseline, not as a guarantee that every adopter has identical local behavior.
 - Document any required personal or org-level VS Code settings in onboarding docs instead of assuming the repo can force them.
 
@@ -67,11 +94,15 @@ To verify the repo guidance is being picked up in VS Code:
 1. Open Copilot Chat in this workspace.
 2. Ask a question that should trigger the role model, for example: `Which role should own the next step for a non-trivial bug in this repo?`
 3. Inspect the response references and confirm `AGENTS.md`, `.github/copilot-instructions.md`, or a matching `.github/instructions/*.instructions.md` file appears.
-4. Open a file that should match one of the shipped instruction files, ask a file-specific question, and confirm the matching instruction file is referenced.
-5. Try one custom agent from `.github/agents/` and confirm Copilot offers it in the agent picker.
+4. Ask Copilot to start a non-trivial task and confirm it creates or updates a work packet under `docs/work/<work-id>/` instead of relying only on `~/.copilot/session-state/`.
+5. Open a file that should match one of the shipped instruction files, ask a file-specific question, and confirm the matching instruction file is referenced.
+6. Try one custom agent from `.github/agents/` and confirm Copilot offers it in the agent picker.
+7. For an agent with a pinned model, open its `.github/agents/*.agent.md` file and confirm the `model:` frontmatter matches the intended role-level preference.
 
 ## Limits
 
 - This repo cannot reliably force Copilot sign-in, entitlement, model selection, or every runtime behavior from tracked files alone.
+- This repo can pin a model for explicit custom Copilot agents, but it still cannot force the model used by the default non-agent chat thread repo-wide.
 - Personal instructions and some IDE-level settings can override repo guidance.
 - Copilot in VS Code has a weaker repo-native runtime control surface than `.claude/settings.json` or `.codex/config.toml`.
+- Copilot may still create tool-local session artifacts for its own runtime. The repo can require that durable task truth be mirrored into `docs/work/<work-id>/`, but it cannot stop the tool from keeping its own scratch files.

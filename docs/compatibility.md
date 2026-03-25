@@ -42,6 +42,7 @@ This repo uses GitHub Copilot customization layers:
 The repo ships path-specific instruction files for tests, firmware, docs, and build-system files so Copilot gets a concrete path-aware guidance layer in addition to the repo-wide instructions.
 
 The custom agent files under `.github/agents/` are generated from `.agents/agents/*.toml`.
+Canonical role specs may also set a `copilot_model` value, which `tools/cli.py sync` emits as the `model:` frontmatter property in the generated Copilot agent files.
 
 ## OpenAI Codex
 

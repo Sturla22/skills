@@ -4,6 +4,7 @@ tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit", "WebFetch", "WebSearch"]
 skills = ["codebase-exploration"]
 claude_model = "sonnet"
 claude_max_turns = 14
+copilot_model = "gpt-5.4"
 codex_model_reasoning_effort = "high"
 codex_sandbox_mode = "workspace-write"
 codex_nickname_candidates = ["Scout", "Librarian", "Cartographer"]

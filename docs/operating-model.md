@@ -29,6 +29,7 @@ Treat integration and V&V as continuous signals inside each iteration, not as a 
 - Store durable task context under `docs/work/<work-id>/`.
 - Store role-to-role handoffs under `docs/work/<work-id>/handoffs/`.
 - Store bounded process-improvement experiments under `docs/workflow-experiments/`.
+- Treat tool-local scratch artifacts such as `~/.copilot/session-state/` as session-local notes only; they do not replace `brief.md`, `plan.md`, `status.md`, or durable evidence in the work packet.
 - Keep handoffs delta-focused: point to canonical packet files and describe only what changed.
 - Prefer isolated worktrees for planner-approved parallel write lanes when the tool supports them.
 
@@ -102,6 +103,7 @@ Bring in **workflow-architect** when:
 - writing code that cannot be justified by any driver: user scenario, risk, epistemic uncertainty, design intent communication, or external obligation
 - delegating before restating the real problem
 - copying the same scope, assumptions, and risks into every artifact instead of using one canonical work packet
+- treating `~/.copilot/session-state/` or any other tool-local scratch location as if it were the canonical work packet
 - letting every specialist improvise its own handoff format
 - keeping handoffs only in chat instead of in-repo Markdown files
 - letting the implementer declare victory

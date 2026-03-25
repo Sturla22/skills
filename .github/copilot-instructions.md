@@ -8,6 +8,12 @@ Read `AGENTS.md` first for the operating model.
 - Use `.github/instructions/*.instructions.md` for path-specific guidance on tests, firmware, docs, and build-system files.
 - Use `.github/agents/*.agent.md` when a custom specialist is a better fit than the default chat thread.
 
+## Durable artifact rule
+
+- For non-trivial tasks, create or update the canonical work packet under `docs/work/<work-id>/`.
+- Use `brief.md` for shared understanding, `plan.md` for the execution plan, `status.md` for current owner and next step, and `evidence/` plus `handoffs/` for durable proof and transitions.
+- Treat `~/.copilot/session-state/` and similar tool-local files as scratch only. They may help the current session, but they do not satisfy the repo's durable work-packet requirement.
+
 ## Repo-wide defaults
 
 - Start non-trivial tasks by restating shared understanding, scope, non-goals, constraints, and acceptance criteria.

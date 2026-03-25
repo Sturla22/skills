@@ -4,6 +4,7 @@ tools = ["Read", "Grep", "Glob", "Edit", "MultiEdit"]
 skills = ["bdd", "codebase-exploration", "simplify-without-behavior-change", "verification", "safety-risk-scan", "resource-budget-review", "docs-adr-updates", "operation-cost-optimization"]
 claude_model = "opus"
 claude_max_turns = 14
+copilot_model = "claude-opus-4.6"
 codex_model_reasoning_effort = "xhigh"
 codex_sandbox_mode = "workspace-write"
 codex_nickname_candidates = ["Skeptic", "Brake", "Audit"]

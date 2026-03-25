@@ -475,14 +475,15 @@ def _generate_claude_agent(spec: dict) -> str:
 
 def _generate_github_agent(spec: dict) -> str:
     body = spec.get("github_body") or spec["body"]
-    return (
-        "---\n"
-        + f"name: {spec['name']}\n"
-        + f"description: {spec['description']}\n"
-        + "---\n"
-        + body.rstrip()
-        + "\n"
-    )
+    lines = [
+        "---",
+        f"name: {spec['name']}",
+        f"description: {spec['description']}",
+    ]
+    if spec.get("copilot_model"):
+        lines.append(f"model: {json.dumps(spec['copilot_model'])}")
+    lines.append("---")
+    return "\n".join(lines) + "\n" + body.rstrip() + "\n"
 
 
 def _generate_codex_agent(spec: dict) -> str:
@@ -1087,7 +1088,7 @@ def _first_run_lines(tool: str, mode: str) -> list[str]:
         prompts = {
             "codex": '9. Start Codex in the existing repo and use this first prompt:\n   `codex "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
             "claude": '9. Start Claude in the existing repo and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create."`',
-            "copilot": '9. In your IDE chat, use this first prompt:\n   `Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then propose the smallest adoption slice and the first durable artifact to create.`',
+            "copilot": '9. In your IDE chat, use this first prompt:\n   `Use product-owner to adapt this roles-and-skills workflow into an existing repository. First identify the conventions we must preserve, ask whether Jira ticket IDs should prefix commit messages and PR titles, then create or update the canonical work packet under docs/work/adoption-pilot/. Treat ~/.copilot/session-state/ as scratch only, not as the work packet.`',
         }
     else:
         common = [
@@ -1106,7 +1107,7 @@ def _first_run_lines(tool: str, mode: str) -> list[str]:
         prompts = {
             "codex": '6. Start Codex in the repo root and use this first prompt:\n   `codex "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
             "claude": '6. Start Claude in the repo root and use this first prompt:\n   `claude --permission-mode plan -p "Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create."`',
-            "copilot": '6. In your IDE chat, use this first prompt:\n   `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then tell me the next owner and the first durable artifact to create.`',
+            "copilot": '6. In your IDE chat, use this first prompt:\n   `Use product-owner to summarize the current instructions and available skills, ask whether Jira ticket IDs should prefix commit messages and PR titles, then create or update the canonical work packet under docs/work/onboarding-demo/. Treat ~/.copilot/session-state/ as scratch only, not as the work packet.`',
         }
 
     rendered = [line.format(tool=tool) for line in common]

@@ -51,6 +51,7 @@ For non-trivial work, keep one durable work packet under `docs/work/<work-id>/`.
 - `status.md` is the current owner / next-action snapshot. `product-owner` owns the overall truth; the current owner updates it when the state changes.
 - `evidence/` holds durable proof and investigation artifacts such as verification records, loop logs, hypotheses, and optimization scorecards.
 - `handoffs/` holds role-to-role handoffs as delta records that point back to the canonical packet files.
+- Tool-local scratch artifacts such as `~/.copilot/session-state/` may help the current session, but they are not canonical packet files and do not satisfy the durable brief / plan / status requirement.
 
 One fact should have one durable home. Handoffs and chat should reference canonical packet files instead of restating the full context.
 Store bounded process-improvement experiments separately under `docs/workflow-experiments/` so workflow changes can be tested without polluting product work packets.
@@ -270,6 +271,7 @@ Skills in this repo fall into three tiers:
 - Do not let internal specialists silently turn into user-facing decision makers.
 - Do not widen scope silently.
 - Do not claim success without evidence.
+- Do not let tool-local session files displace the canonical work packet under `docs/work/<work-id>/`.
 - Do not run an open-ended autonomous loop without explicit budget and stop states.
 - Do not run parallel write lanes in one shared dirty tree when isolated worktrees would make ownership and integration clearer.
 - Prefer simple CI configuration that delegates substantive setup and verification logic to repo-tracked scripts or Make targets under `tools/` instead of embedding long shell sequences in workflow files.
