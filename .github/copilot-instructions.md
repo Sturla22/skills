@@ -19,6 +19,8 @@ Read `AGENTS.md` first for the operating model.
 - Start non-trivial tasks by restating shared understanding, scope, non-goals, constraints, and acceptance criteria.
 - Prefer BDD-style behavior scenarios for acceptance criteria and tests.
 - Prefer the smallest effective diff.
+- Prefer narrow, staged patches over large all-at-once edits. Keep the active write surface small until the first slice is working.
+- If a patch attempt fails or looks too broad to apply safely, shrink the scope and land a smaller verified slice instead of retrying with an even larger patch.
 - Separate planning, implementation, verification, and review.
 - Prefer the test pyramid and simulation-first host checks before slower hardware-only checks when practical.
 - Do not claim a fix without evidence.
