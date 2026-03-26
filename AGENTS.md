@@ -123,6 +123,7 @@ Every handoff should include:
 - Use trailers only when relevant or required by project policy, for example `BREAKING CHANGE:`, `Co-authored-by:`, or `Signed-off-by:`.
 - Keep exploratory or broken intermediate states as local scratch only. Do not share them as if they were durable history.
 - Use amend or interactive rebase for local cleanup before sharing. After a commit is shared, prefer follow-up commits or explicitly coordinated history rewriting.
+- Before committing, check whether pre-commit hooks are installed (`.git/hooks/pre-commit` exists). If not, warn the user and suggest running `make install-pre-commit` before proceeding.
 
 ## Versioning and changelog
 
