@@ -67,6 +67,15 @@ Then:
 - rerun `python3 tools/cli.py check-work onboarding-demo`
 - start your tool and ask `product-owner` to summarize the current instructions and available skills
 
+Use a supported CLI for operations it already models instead of hand-editing underlying files. For work packets, the supported CLI is the repo CLI. In practice, that means:
+
+- scaffold packets with `python3 tools/cli.py new-work <work-id>` instead of hand-creating `brief.md`, `plan.md`, `status.md`, `handoffs/`, and `evidence/`
+- create numbered handoff stubs with `python3 tools/cli.py new-handoff <work-id> <from-role> <to-role>`
+- create numbered postmortems with `python3 tools/cli.py new-postmortem <work-id>`
+- scaffold scenario files with `python3 tools/cli.py new-scenarios --work <work-id>`
+- inspect or validate packets with `python3 tools/cli.py list-work`, `python3 tools/cli.py check-work <work-id>`, and `python3 tools/cli.py check-debt`
+- use direct file edits to fill in or update the task-specific content after scaffolding
+
 ## Troubleshooting
 
 - `python3 tools/cli.py doctor --tool <tool>` fails on the CLI binary: install that tool and make sure it is on `PATH`
@@ -211,6 +220,8 @@ python3 tools/cli.py first-run --tool codex --mode existing
 - keep lightweight continuous V&V status in `status.md` so verification, validation, and integration gaps stay visible during iteration
 - store bounded process-improvement experiments under `docs/workflow-experiments/`
 - keep work packets out of top-level architecture docs so the docs tree stays non-intrusive
+- use the supported packet CLI (`tools/cli.py`) for packet operations it already models: `new-work`, `new-handoff`, `new-postmortem`, `new-scenarios`, `check-work`, `check-debt`, and `list-work`
+- use `check-debt` to review tracked technical debt in `docs/tech-debt.md` before closing out larger changes
 
 ### Git commit rules
 

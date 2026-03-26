@@ -180,6 +180,35 @@ def cmd_new_handoff(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Subcommand: new-postmortem
+# ---------------------------------------------------------------------------
+
+def cmd_new_postmortem(args: argparse.Namespace) -> None:
+    work_id: str = args.work_id
+    packet_dir = DOCS_WORK_DIR / work_id
+
+    if not packet_dir.exists():
+        print(f"ERROR: work packet not found: {packet_dir}", file=sys.stderr)
+        sys.exit(1)
+
+    evidence_dir = packet_dir / "evidence"
+    if not evidence_dir.exists():
+        evidence_dir.mkdir(parents=True)
+
+    # Auto-number postmortems like handoffs
+    existing = [
+        p.name for p in evidence_dir.iterdir()
+        if p.is_file() and p.name.startswith("postmortem-") and p.name.endswith(".md")
+    ]
+    seq = len(existing) + 1
+    filename = f"postmortem-{seq:03d}.md"
+    dest = evidence_dir / filename
+
+    content = _read_template("postmortem-template.md")
+    _write_new_file(dest, content)
+
+
+# ---------------------------------------------------------------------------
 # Subcommand: check-work  (SC-004)
 # ---------------------------------------------------------------------------
 
@@ -884,6 +913,68 @@ def cmd_check_layout(args: argparse.Namespace) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Subcommand: check-debt
+# ---------------------------------------------------------------------------
+
+_TD_PATTERN = re.compile(r"\bTD-(\d{3})\b")
+_TD_STATUS_PATTERN = re.compile(r"\*\*Status\*\*:\s*(\w+)", re.IGNORECASE)
+
+
+def cmd_check_debt(args: argparse.Namespace) -> None:
+    root = Path(args.root).resolve() if args.root else ROOT
+    debt_file = root / "docs" / "tech-debt.md"
+
+    if not debt_file.exists():
+        print("No tech debt catalog found at docs/tech-debt.md.")
+        print("Result: 0 items tracked — OK")
+        sys.exit(0)
+
+    text = debt_file.read_text(encoding="utf-8")
+
+    # Split into sections by ## heading
+    sections = _extract_sections(text)
+
+    items: dict[str, str] = {}  # TD-NNN -> status
+    for heading, body in sections:
+        td_match = _TD_PATTERN.search(heading)
+        if not td_match:
+            # Also check body for TD-NNN
+            td_match = _TD_PATTERN.search(body)
+        if td_match:
+            td_id = td_match.group()
+            status_match = _TD_STATUS_PATTERN.search(body)
+            status = status_match.group(1).lower() if status_match else "open"
+            items[td_id] = status
+
+    open_items = [k for k, v in sorted(items.items()) if v == "open"]
+    resolved_items = [k for k, v in sorted(items.items()) if v == "resolved"]
+    deferred_items = [k for k, v in sorted(items.items()) if v == "deferred"]
+
+    if open_items:
+        print("OPEN DEBT:")
+        for td in open_items:
+            print(f"  {td}")
+        print()
+    if deferred_items:
+        print("DEFERRED DEBT:")
+        for td in deferred_items:
+            print(f"  {td}")
+        print()
+    if resolved_items:
+        print("RESOLVED DEBT:")
+        for td in resolved_items:
+            print(f"  {td}")
+        print()
+
+    total = len(items)
+    print(
+        f"Result: {total} item(s) tracked — "
+        f"{len(open_items)} open, {len(deferred_items)} deferred, "
+        f"{len(resolved_items)} resolved — OK"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Subcommand: doctor
 # ---------------------------------------------------------------------------
 
@@ -1172,6 +1263,14 @@ def build_parser() -> argparse.ArgumentParser:
                                 help="Destination role")
     p_new_handoff.set_defaults(func=cmd_new_handoff)
 
+    # new-postmortem
+    p_new_postmortem = sub.add_parser(
+        "new-postmortem",
+        help="Create a postmortem record in a work packet's evidence directory",
+    )
+    p_new_postmortem.add_argument("work_id", metavar="<work-id>", help="Work packet identifier")
+    p_new_postmortem.set_defaults(func=cmd_new_postmortem)
+
     # check-work
     p_check_work = sub.add_parser(
         "check-work",
@@ -1270,6 +1369,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="Repo root to check (default: repo root of this script)",
     )
     p_check_layout.set_defaults(func=cmd_check_layout)
+
+    # check-debt
+    p_check_debt = sub.add_parser(
+        "check-debt",
+        help="Report technical debt items tracked in docs/tech-debt.md",
+    )
+    p_check_debt.add_argument(
+        "--root",
+        metavar="<dir>",
+        default=None,
+        help="Repo root to resolve paths from (default: repo root of this script)",
+    )
+    p_check_debt.set_defaults(func=cmd_check_debt)
 
     # doctor
     p_doctor = sub.add_parser(
