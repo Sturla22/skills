@@ -30,6 +30,7 @@ Treat integration and V&V as continuous signals inside each iteration, not as a 
 - Store role-to-role handoffs under `docs/work/<work-id>/handoffs/`.
 - Store bounded process-improvement experiments under `docs/workflow-experiments/`.
 - Treat tool-local scratch artifacts such as `~/.copilot/session-state/` as session-local notes only; they do not replace `brief.md`, `plan.md`, `status.md`, or durable evidence in the work packet.
+- When a supported CLI already models an operation, prefer that CLI over direct file creation or manual inspection. For work packets, the supported CLI is `python3 tools/cli.py`: use `new-work`, `new-handoff`, `new-scenarios`, `check-work`, and `list-work`, then edit the scaffolded files to add task-specific content.
 - Keep handoffs delta-focused: point to canonical packet files and describe only what changed.
 - Prefer isolated worktrees for planner-approved parallel write lanes when the tool supports them.
 
@@ -110,6 +111,7 @@ Bring in **workflow-architect** when:
 - delegating before restating the real problem
 - copying the same scope, assumptions, and risks into every artifact instead of using one canonical work packet
 - treating `~/.copilot/session-state/` or any other tool-local scratch location as if it were the canonical work packet
+- hand-creating work-packet scaffolding or numbered handoff files when the supported CLI (`tools/cli.py`) already provides the operation
 - letting every specialist improvise its own handoff format
 - keeping handoffs only in chat instead of in-repo Markdown files
 - letting the implementer declare victory
@@ -124,6 +126,7 @@ Bring in **workflow-architect** when:
 - creating a new role for a one-off problem that a prompt, template, or skill would solve
 - changing multiple workflow surfaces at once with no way to tell what actually helped
 - turning a bounded autonomy loop into an unbounded retry habit on ambiguous work
+- committing secrets, credentials, API keys, or private keys to source control — use environment variables, CI secret stores, or hardware key storage instead
 
 ## Context engineering
 
@@ -134,6 +137,23 @@ This repo practices context engineering — the system automatically provides th
 3. **Work packets** (`docs/work/<id>/`) — durable task context that survives session boundaries; brief, plan, status, evidence, and handoffs in one place
 
 The goal is that the right context is always available without the engineer having to remember to provide it. Skills are particularly valuable when the AI has little training data on your domain, or when you want work done a very specific way.
+
+## Architectural fitness functions
+
+Automated checks that protect architectural properties from silent drift are fitness functions. This repo already includes several:
+
+- `tools/cli.py check-layout` — enforces Pitchfork directory structure
+- `tools/cli.py check-risks` — verifies risk catalog mitigations are covered
+- `tools/cli.py check-coverage` — verifies scenario-to-test traceability
+
+When adding new architectural constraints, prefer encoding them as automated checks (Make targets, CI steps, or CLI subcommands) rather than relying on review memory alone. Name the property being protected and the failure signal.
+
+## Technical debt tracking
+
+- Identify debt explicitly: name it, classify it (reckless vs. prudent, deliberate vs. inadvertent), and record it in the relevant work packet or in `docs/tech-debt.md` for cross-cutting items.
+- Prioritize debt by coupling: debt in code you are actively changing costs more than debt in stable, rarely-touched code.
+- Prefer paying debt as tidy-first prep work before feature changes in the same area, rather than scheduling standalone "debt sprints."
+- Do not let debt live only in people's heads — if it matters enough to mention, it matters enough to write down.
 
 ## Agent failure notes
 

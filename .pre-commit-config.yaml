@@ -16,3 +16,8 @@ repos:
         pass_filenames: false
         files: >-
           ^(extras/cmake-nrf52840-template/|tools/ci/check-static-analysis\.py|Makefile|\.pre-commit-config\.yaml)$
+      - id: detect-secrets
+        name: Detect secrets
+        entry: python3 tools/dev/detect_secrets.py
+        language: system
+        types: [text]

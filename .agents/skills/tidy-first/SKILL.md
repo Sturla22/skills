@@ -97,6 +97,10 @@ After verification, classify issues as:
 - If a cleanup requires behavior change, stop and switch to feature/refactor workflow.
 - If you have been tidying for more than one hour before the behavioral change, you have over-scoped; do only what's needed.
 
+## Relation to technical debt tracking
+
+Tidy-first is the preferred mechanism for paying down debt incrementally. When a tidy pass reveals debt too large for the current scope, record it in the relevant work packet or in `docs/tech-debt.md` instead of expanding the current change.
+
 ## Output Contract
 
 Report:

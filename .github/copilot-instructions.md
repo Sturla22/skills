@@ -13,10 +13,12 @@ Read `AGENTS.md` first for the operating model.
 - For non-trivial tasks, create or update the canonical work packet under `docs/work/<work-id>/`.
 - Use `brief.md` for shared understanding, `plan.md` for the execution plan, `status.md` for current owner and next step, and `evidence/` plus `handoffs/` for durable proof and transitions.
 - Treat `~/.copilot/session-state/` and similar tool-local files as scratch only. They may help the current session, but they do not satisfy the repo's durable work-packet requirement.
+- When a supported CLI already provides the operation, use that CLI instead of hand-creating workflow artifacts. For work packets and related files, the supported CLI is `python3 tools/cli.py`: prefer `new-work`, `new-handoff`, `new-scenarios`, `check-work`, and `list-work`, then edit the resulting files to fill in the task-specific content.
 
 ## Repo-wide defaults
 
 - Start non-trivial tasks by restating shared understanding, scope, non-goals, constraints, and acceptance criteria.
+- Prefer supported CLI commands over direct file edits when the CLI already provides the operation.
 - Prefer BDD-style behavior scenarios for acceptance criteria and tests.
 - Prefer the smallest effective diff.
 - Prefer narrow, staged patches over large all-at-once edits. Keep the active write surface small until the first slice is working.

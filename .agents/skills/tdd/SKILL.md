@@ -99,6 +99,19 @@ Before moving to the next test, confirm:
 - **Testing Internals** — asserting on private state rather than observable behavior.
 - **No Refactor Phase** — skipping the third step produces messy internals even with full coverage.
 
+## Property-based testing
+
+Use property-based (generative) testing alongside example-based TDD when the domain has clear invariants:
+
+- **State machines** — generate random event sequences; assert that illegal transitions never occur and invariants hold after every step.
+- **Parsers and serializers** — generate random valid inputs; assert that `decode(encode(x)) == x` (round-trip property).
+- **Protocol handlers** — generate randomized message sequences; assert ordering, framing, and error-handling contracts.
+- **Numeric algorithms** — assert mathematical properties (commutativity, bounds, monotonicity) over many random inputs.
+
+Property tests complement example-based tests — they catch edge cases humans miss but are harder to debug when they fail. When a property test finds a failure, shrink it to a minimal example and pin it as a named regression test.
+
+Frameworks: Hypothesis (Python), RapidCheck (C++), proptest (Rust), fast-check (JS/TS).
+
 ## Embedded-specific
 - All hardware dependencies must be behind a seam (HAL interface) before TDD is possible at unit level.
 - Use `simulation-harness-first` to introduce seams if they don't exist yet.

@@ -52,6 +52,7 @@ For non-trivial work, keep one durable work packet under `docs/work/<work-id>/`.
 - `evidence/` holds durable proof and investigation artifacts such as verification records, loop logs, hypotheses, and optimization scorecards.
 - `handoffs/` holds role-to-role handoffs as delta records that point back to the canonical packet files.
 - Tool-local scratch artifacts such as `~/.copilot/session-state/` may help the current session, but they are not canonical packet files and do not satisfy the durable brief / plan / status requirement.
+- When a supported CLI already provides the operation, prefer that CLI over hand-creating or hand-auditing workflow artifacts. For work packets and related files, the supported CLI is `python3 tools/cli.py`: use `new-work`, `new-handoff`, `new-scenarios`, `check-work`, and `list-work`, then edit the resulting files to fill in task-specific content.
 
 One fact should have one durable home. Handoffs and chat should reference canonical packet files instead of restating the full context.
 Store bounded process-improvement experiments separately under `docs/workflow-experiments/` so workflow changes can be tested without polluting product work packets.
@@ -175,15 +176,16 @@ Skills in this repo fall into three tiers:
 3. `planning`
 4. `requirements-and-traceability`
 5. `risk-catalog` when safety- or reliability-sensitive requirements exist
-6. `bdd`
-7. `trade-study-and-decision-analysis` when multiple credible options exist
-8. `interface-contract-design`
-9. `simulation-harness-first`
-10. `tdd`
-11. `validation-planning` when stakeholder fit needs separate evidence
-12. `verification`
-13. `resource-budget-review`
-14. `docs-adr-updates`
+6. `security-threat-modeling` when the change adds connectivity, external interfaces, authentication, or OTA paths
+7. `bdd`
+8. `trade-study-and-decision-analysis` when multiple credible options exist
+9. `interface-contract-design`
+10. `simulation-harness-first`
+11. `tdd`
+12. `validation-planning` when stakeholder fit needs separate evidence
+13. `verification`
+14. `resource-budget-review`
+15. `docs-adr-updates`
 
 ### Product bug work
 1. `codebase-exploration`
@@ -196,6 +198,7 @@ Skills in this repo fall into three tiers:
 8. `tdd`
 9. `verification`
 10. `fault-injection-and-recovery`
+11. `postmortem` when the bug caused a production incident or escaped to the field
 
 ### Product performance / endurance optimization
 1. `codebase-exploration`
@@ -230,12 +233,13 @@ Skills in this repo fall into three tiers:
 ### System definition / concept trade
 1. `requirements-and-traceability`
 2. `risk-catalog` when safety- or reliability-sensitive requirements exist
-3. `research` when the work references an external component, standard, or library not already characterized in the codebase
-4. `planning`
-5. `trade-study-and-decision-analysis`
-6. `interface-contract-design`
-7. `validation-planning`
-8. `docs-adr-updates`
+3. `security-threat-modeling` when the system has external interfaces, connectivity, or stored secrets
+4. `research` when the work references an external component, standard, or library not already characterized in the codebase
+5. `planning`
+6. `trade-study-and-decision-analysis`
+7. `interface-contract-design`
+8. `validation-planning`
+9. `docs-adr-updates`
 
 ### Workflow evolution
 1. `codebase-exploration`
@@ -262,8 +266,9 @@ Skills in this repo fall into three tiers:
 5. `hardware-abstraction`
 6. `verification`
 7. `safety-risk-scan`
-8. `risk-catalog` to promote high-severity migration findings to the permanent catalog
-9. `resource-budget-review`
+8. `security-threat-modeling` when the migration changes trust boundaries, boot chain, or external interfaces
+9. `risk-catalog` to promote high-severity migration findings to the permanent catalog
+10. `resource-budget-review`
 
 ## Behavioral defaults
 
@@ -273,6 +278,7 @@ Skills in this repo fall into three tiers:
 - Do not widen scope silently.
 - Do not claim success without evidence.
 - Do not let tool-local session files displace the canonical work packet under `docs/work/<work-id>/`.
+- Do not hand-create work-packet scaffolding, numbered handoff files, or scenario stubs when the supported CLI already provides that operation.
 - Do not run an open-ended autonomous loop without explicit budget and stop states.
 - Do not run parallel write lanes in one shared dirty tree when isolated worktrees would make ownership and integration clearer.
 - Prefer simple CI configuration that delegates substantive setup and verification logic to repo-tracked scripts or Make targets under `tools/` instead of embedding long shell sequences in workflow files.

@@ -11,3 +11,5 @@ applyTo: "**/CMakeLists.txt,**/*.cmake,**/west.yml,**/module.yml,**/board*.yml,*
 - Document why non-obvious linker, toolchain, or board settings exist.
 - Prefer CI workflows that call repo-tracked scripts or Make targets under `tools/` instead of embedding substantial shell logic directly in workflow YAML.
 - Prefer Python over Bash for repo-owned build and CI automation once the logic grows beyond a short shell wrapper.
+- When the project has vendored or submodule dependencies in `external/`, scan them for known vulnerabilities as part of CI. Prefer automated tooling (e.g., `osv-scanner`, Dependabot, or Trivy) over manual audit.
+- For release builds, generate an SBOM (Software Bill of Materials) in CycloneDX or SPDX format. Track it alongside the release artifact.

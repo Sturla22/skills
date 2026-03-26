@@ -41,6 +41,9 @@ Verify failure handling deliberately instead of assuming it is correct.
 - watchdog starvation (code hangs but timer interrupt still fires)
 - stack overflow (write past canary)
 - invalid inputs / out-of-range sensor values
+- sleep/wake transition failure (peripheral not re-initialized, clock not restored)
+- brownout or supply droop mid-operation
+- battery exhaustion or charging-state edge cases
 
 ## Watchdog-specific patterns to test
 - **"Kick on timer" anti-pattern** — deadlock the application while leaving the timer alive; watchdog must still fire.
