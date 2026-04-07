@@ -16,6 +16,20 @@ repos:
         pass_filenames: false
         files: >-
           ^(extras/cmake-nrf52840-template/|tools/ci/check-static-analysis\.py|Makefile|\.pre-commit-config\.yaml)$
+      - id: check-layout
+        name: Check layout
+        entry: python3 tools/cli.py check-layout
+        language: system
+        pass_filenames: false
+        files: >-
+          ^(src/|include/|libs/|tests/|extras/|data/|tools/|docs/|external/|Makefile|\.pre-commit-config\.yaml)$
+      - id: sync-check
+        name: Check generated surfaces
+        entry: python3 tools/cli.py sync --check
+        language: system
+        pass_filenames: false
+        files: >-
+          ^(\.agents/|AGENTS\.md|\.github/copilot-instructions\.md|\.github/agents/|\.claude/|\.codex/)
       - id: detect-secrets
         name: Detect secrets
         entry: python3 tools/dev/detect_secrets.py
