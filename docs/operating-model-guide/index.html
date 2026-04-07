@@ -1,0 +1,1793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operating Model Guide — Agent Skills Starter</title>
+<style>
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d1117; --bg-card: #161b22; --bg-hover: #1c2129;
+  --border: #30363d; --border-accent: #58a6ff;
+  --text: #c9d1d9; --text-muted: #8b949e; --text-heading: #e6edf3;
+  --accent: #58a6ff; --green: #3fb950; --red: #f85149; --orange: #d29922; --purple: #bc8cff;
+  --radius: 8px; --radius-lg: 12px;
+  --max-w: 1100px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3, h4 { color: var(--text-heading); line-height: 1.3; }
+code { font-family: var(--mono); background: rgba(110,118,129,0.15); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.88em; }
+pre { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1em 1.2em; overflow-x: auto; font-size: 0.85em; }
+pre code { background: none; padding: 0; }
+
+/* ── Layout ───────────────────────────────────────────────── */
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+section:last-of-type { border-bottom: none; }
+.section-label { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
+.section-title { font-size: 2rem; margin-bottom: 1rem; }
+.section-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; max-width: 700px; }
+
+/* ── Navigation ───────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,17,23,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); padding: 0;
+}
+nav .container { display: flex; align-items: center; gap: 1rem; height: 48px; overflow-x: auto; }
+nav a {
+  color: var(--text-muted); font-size: 0.8rem; white-space: nowrap;
+  padding: 0.3em 0.6em; border-radius: 4px; transition: color 0.15s, background 0.15s;
+}
+nav a:hover, nav a.active { color: var(--text-heading); background: rgba(110,118,129,0.15); text-decoration: none; }
+nav .nav-brand { color: var(--accent); font-weight: 600; font-size: 0.85rem; margin-right: auto; }
+
+/* ── Hero ─────────────────────────────────────────────────── */
+#hero { padding: 6rem 0 4rem; text-align: center; border-bottom: 1px solid var(--border); }
+#hero h1 { font-size: 2.8rem; margin-bottom: 0.6rem; }
+#hero .subtitle { color: var(--text-muted); font-size: 1.25rem; margin-bottom: 2.5rem; max-width: 650px; margin-left: auto; margin-right: auto; }
+.hero-flow {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  flex-wrap: wrap; margin: 2rem auto; max-width: 700px;
+}
+.hero-flow .step {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 0.6em 1.2em; font-size: 0.95rem; white-space: nowrap;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.hero-flow .step:hover { border-color: var(--accent); transform: translateY(-2px); }
+.hero-flow .arrow { color: var(--text-muted); font-size: 1.2rem; }
+.hero-thesis {
+  background: rgba(88,166,255,0.06); border: 1px solid rgba(88,166,255,0.2);
+  border-radius: var(--radius-lg); padding: 1.2em 1.8em; margin: 2.5rem auto 0;
+  max-width: 780px; font-size: 1rem; color: var(--text);
+}
+
+/* ── Cards ────────────────────────────────────────────────── */
+.card-grid { display: grid; gap: 1.2rem; align-items: start; }
+.card-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.card-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 1.5em; transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border-accent); }
+.card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+.card p { color: var(--text-muted); font-size: 0.92rem; }
+
+/* ── Disclosure (progressive drill-down) ──────────────────── */
+details { margin-bottom: 0.8rem; }
+details summary {
+  cursor: pointer; list-style: none; display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.8em 1em; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); font-weight: 500; color: var(--text-heading);
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+details summary:hover { background: var(--bg-hover); border-color: var(--border-accent); }
+details summary::-webkit-details-marker { display: none; }
+details summary::before {
+  content: "▸"; font-size: 0.85em; color: var(--accent); transition: transform 0.2s; flex-shrink: 0;
+}
+details[open] summary::before { transform: rotate(90deg); }
+details[open] summary { border-radius: var(--radius) var(--radius) 0 0; border-bottom-color: transparent; }
+.details-body {
+  padding: 1.2em 1.2em 1.2em 2.4em; background: var(--bg-card);
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius); font-size: 0.93rem;
+}
+.details-body ul { margin: 0.5em 0; padding-left: 1.2em; }
+.details-body li { margin-bottom: 0.35em; color: var(--text-muted); }
+.details-body li strong { color: var(--text); }
+.details-body p { margin-bottom: 0.6em; }
+
+/* ── Role cards ───────────────────────────────────────────── */
+.role-section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.8rem; font-weight: 600; }
+.role-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden; transition: border-color 0.2s;
+}
+.role-card:hover { border-color: var(--border-accent); }
+.role-card summary {
+  padding: 1em 1.2em; display: flex; align-items: center; gap: 0.8rem;
+  cursor: pointer; list-style: none; border: none; background: none;
+}
+.role-card summary::-webkit-details-marker { display: none; }
+.role-card summary::after {
+  content: "▾"; margin-left: auto; color: var(--text-muted); font-size: 0.9em; transition: transform 0.2s;
+}
+.role-card[open] summary::after { transform: rotate(180deg); }
+.role-icon { font-size: 1.4rem; }
+.role-name { font-weight: 600; color: var(--text-heading); font-size: 1rem; }
+.role-tagline { color: var(--text-muted); font-size: 0.82rem; }
+.role-detail {
+  padding: 0 1.2em 1.2em 3.2em; font-size: 0.88rem; color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+.role-detail h4 { color: var(--text); font-size: 0.85rem; margin: 1em 0 0.4em; text-transform: uppercase; letter-spacing: 0.05em; }
+.role-detail ul { padding-left: 1em; }
+.role-detail li { margin-bottom: 0.3em; }
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.tab-bar {
+  display: flex; gap: 0; border-bottom: 1px solid var(--border);
+  overflow-x: auto; margin-bottom: 1.5rem;
+}
+.tab-btn {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--text-muted); padding: 0.7em 1.2em; font-size: 0.85rem; font-family: var(--font);
+  cursor: pointer; white-space: nowrap; transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn:hover { color: var(--text-heading); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Skill grid ───────────────────────────────────────────── */
+.skill-group-title {
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--accent); margin: 1.8rem 0 0.8rem; font-weight: 600;
+}
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.6rem; align-items: start; }
+.skill-chip {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: border-color 0.15s;
+}
+.skill-chip:hover { border-color: var(--accent); }
+.skill-chip summary {
+  padding: 0.6em 0.9em; cursor: pointer; list-style: none;
+  display: flex; align-items: baseline; gap: 0.5rem;
+}
+.skill-chip summary::-webkit-details-marker { display: none; }
+.skill-chip summary::after {
+  content: "▾"; margin-left: auto; color: var(--text-muted); font-size: 0.75em;
+  transition: transform 0.2s; flex-shrink: 0;
+}
+.skill-chip[open] summary::after { transform: rotate(180deg); }
+.skill-chip .skill-name { font-weight: 600; color: var(--text-heading); font-size: 0.82rem; }
+.skill-chip .skill-desc { color: var(--text-muted); font-size: 0.78rem; }
+.skill-detail {
+  padding: 0.5em 0.9em 0.8em; font-size: 0.8rem; color: var(--text-muted);
+  border-top: 1px solid var(--border); background: rgba(110,118,129,0.04);
+}
+.skill-detail p { margin-bottom: 0.4em; }
+.skill-detail strong { color: var(--text); }
+.skill-detail ul { padding-left: 1.1em; margin: 0.3em 0; }
+.skill-detail li { margin-bottom: 0.25em; }
+
+/* ── Two-column do/don't ──────────────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+.do-col, .dont-col { border-radius: var(--radius-lg); padding: 1.5em; }
+.do-col { background: rgba(63,185,80,0.04); border: 1px solid rgba(63,185,80,0.2); }
+.dont-col { background: rgba(248,81,73,0.04); border: 1px solid rgba(248,81,73,0.2); }
+.do-col h3 { color: var(--green); }
+.dont-col h3 { color: var(--red); }
+.do-col li, .dont-col li { font-size: 0.9rem; margin-bottom: 0.4em; color: var(--text-muted); }
+
+/* ── Quick-start steps ────────────────────────────────────── */
+.steps { counter-reset: step; }
+.step-item {
+  display: flex; gap: 1.2rem; margin-bottom: 1.5rem; align-items: flex-start;
+}
+.step-num {
+  counter-increment: step; flex-shrink: 0;
+  width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  background: rgba(88,166,255,0.12); border: 1px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: var(--accent); font-size: 0.9rem;
+}
+.step-num::before { content: counter(step); }
+.step-body h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+.step-body p { color: var(--text-muted); font-size: 0.9rem; }
+
+/* ── Ladder / tier visual ─────────────────────────────────── */
+.ladder { display: flex; flex-direction: column; gap: 0; max-width: 600px; margin: 1.5rem auto; }
+.ladder-rung {
+  display: flex; align-items: center; gap: 1rem; padding: 0.8em 1.2em;
+  border: 1px solid var(--border); background: var(--bg-card);
+  font-size: 0.9rem;
+}
+.ladder-rung:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+.ladder-rung:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+.ladder-rung + .ladder-rung { border-top: none; }
+.ladder-rung.highlight { background: rgba(88,166,255,0.06); border-color: var(--accent); }
+.ladder-level { font-weight: 700; color: var(--accent); min-width: 2.5rem; text-align: center; }
+.ladder-desc { flex: 1; }
+.ladder-tool { color: var(--text-muted); font-size: 0.8rem; }
+
+/* ── Mermaid ──────────────────────────────────────────────── */
+.mermaid { margin: 2rem 0; text-align: center; }
+.mermaid svg { max-width: 100%; }
+
+/* ── Footer ───────────────────────────────────────────────── */
+footer { padding: 2rem 0; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+
+/* ── Utility ──────────────────────────────────────────────── */
+.badge {
+  display: inline-block; font-size: 0.7rem; padding: 0.15em 0.5em;
+  border-radius: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.badge-core { background: rgba(88,166,255,0.15); color: var(--accent); }
+.badge-optional { background: rgba(188,140,255,0.15); color: var(--purple); }
+.badge-green { background: rgba(63,185,80,0.15); color: var(--green); }
+.mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mt-3 { margin-top: 1.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); }
+.text-sm { font-size: 0.85rem; }
+
+@media (max-width: 600px) {
+  #hero h1 { font-size: 2rem; }
+  .section-title { font-size: 1.5rem; }
+  .hero-flow { gap: 0.3rem; }
+  .card-grid.cols-3 { grid-template-columns: 1fr; }
+  .skill-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════════════════════════ -->
+<nav>
+  <div class="container">
+    <span class="nav-brand">Operating Model</span>
+    <a href="#hero">Home</a>
+    <a href="#shift">The Shift</a>
+    <a href="#concepts">Concepts</a>
+    <a href="#roles">Roles</a>
+    <a href="#flow">Workflow</a>
+    <a href="#skills">Skills</a>
+    <a href="#sequences">Recipes</a>
+    <a href="#antipatterns">Do / Don't</a>
+    <a href="#start">Get Started</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     1. HERO
+     ════════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <h1>The Operating Model</h1>
+    <p class="subtitle">From chat to agent systems — an interactive introduction</p>
+
+    <div class="hero-flow">
+      <span class="step">🔤 Prompt</span>
+      <span class="arrow">→</span>
+      <span class="step">⚡ Skill</span>
+      <span class="arrow">→</span>
+      <span class="step">🤖 Agent</span>
+      <span class="arrow">→</span>
+      <span class="step">🏗️ Agent System</span>
+    </div>
+
+    <div class="hero-thesis">
+      This repo uses a <strong>roles-over-skills</strong> model where specialized agents collaborate through
+      explicit handoffs, durable work packets, and structured skills.
+      The goal is that the right context is always available without the engineer having to remember to provide it.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     2. THE SHIFT
+     ════════════════════════════════════════════════════════════ -->
+<section id="shift">
+  <div class="container">
+    <p class="section-label">Why This Exists</p>
+    <h2 class="section-title">The Shift: From Chat to Agent Systems</h2>
+    <p class="section-subtitle">
+      Most developers start with AI as a chat interface — ask a question, get an answer.
+      That works for small tasks, but it hits a ceiling fast.
+    </p>
+
+    <div class="card-grid cols-2 mb-2">
+      <div class="card">
+        <h3>💬 Chat-Based Agents</h3>
+        <p>Limited memory between sessions. No role boundaries. No structured accountability for claims.
+        Context resets every conversation. The human carries most state in their head.</p>
+        <p class="mt-1 text-muted text-sm">Good for: quick Q&A, small edits, learning a new API.</p>
+      </div>
+      <div class="card">
+        <h3>🏗️ Agent Systems</h3>
+        <p>Persistent context in work packets. Specialized roles with explicit handoffs.
+        Evidence-based verification. Skills encode how work gets done — not just what gets done.</p>
+        <p class="mt-1 text-muted text-sm">Good for: production code, multi-step tasks, team workflows.</p>
+      </div>
+    </div>
+
+    <details>
+      <summary>Context Engineering over Prompt Engineering</summary>
+      <div class="details-body">
+        <p><strong>Prompt engineering</strong> is about crafting a single input for one interaction — choosing words carefully to get a better response. It's stateless and per-request.</p>
+        <p><strong>Context engineering</strong> is about designing the entire information environment that the AI operates in. It includes three layers in this repo:</p>
+        <ul>
+          <li><strong>Project rules</strong> (<code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>) — loaded automatically by each tool; encode architecture rules, coding constraints, testing requirements</li>
+          <li><strong>Skills</strong> (<code>.agents/skills/</code>) — reusable structured capabilities that encode <em>how</em> to do specific kinds of work; the AI activates them when relevant</li>
+          <li><strong>Work packets</strong> (<code>docs/work/&lt;id&gt;/</code>) — durable task context that survives session boundaries; brief, plan, status, evidence, and handoffs in one place</li>
+        </ul>
+        <p>The shift: instead of typing the perfect prompt every time, you build a system where the right context is <em>always</em> available.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>The Autonomy Ladder</summary>
+      <div class="details-body">
+        <p>Not all AI usage is the same. Think of it as a ladder of increasing autonomy:</p>
+        <div class="ladder">
+          <div class="ladder-rung">
+            <span class="ladder-level">1–2</span>
+            <span class="ladder-desc">Autocomplete &amp; chat Q&amp;A</span>
+            <span class="ladder-tool">Copilot inline, ChatGPT</span>
+          </div>
+          <div class="ladder-rung highlight">
+            <span class="ladder-level">3</span>
+            <span class="ladder-desc"><strong>Multi-file edits, runs commands</strong></span>
+            <span class="ladder-tool">Copilot Agent Mode, Cursor, Claude Code</span>
+          </div>
+          <div class="ladder-rung highlight">
+            <span class="ladder-level">4</span>
+            <span class="ladder-desc"><strong>Agent loop: plan → code → test → fix</strong></span>
+            <span class="ladder-tool">Claude Code + skills, Copilot + custom agents</span>
+          </div>
+          <div class="ladder-rung">
+            <span class="ladder-level">5+</span>
+            <span class="ladder-desc">Agents do primary work, humans review</span>
+            <span class="ladder-tool">Agent systems, orchestration</span>
+          </div>
+        </div>
+        <p>This repo operates primarily at <strong>Level 3–4</strong>, where the practical value is right now. The operating model is the framework that makes Levels 4–5 reliable.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Core Thesis: Designing systems that produce code</summary>
+      <div class="details-body">
+        <p>We are moving from <strong>writing code</strong> line by line to <strong>designing systems that produce code</strong>.</p>
+        <p>For engineers, this doesn't mean we stop understanding the domain. It means our job evolves. We become <em>architects of process</em>, not just authors of functions.</p>
+        <p>The operating model is that process architecture — it defines who does what, how context flows, and how claims are verified.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     3. CORE CONCEPTS
+     ════════════════════════════════════════════════════════════ -->
+<section id="concepts">
+  <div class="container">
+    <p class="section-label">Foundations</p>
+    <h2 class="section-title">Core Concepts</h2>
+    <p class="section-subtitle">
+      Three ideas underpin the entire operating model. Expand each to learn more.
+    </p>
+
+    <div class="card-grid" style="grid-template-columns: 1fr;">
+
+      <!-- Roles Over Skills -->
+      <details>
+        <summary>
+          <span>🎭</span>
+          <span><strong>Roles Over Skills</strong> — agents make better decisions when focused on a single objective</span>
+        </summary>
+        <div class="details-body">
+          <p>A "skill" is a reusable capability — like TDD, debugging, or code review. A "role" is an agent with a specific <em>objective</em> and <em>accountability</em>.</p>
+          <p>The key insight: <strong>role boundaries prevent conflicting objectives</strong>. A planner wants completeness; a developer wants simplicity. These pull in opposite directions. Combining them in one session leads to compromised work.</p>
+          <p>The <strong>handoff</strong> is the explicit moment where objectives change. It's a Markdown file with context, rationale, and done-when criteria — not a vague "take a look at this."</p>
+
+          <h4 style="color: var(--text-heading); margin: 1rem 0 0.5rem;">How it differs from one-agent-does-everything:</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <p><strong style="color: var(--red);">❌ Single agent</strong></p>
+              <ul>
+                <li>Plans and implements simultaneously</li>
+                <li>Judges its own work</li>
+                <li>Loses context across sessions</li>
+                <li>No accountability trail</li>
+              </ul>
+            </div>
+            <div>
+              <p><strong style="color: var(--green);">✅ Roles-over-skills</strong></p>
+              <ul>
+                <li>Product-owner establishes shared understanding</li>
+                <li>Planner decomposes; developer implements</li>
+                <li>Verifier checks independently</li>
+                <li>Handoffs create an audit trail</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Context Engineering -->
+      <details>
+        <summary>
+          <span>🧠</span>
+          <span><strong>Context Engineering</strong> — the right context is always available without the engineer remembering to provide it</span>
+        </summary>
+        <div class="details-body">
+          <p>Every AI session in this repo automatically receives context through three layers:</p>
+
+          <div class="card-grid cols-3 mt-2">
+            <div class="card">
+              <h3>📋 Project Rules</h3>
+              <p>Files like <code>CLAUDE.md</code>, <code>AGENTS.md</code>, and <code>.github/copilot-instructions.md</code> are loaded automatically by each tool. They encode architecture rules, coding constraints, testing requirements, and build commands.</p>
+            </div>
+            <div class="card">
+              <h3>⚡ Skills</h3>
+              <p>Structured capabilities under <code>.agents/skills/</code> encode <em>how</em> to do specific kinds of work. The AI activates them when relevant — like TDD for implementation or hypothesis-driven debugging for bugs.</p>
+            </div>
+            <div class="card">
+              <h3>📦 Work Packets</h3>
+              <p>Durable task context under <code>docs/work/&lt;id&gt;/</code> survives session boundaries. Brief, plan, status, evidence, and handoffs — all in one place, readable by any agent.</p>
+            </div>
+          </div>
+
+          <p class="mt-2">Skills are particularly valuable when the AI has little training data on your domain, or when you want work done a very specific way.</p>
+        </div>
+      </details>
+
+      <!-- Durable Work Packets -->
+      <details>
+        <summary>
+          <span>📁</span>
+          <span><strong>Durable Work Packets</strong> — one fact has one durable home</span>
+        </summary>
+        <div class="details-body">
+          <p>Chat history is ephemeral. Work packets are not. For every non-trivial task, a packet lives at <code>docs/work/&lt;work-id&gt;/</code> containing:</p>
+          <ul>
+            <li><strong><code>brief.md</code></strong> — the canonical shared-understanding record (product-owner owns it)</li>
+            <li><strong><code>plan.md</code></strong> — the canonical execution plan (planner owns it)</li>
+            <li><strong><code>status.md</code></strong> — current owner and next-action snapshot</li>
+            <li><strong><code>evidence/</code></strong> — durable proof: verification records, loop logs, hypotheses, optimization scorecards</li>
+            <li><strong><code>handoffs/</code></strong> — role-to-role transition records that point back to canonical files</li>
+          </ul>
+          <p class="mt-1">The rule: <strong>one fact should have one durable home.</strong> Handoffs and chat reference canonical files instead of restating context. Tool-local scratch (like session state files) is temporary — it does not replace the work packet.</p>
+          <p>The repo CLI (<code>python3 tools/cli.py new-work &lt;id&gt;</code>) scaffolds this structure automatically.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     4. ROLES
+     ════════════════════════════════════════════════════════════ -->
+<section id="roles">
+  <div class="container">
+    <p class="section-label">Who Does What</p>
+    <h2 class="section-title">The Roles</h2>
+    <p class="section-subtitle">
+      Twelve specialized roles, each with a single objective. Six form the core flow; seven are optional specialists that join when their trigger conditions are met. Not every role participates in every task.
+    </p>
+
+    <!-- Core Roles -->
+    <p class="role-section-label">Core Flow Roles <span class="badge badge-core">Default Flow</span></p>
+    <div class="card-grid cols-2 mb-2">
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🎯</span>
+          <div>
+            <div class="role-name">product-owner</div>
+            <div class="role-tagline">Human-facing control thread &amp; delegation</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <p>The default entry point for every non-trivial task. Establishes shared understanding with the requester before delegating.</p>
+          <h4>When active</h4>
+          <ul>
+            <li>Always — this is the default human-facing control thread</li>
+            <li>Task is non-trivial, ambiguous, multi-step, or involves specialists</li>
+          </ul>
+          <h4>Shared-understanding contract (align before delegating)</h4>
+          <ol>
+            <li>Problem / desired outcome</li>
+            <li>Scope</li>
+            <li>Non-goals</li>
+            <li>Constraints</li>
+            <li>Acceptance criteria</li>
+            <li>Delivery class: product development or non-productized tool</li>
+            <li>Assumptions / open questions</li>
+            <li>Code driver: user scenario, risk, spike, design intent, or external obligation</li>
+          </ol>
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Restate the request in outcome terms</li>
+            <li>Align on all eight shared-understanding fields above</li>
+            <li>Create and maintain <code>brief.md</code> and <code>status.md</code></li>
+            <li>Choose the right specialist and hand off explicitly</li>
+            <li>Synthesize results back to the requester</li>
+          </ul>
+          <h4>Key rule</h4>
+          <p>Do not delegate until the goal and done-when criteria are explicit.</p>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🗺️</span>
+          <div>
+            <div class="role-name">planner</div>
+            <div class="role-tagline">Task decomposition &amp; safe parallel lanes</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <p>Makes the next step smaller, safer, and more checkable. Decomposes ambiguous or risky work into a verifiable plan.</p>
+          <h4>When to bring in</h4>
+          <ul>
+            <li>Scope is unclear or the request has multiple plausible implementations</li>
+            <li>Acceptance criteria are not yet concrete</li>
+            <li>Independent parallel work could shorten the critical path</li>
+          </ul>
+          <h4>Returns</h4>
+          <ul>
+            <li>A checkable <code>plan.md</code> with ordered lanes</li>
+            <li>Recommended next owner(s)</li>
+            <li>Blockers, merge points, and verification gates</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🔨</span>
+          <div>
+            <div class="role-name">developer</div>
+            <div class="role-tagline">Smallest effective change</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <p>The implementation specialist. Works from the delegated brief, preserves scope, and follows TDD by default for product development.</p>
+          <h4>Optimizes for</h4>
+          <ul>
+            <li>Smallest effective diff</li>
+            <li>Preserved behavior unless intentionally changed</li>
+            <li>Host-verifiable logic where practical</li>
+            <li>TDD-first for product development</li>
+          </ul>
+          <h4>Key rule</h4>
+          <p>If the requested behavior is unclear, stop and hand the ambiguity back instead of guessing.</p>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🔍</span>
+          <div>
+            <div class="role-name">verifier</div>
+            <div class="role-tagline">Evidence, not plausibility</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <p>The verification specialist. Assumes the implementation might be wrong and attempts falsification first.</p>
+          <h4>Standard</h4>
+          <p>Evidence, not plausibility. "Looks reasonable" is not "is demonstrated."</p>
+          <h4>Returns</h4>
+          <ul>
+            <li>Verdict: demonstrated, disproved, or unresolved</li>
+            <li>Evidence gathered</li>
+            <li>Unverified areas and residual risk</li>
+            <li>Recommendation on whether to proceed</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">⚔️</span>
+          <div>
+            <div class="role-name">reviewer</div>
+            <div class="role-tagline">Hidden risk, complexity, weak evidence</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <p>Fires <strong>after implementation</strong> to critique the actual patch and evidence — looking for hidden risk, overengineering, and missing evidence. Not the same as red-team, which challenges the <em>plan</em> before implementation.</p>
+          <h4>When to bring in early</h4>
+          <ul>
+            <li>The plan feels large</li>
+            <li>Multiple abstractions are being introduced</li>
+            <li>The change crosses platform boundaries</li>
+            <li>There is a temptation to "rewrite it cleanly"</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🏛️</span>
+          <div>
+            <div class="role-name">firmware-architect</div>
+            <div class="role-tagline">Interfaces, HAL, migration, structure</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <p>Protects long-term structure: interface stability, HAL boundaries, migration shape, and timing correctness.</p>
+          <h4>When to bring in</h4>
+          <ul>
+            <li>A hardware seam is missing</li>
+            <li>Platform code is leaking upward</li>
+            <li>A migration path is unclear</li>
+            <li>Interface stability matters more than immediate speed</li>
+            <li>The change affects timing, concurrency, or architecture</li>
+          </ul>
+        </div>
+      </details>
+
+    </div>
+
+    <!-- Optional Specialists -->
+    <p class="role-section-label mt-3">Optional Specialists <span class="badge badge-optional">Join When Needed</span></p>
+    <div class="card-grid cols-2">
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">✍️</span>
+          <div>
+            <div class="role-name">technical-writer</div>
+            <div class="role-tagline">Reader-facing docs, release notes, migration guides</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <h4>When to bring in</h4>
+          <ul>
+            <li>Release notes or changelog entries need curation</li>
+            <li>Migration or deprecation guidance is needed</li>
+            <li>Docs have drifted into duplication or unclear structure</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🚀</span>
+          <div>
+            <div class="role-name">release-manager</div>
+            <div class="role-tagline">Version bump, release shape, go/no-go</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <h4>When to bring in</h4>
+          <ul>
+            <li>SemVer impact or release readiness is disputed</li>
+            <li>Changelog, release notes, and evidence need a single final owner</li>
+            <li>The choice between pre-release, canary, and full release is unclear</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🔌</span>
+          <div>
+            <div class="role-name">integration-engineer</div>
+            <div class="role-tagline">HIL, bench, environment reproducibility</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <h4>When to bring in</h4>
+          <ul>
+            <li>HIL or bench setup is the critical bottleneck</li>
+            <li>The environment is flaky and needs reproducible setup</li>
+            <li>Repeated reruns can't distinguish product failures from environment failures</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🛡️</span>
+          <div>
+            <div class="role-name">red-team</div>
+            <div class="role-tagline">Adversarial challenge of plans before implementation</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <h4>When active</h4>
+          <ul>
+            <li>Medium/high-risk work, after planner writes <code>plan.md</code></li>
+            <li>Before developer starts implementation</li>
+          </ul>
+          <h4>Returns</h4>
+          <p>Structured findings with an approve / revise / escalate recommendation.</p>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🔧</span>
+          <div>
+            <div class="role-name">workflow-architect</div>
+            <div class="role-tagline">Process evolution, role/skill improvements</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <h4>When to bring in</h4>
+          <ul>
+            <li>The same workflow friction appears across multiple tasks</li>
+            <li>Role boundaries are repeatedly unclear in practice</li>
+            <li>A prompt, template, skill, or role may need to be created or refined</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="role-card">
+        <summary>
+          <span class="role-icon">🔬</span>
+          <div>
+            <div class="role-name">researcher</div>
+            <div class="role-tagline">External domain investigation</div>
+          </div>
+        </summary>
+        <div class="role-detail">
+          <h4>When to bring in</h4>
+          <ul>
+            <li>Work references a specific external component, standard, SDK, or library</li>
+            <li>External assumptions have not been verified against current sources</li>
+          </ul>
+          <h4>Scope</h4>
+          <p>Stops before option comparison or design begins — produces a durable research summary only.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     5. DEFAULT FLOW
+     ════════════════════════════════════════════════════════════ -->
+<section id="flow">
+  <div class="container">
+    <p class="section-label">In Practice</p>
+    <h2 class="section-title">The Default Workflow</h2>
+    <p class="section-subtitle">
+      A non-trivial task typically flows through roles in this order. This is a common loop, not a strict pipeline — verifier, reviewer, firmware-architect, and researcher may join earlier when their trigger conditions are met.
+    </p>
+
+    <div class="mermaid">
+sequenceDiagram
+    participant U as 👤 Requester
+    participant PO as 🎯 Product Owner
+    participant PL as 🗺️ Planner
+    participant RT as 🛡️ Red Team
+    participant D as 🔨 Developer
+    participant V as 🔍 Verifier
+    participant R as ⚔️ Reviewer
+
+    U->>PO: Describe desired outcome
+    PO->>PO: Establish shared understanding
+    PO->>PL: Hand off brief.md
+
+    PL->>PL: Decompose into plan.md
+    PL->>PO: Return plan + recommended owners
+
+    Note over RT: (medium/high-risk only)
+    PO->>RT: Challenge plan.md
+    RT->>PO: Findings + approve/revise/escalate
+
+    PO->>D: Delegate implementation
+    D->>D: TDD: test → code → refactor
+    D->>V: Hand off for verification
+
+    V->>V: Attempt falsification
+    V->>PO: Verdict + evidence
+
+    PO->>R: Request review
+    R->>PO: Risk assessment + findings
+
+    PO->>U: Synthesize result
+    </div>
+
+    <details>
+      <summary>Understanding the handoff model</summary>
+      <div class="details-body">
+        <p>Each arrow in the diagram is a <strong>handoff</strong> — a structured Markdown file stored under <code>docs/work/&lt;id&gt;/handoffs/</code>. A handoff includes:</p>
+        <ul>
+          <li>Destination role and rationale</li>
+          <li>Pointers to <code>brief.md</code>, <code>plan.md</code>, <code>status.md</code></li>
+          <li>What changed since the previous owner</li>
+          <li>New assumptions, risks, or blockers</li>
+          <li>Requested next action</li>
+          <li>Done-when criteria for the recipient</li>
+        </ul>
+        <p>Handoffs are delta-focused — they point to canonical files instead of restating all context. This prevents the "telephone game" where information degrades across handoffs.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>When specialists join</summary>
+      <div class="details-body">
+        <p>The seven optional specialists join based on specific triggers:</p>
+        <ul>
+          <li><strong>red-team</strong> — when medium/high-risk work needs adversarial plan review <em>before</em> implementation starts</li>
+          <li><strong>firmware-architect</strong> — when interfaces, HAL boundaries, migration shape, timing, or long-term structure matter</li>
+          <li><strong>technical-writer</strong> — when release notes, migration guides, or substantial docs deserve their own lane</li>
+          <li><strong>release-manager</strong> — when version bump, changelog finalization, or go/no-go needs a dedicated owner</li>
+          <li><strong>integration-engineer</strong> — when HIL/bench setup, flashing, or environment stability is the bottleneck</li>
+          <li><strong>workflow-architect</strong> — when repeated friction in the process itself needs investigation</li>
+          <li><strong>researcher</strong> — when work references an external component not already characterized in the codebase</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Parallel work: when and how</summary>
+      <div class="details-body">
+        <p>Multiple specialists may work in parallel, but <strong>only</strong> when the planner has made these things explicit:</p>
+        <ul>
+          <li><strong>Ownership boundaries</strong> — who owns which files/surfaces</li>
+          <li><strong>Dependencies</strong> — what blocks what</li>
+          <li><strong>Integration checkpoints</strong> — when parallel work merges</li>
+          <li><strong>Isolation plan</strong> — separate worktrees or equivalent to avoid write conflicts</li>
+        </ul>
+        <p>Without these, work stays serial. The coordination cost of vague parallel work exceeds the time savings.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     6. SKILLS CATALOG
+     ════════════════════════════════════════════════════════════ -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label">Capabilities</p>
+    <h2 class="section-title">Skills Catalog</h2>
+    <p class="section-subtitle">
+      A skill is a reusable, structured capability — it encodes <em>how</em> to do a specific kind of work.
+      This repo has 37 canonical skills across six categories.
+    </p>
+
+    <details class="mb-2">
+      <summary>What is a skill, exactly?</summary>
+      <div class="details-body">
+        <p>A skill is a structured prompt that tells the AI <em>how</em> to approach a specific kind of work. Unlike a one-off prompt, skills are:</p>
+        <ul>
+          <li><strong>Reusable</strong> — checked into the repo, available to every session</li>
+          <li><strong>Structured</strong> — with "when to use," "steps," "constraints," and "output format" sections</li>
+          <li><strong>Composable</strong> — skills can be chained into sequences for different work types</li>
+        </ul>
+        <p>You write a skill when: the AI doesn't have much training data on your domain, you want things done a very specific way, or you use the same prompt pattern more than once.</p>
+
+        <h4 style="color: var(--text-heading); margin: 1rem 0 0.5rem;">Two tiers</h4>
+        <ul>
+          <li><strong>Repo skills</strong> <span class="badge badge-core">shared</span> — version-controlled under <code>.agents/skills/</code>, synced by <code>tools/cli.py sync</code>. The starter ships a canonical set; adopters add their own alongside them in the same directory.</li>
+          <li><strong>Personal</strong> — stored globally (e.g. <code>~/.claude/skills/</code>) or gitignored, individual productivity, no team expectation</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Planning & Discovery -->
+    <p class="skill-group-title">🔭 Planning &amp; Discovery</p>
+    <div class="skill-grid">
+      <details class="skill-chip">
+        <summary><span class="skill-name">codebase-exploration</span></summary>
+        <div class="skill-detail">
+          <p>Map files, entry points, boundaries, and invariants before changing code.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Exploring an unfamiliar area of the codebase</li>
+            <li>Tracing ownership, dependencies, or module boundaries</li>
+            <li>Finding test seams before making changes</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">planning</span></summary>
+        <div class="skill-detail">
+          <p>Produce a concrete, staged plan with explicit verification before implementation.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Request is ambiguous or has multiple implementation options</li>
+            <li>Work crosses modules or layers</li>
+            <li>Risk needs to be understood before code changes</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">research</span></summary>
+        <div class="skill-detail">
+          <p>Structured external domain investigation — datasheets, specs, standards, errata, feasibility signals.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>A knowledge gap must be closed before planning is possible</li>
+            <li>Work references an external component, standard, or SDK</li>
+          </ul>
+          <p>Stops before option comparison or design begins.</p>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">write-a-brief</span></summary>
+        <div class="skill-detail">
+          <p>Build a complete brief.md through structured discovery.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Starting a medium or large feature</li>
+            <li>Problem space is not yet fully understood</li>
+            <li>A blank template is not enough — need guided discovery</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">grill-me</span></summary>
+        <div class="skill-detail">
+          <p>Stress-test a brief or plan through relentless structured interrogation.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Product-owner wants to challenge a brief before delegation</li>
+            <li>Planner wants to challenge a plan before implementation</li>
+            <li>User explicitly says "grill me"</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- Requirements & Risk -->
+    <p class="skill-group-title">⚠️ Requirements &amp; Risk</p>
+    <div class="skill-grid">
+      <details class="skill-chip">
+        <summary><span class="skill-name">requirements-and-traceability</span></summary>
+        <div class="skill-detail">
+          <p>Capture stakeholder needs, explicit requirements, derived requirements, and their links to design and verification.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Expected behavior is unclear or may drift across handoffs</li>
+            <li>Multiple stakeholders matter</li>
+            <li>Traceability is needed for safety, release, or systems work</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">risk-catalog</span></summary>
+        <div class="skill-detail">
+          <p>Maintain a project-level risk catalog with stable RK-NNN IDs, FMEA fields, and mechanical mitigation coverage checking.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Safety-risk-scan produces findings worth tracking permanently</li>
+            <li>Requirements carry failure-mode implications</li>
+            <li>Verifying that cataloged risks have test-proven mitigations</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">safety-risk-scan</span></summary>
+        <div class="skill-detail">
+          <p>Enumerate likely failure modes and required mitigations for safety- or reliability-sensitive changes.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Changing storage, control logic, sensor handling, or state machines</li>
+            <li>Behavior on timeout or reboot matters</li>
+            <li>Before merging safety-critical code</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">security-threat-modeling</span></summary>
+        <div class="skill-detail">
+          <p>Identify security threats, attack surfaces, and trust boundaries for firmware and connected-device changes.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Adding connectivity, authentication, or OTA update paths</li>
+            <li>Storing secrets or adding external interfaces</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">scenario-traceability</span></summary>
+        <div class="skill-detail">
+          <p>Keep plain-English usage scenarios linked to tests with stable SC-NNN IDs and mechanical coverage checking.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Starting a feature or writing acceptance criteria</li>
+            <li>Verifying that every stated user need has at least one covering test</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- Design & Architecture -->
+    <p class="skill-group-title">📐 Design &amp; Architecture</p>
+    <div class="skill-grid">
+      <details class="skill-chip">
+        <summary><span class="skill-name">design-an-interface</span></summary>
+        <div class="skill-detail">
+          <p>Generate three or more radically different interface designs, then compare and recommend the deepest option.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Implementing a new module, HAL boundary, or API surface</li>
+            <li>Interface shape will be hard to change later</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">interface-contract-design</span></summary>
+        <div class="skill-detail">
+          <p>Define stable module contracts with explicit inputs, outputs, failure modes, timing, and ownership.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Introducing or changing a module boundary</li>
+            <li>Reshaping a HAL or service interface</li>
+            <li>Resolving ambiguity between callers and implementers</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">trade-study-and-decision-analysis</span></summary>
+        <div class="skill-detail">
+          <p>Compare viable options against explicit criteria and choose a justified direction.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Multiple architectures, interfaces, or rollout shapes are plausible</li>
+            <li>Team needs evidence-based decision instead of intuition</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">hardware-abstraction</span></summary>
+        <div class="skill-detail">
+          <p>Keep direct hardware access behind a narrow seam and separate policy from mechanism.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Application code touches peripherals directly</li>
+            <li>Platform migration is underway</li>
+            <li>Hardware details are leaking into business logic</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">ubiquitous-language</span></summary>
+        <div class="skill-detail">
+          <p>Extract domain terminology into a canonical glossary so the same term always means the same thing.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Starting a new domain</li>
+            <li>Terminology confusion is causing miscommunication</li>
+            <li>Code mixes synonyms for the same concept</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- Implementation -->
+    <p class="skill-group-title">🔨 Implementation</p>
+    <div class="skill-grid">
+      <details class="skill-chip">
+        <summary><span class="skill-name">tdd</span></summary>
+        <div class="skill-detail">
+          <p>Drive implementation with a failing test, the smallest passing change, and safe cleanup.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Default for all product development work</li>
+            <li>Optional for non-productized tools when plan says so</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">bdd</span></summary>
+        <div class="skill-detail">
+          <p>Discover and formulate behavior through concrete examples before or alongside implementation.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Shaping acceptance criteria or turning a brief into rules and examples</li>
+            <li>Mapping scenarios onto the test pyramid</li>
+            <li>Aligning product behavior before TDD begins</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">bounded-autonomy-loop</span></summary>
+        <div class="skill-detail">
+          <p>Run a narrow implementation slice as a fixed-budget self-correcting loop with explicit done-when criteria.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Task is already well-scoped with stable objective</li>
+            <li>Automated checks can verify each pass</li>
+            <li>Loop can stop cleanly as complete, blocked, or budget exhausted</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">story-loop</span></summary>
+        <div class="skill-detail">
+          <p>Run a list of user stories autonomously, implementing each with the smallest effective change.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Planner-defined story list has explicit acceptance criteria</li>
+            <li>Automated checks (tests, lint, build) can verify each story</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">tidy-first</span></summary>
+        <div class="skill-detail">
+          <p>Quick hygiene pass — naming, dead code, small duplication, lint fixes — without changing behavior.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>User says "clean up this code" or "tidy before feature work"</li>
+            <li>Target area is messy and needs low-risk prep first</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">refactoring</span></summary>
+        <div class="skill-detail">
+          <p>Perform behavior-preserving refactors with explicit invariants, staged edits, and regression gates.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>User asks to refactor, restructure, reorganize, or clean up code</li>
+            <li>External behavior must not change</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">simplify-without-behavior-change</span></summary>
+        <div class="skill-detail">
+          <p>Remove accidental complexity without changing externally visible behavior.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Code feels overengineered or wrappers add little value</li>
+            <li>Flags or state paths are tangled</li>
+            <li>Before a refactor, to reduce noise first</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- Verification & Quality -->
+    <p class="skill-group-title">✅ Verification &amp; Quality</p>
+    <div class="skill-grid">
+      <details class="skill-chip">
+        <summary><span class="skill-name">verification</span></summary>
+        <div class="skill-detail">
+          <p>Prove that the claimed change works and state clearly what remains unverified.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>A code change was made or a bug fix is claimed</li>
+            <li>Refactor or migration needs evidence</li>
+            <li>Before marking work as done</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">validation-planning</span></summary>
+        <div class="skill-detail">
+          <p>Plan how to show the work solves the real stakeholder need, not just that implementation passes tests.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Product behavior changes or multiple user groups matter</li>
+            <li>Measures of effectiveness or performance need definition</li>
+            <li>Verification alone would not show fitness for purpose</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">simulation-harness-first</span></summary>
+        <div class="skill-detail">
+          <p>Bias toward deterministic host-side simulation and fake time/I/O before hardware-only iteration.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Debugging is slow on hardware</li>
+            <li>Logic mixes hardware interaction and decision-making</li>
+            <li>You want fast deterministic test feedback</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">fault-injection-and-recovery</span></summary>
+        <div class="skill-detail">
+          <p>Exercise timeout, corruption, missing-device, reset, and other failure scenarios deliberately.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Testing error paths or verifying recovery behavior</li>
+            <li>Checking fault tolerance or stress-testing failure handling</li>
+            <li>Confirming safe degradation under faults</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">hypothesis-driven-debugging</span></summary>
+        <div class="skill-detail">
+          <p>Debug by ranking concrete hypotheses and running discriminating checks.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Bug is hard to localize or has many plausible failure points</li>
+            <li>Logs are noisy or misleading</li>
+            <li>Trial-and-error edits haven't worked</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">operation-cost-optimization</span></summary>
+        <div class="skill-detail">
+          <p>Optimize performance, endurance, churn, or footprint by measuring the real cost driver.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Flash erases/writes, RAM/flash usage, heap traffic, or I/O dominate</li>
+            <li>Need explicit cost model with weights and measured reductions</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">resource-budget-review</span></summary>
+        <div class="skill-detail">
+          <p>Review RAM, flash, stack, CPU, latency, and logging impact as part of the change.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Changing allocation patterns, buffers, queues, or state machines</li>
+            <li>Adding platform features or diagnostics</li>
+            <li>Moving behavior into a tighter execution context</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- Operations -->
+    <p class="skill-group-title">🚀 Operations &amp; Process</p>
+    <div class="skill-grid">
+      <details class="skill-chip">
+        <summary><span class="skill-name">release-readiness</span></summary>
+        <div class="skill-detail">
+          <p>Prepare or assess a release using explicit SemVer classification, release shape, and evidence gates.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Version bump or release readiness decision needed</li>
+            <li>Pre-release vs full release choice is unclear</li>
+            <li>Changelog shaping or go/no-go decisions</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">lab-and-hil-reproducibility</span></summary>
+        <div class="skill-detail">
+          <p>Make bench, HIL, flashing, and cross-component integration checks reproducible and auditable.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Hardware identity, fixture setup, or flashing steps need a repeatable workflow</li>
+            <li>Flaky-lab triage or product-vs-environment failure classification</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">observability-and-diagnostics</span></summary>
+        <div class="skill-detail">
+          <p>Add or refine the minimal logs, counters, asserts, and traces needed to verify and support the system.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>A bug is hard to localize or failures are silent/ambiguous</li>
+            <li>A migration needs confidence signals</li>
+            <li>Adding observability before a risky change</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">firmware-migration</span></summary>
+        <div class="skill-detail">
+          <p>Move from legacy platform structure to a target structure in small, verified, reversible steps.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Migrating to a new MCU, RTOS, HAL, or transport layer</li>
+            <li>Replacing legacy platform glue or porting firmware</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">postmortem</span></summary>
+        <div class="skill-detail">
+          <p>Run a structured blameless postmortem after an incident, outage, or significant unexpected failure.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Production issue occurred or fleet-wide update failed</li>
+            <li>Safety-critical bug escaped or systemic process failure</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">docs-adr-updates</span></summary>
+        <div class="skill-detail">
+          <p>Keep README, CHANGELOG, architecture notes, and ADRs aligned with the implemented system.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>A design decision, interface, or API changed</li>
+            <li>A migration path was introduced or docs are stale</li>
+            <li>Release-facing behavior changed</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">workflow-evolution</span></summary>
+        <div class="skill-detail">
+          <p>Improve the roles-and-skills system from evidence in durable work artifacts.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Repeated friction, unclear role boundaries, or stale prompts</li>
+            <li>A possible new skill or role needs a disciplined workflow change</li>
+          </ul>
+        </div>
+      </details>
+      <details class="skill-chip">
+        <summary><span class="skill-name">plan-red-team</span></summary>
+        <div class="skill-detail">
+          <p>Challenge a completed plan.md before implementation starts.</p>
+          <p><strong>When to use:</strong></p>
+          <ul>
+            <li>Work is medium/high-risk</li>
+            <li>Product-owner needs adversarial pass on assumptions, sequencing, and dependencies</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     7. SKILL SEQUENCES
+     ════════════════════════════════════════════════════════════ -->
+<section id="sequences">
+  <div class="container">
+    <p class="section-label">Workflow Recipes</p>
+    <h2 class="section-title">Skill Sequences</h2>
+    <p class="section-subtitle">
+      Different types of work follow different skill sequences. These are the defaults — conditional steps activate only when their trigger applies.
+    </p>
+
+    <div class="tab-bar" role="tablist">
+      <button class="tab-btn active" role="tab" id="tab-feature" aria-selected="true" aria-controls="seq-feature" data-tab="seq-feature">Feature</button>
+      <button class="tab-btn" role="tab" id="tab-bug" aria-selected="false" aria-controls="seq-bug" data-tab="seq-bug">Bug</button>
+      <button class="tab-btn" role="tab" id="tab-perf" aria-selected="false" aria-controls="seq-perf" data-tab="seq-perf">Performance</button>
+      <button class="tab-btn" role="tab" id="tab-tool" aria-selected="false" aria-controls="seq-tool" data-tab="seq-tool">Tool</button>
+      <button class="tab-btn" role="tab" id="tab-release" aria-selected="false" aria-controls="seq-release" data-tab="seq-release">Release</button>
+      <button class="tab-btn" role="tab" id="tab-migration" aria-selected="false" aria-controls="seq-migration" data-tab="seq-migration">Migration</button>
+      <button class="tab-btn" role="tab" id="tab-hil" aria-selected="false" aria-controls="seq-hil" data-tab="seq-hil">Bench / HIL</button>
+      <button class="tab-btn" role="tab" id="tab-sysdef" aria-selected="false" aria-controls="seq-sysdef" data-tab="seq-sysdef">System Def</button>
+      <button class="tab-btn" role="tab" id="tab-workflow" aria-selected="false" aria-controls="seq-workflow" data-tab="seq-workflow">Workflow</button>
+      <button class="tab-btn" role="tab" id="tab-cleanup" aria-selected="false" aria-controls="seq-cleanup" data-tab="seq-cleanup">Cleanup</button>
+      <button class="tab-btn" role="tab" id="tab-research" aria-selected="false" aria-controls="seq-research" data-tab="seq-research">Research</button>
+    </div>
+
+    <!-- Feature -->
+    <div class="tab-panel active" id="seq-feature" role="tabpanel" aria-labelledby="tab-feature">
+      <h3>Product Feature Work</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>research</code> <span class="badge badge-optional">when external component involved</span></li>
+        <li><code>planning</code></li>
+        <li><code>requirements-and-traceability</code></li>
+        <li><code>risk-catalog</code> <span class="badge badge-optional">when safety-sensitive</span></li>
+        <li><code>security-threat-modeling</code> <span class="badge badge-optional">when connectivity/auth involved</span></li>
+        <li><code>bdd</code></li>
+        <li><code>trade-study-and-decision-analysis</code> <span class="badge badge-optional">when multiple credible options</span></li>
+        <li><code>interface-contract-design</code></li>
+        <li><code>simulation-harness-first</code></li>
+        <li><code>tdd</code></li>
+        <li><code>validation-planning</code> <span class="badge badge-optional">when stakeholder-fit question exists</span></li>
+        <li><code>verification</code></li>
+        <li><code>resource-budget-review</code></li>
+        <li><code>docs-adr-updates</code></li>
+      </ol>
+    </div>
+
+    <!-- Bug -->
+    <div class="tab-panel" id="seq-bug" role="tabpanel" aria-labelledby="tab-bug">
+      <h3>Product Bug Work</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>research</code> <span class="badge badge-optional">when external component involved</span></li>
+        <li><code>hypothesis-driven-debugging</code></li>
+        <li><code>requirements-and-traceability</code> <span class="badge badge-optional">when expected behavior unclear</span></li>
+        <li><code>risk-catalog</code> <span class="badge badge-optional">when failure mode worth cataloging</span></li>
+        <li><code>bdd</code></li>
+        <li><code>simulation-harness-first</code></li>
+        <li><code>tdd</code></li>
+        <li><code>verification</code></li>
+        <li><code>fault-injection-and-recovery</code></li>
+        <li><code>postmortem</code> <span class="badge badge-optional">when production incident</span></li>
+      </ol>
+    </div>
+
+    <!-- Performance -->
+    <div class="tab-panel" id="seq-perf" role="tabpanel" aria-labelledby="tab-perf">
+      <h3>Performance / Endurance Optimization</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>planning</code></li>
+        <li><code>bdd</code></li>
+        <li><code>operation-cost-optimization</code></li>
+        <li><code>simulation-harness-first</code></li>
+        <li><code>tdd</code></li>
+        <li><code>verification</code></li>
+        <li><code>resource-budget-review</code></li>
+      </ol>
+    </div>
+
+    <!-- Tool -->
+    <div class="tab-panel" id="seq-tool" role="tabpanel" aria-labelledby="tab-tool">
+      <h3>Non-Productized Tool Work</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>planning</code></li>
+        <li><code>bdd</code> <span class="badge badge-optional">when behavior examples improve clarity</span></li>
+        <li><code>tdd</code> <span class="badge badge-optional">if tool expected to be shared/long-lived</span></li>
+        <li><code>verification</code></li>
+      </ol>
+      <p class="text-muted text-sm mt-2">TDD is optional for non-productized tools, but explicit verification is still required.</p>
+    </div>
+
+    <!-- Release -->
+    <div class="tab-panel" id="seq-release" role="tabpanel" aria-labelledby="tab-release">
+      <h3>Release Preparation</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>release-readiness</code></li>
+        <li><code>docs-adr-updates</code></li>
+        <li><code>verification</code></li>
+      </ol>
+    </div>
+
+    <!-- Migration -->
+    <div class="tab-panel" id="seq-migration" role="tabpanel" aria-labelledby="tab-migration">
+      <h3>Platform Migration</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>research</code> <span class="badge badge-optional">when target MCU/SDK not characterized</span></li>
+        <li><code>planning</code></li>
+        <li><code>firmware-migration</code></li>
+        <li><code>hardware-abstraction</code></li>
+        <li><code>verification</code></li>
+        <li><code>safety-risk-scan</code></li>
+        <li><code>security-threat-modeling</code> <span class="badge badge-optional">when trust boundaries change</span></li>
+        <li><code>risk-catalog</code></li>
+        <li><code>resource-budget-review</code></li>
+      </ol>
+    </div>
+
+    <!-- Bench / HIL -->
+    <div class="tab-panel" id="seq-hil" role="tabpanel" aria-labelledby="tab-hil">
+      <h3>Bench / HIL / Integration Lane</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>lab-and-hil-reproducibility</code></li>
+        <li><code>observability-and-diagnostics</code></li>
+        <li><code>verification</code></li>
+        <li><code>fault-injection-and-recovery</code> <span class="badge badge-optional">when failure-path coverage matters</span></li>
+      </ol>
+    </div>
+
+    <!-- System definition -->
+    <div class="tab-panel" id="seq-sysdef" role="tabpanel" aria-labelledby="tab-sysdef">
+      <h3>System Definition / Concept Trade</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>requirements-and-traceability</code></li>
+        <li><code>risk-catalog</code> <span class="badge badge-optional">when safety-sensitive requirements exist</span></li>
+        <li><code>security-threat-modeling</code> <span class="badge badge-optional">when external interfaces, connectivity, or stored secrets</span></li>
+        <li><code>research</code> <span class="badge badge-optional">when external component not characterized</span></li>
+        <li><code>planning</code></li>
+        <li><code>trade-study-and-decision-analysis</code></li>
+        <li><code>interface-contract-design</code></li>
+        <li><code>validation-planning</code></li>
+        <li><code>docs-adr-updates</code></li>
+      </ol>
+    </div>
+
+    <!-- Workflow evolution -->
+    <div class="tab-panel" id="seq-workflow" role="tabpanel" aria-labelledby="tab-workflow">
+      <h3>Workflow Evolution</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>workflow-evolution</code></li>
+        <li><code>docs-adr-updates</code></li>
+        <li><code>verification</code></li>
+      </ol>
+    </div>
+
+    <!-- Design cleanup -->
+    <div class="tab-panel" id="seq-cleanup" role="tabpanel" aria-labelledby="tab-cleanup">
+      <h3>Design Cleanup</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>codebase-exploration</code></li>
+        <li><code>simplify-without-behavior-change</code></li>
+        <li><code>refactoring</code></li>
+        <li><code>verification</code></li>
+      </ol>
+    </div>
+
+    <!-- External domain investigation -->
+    <div class="tab-panel" id="seq-research" role="tabpanel" aria-labelledby="tab-research">
+      <h3>External Domain Investigation</h3>
+      <ol style="padding-left: 1.5em; color: var(--text-muted); font-size: 0.92rem;">
+        <li><code>research</code></li>
+        <li><code>planning</code> <span class="text-muted text-sm">(receives the research summary as input)</span></li>
+        <li><code>trade-study-and-decision-analysis</code> <span class="badge badge-optional">when research surfaces multiple credible options</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<section id="antipatterns">
+  <div class="container">
+    <p class="section-label">Guardrails</p>
+    <h2 class="section-title">Do / Don't</h2>
+    <p class="section-subtitle">
+      Behavioral defaults that keep the operating model effective. These are reinforced by project rules loaded into every session.
+    </p>
+
+    <div class="two-col">
+      <div class="do-col">
+        <h3>✅ Do</h3>
+        <ul>
+          <li>Establish shared understanding before delegating</li>
+          <li>Keep one active human-facing owner (product-owner)</li>
+          <li>Use explicit handoffs with done-when criteria</li>
+          <li>Store durable context in work packets, not chat</li>
+          <li>Follow TDD for product development work</li>
+          <li>Use the test pyramid: mostly unit/simulation, fewer integration, fewest HIL</li>
+          <li>State what was not verified on real hardware</li>
+          <li>Prefer simulation-first before hardware-only debugging</li>
+          <li>Keep hardware access behind narrow interfaces</li>
+          <li>Make timing, units, and failure behavior explicit</li>
+          <li>Prefer remove before add, inline before abstract</li>
+          <li>Use the CLI for work-packet scaffolding</li>
+        </ul>
+      </div>
+      <div class="dont-col">
+        <h3>❌ Don't</h3>
+        <ul>
+          <li>Delegate before restating the real problem</li>
+          <li>Let specialists negotiate requirements directly with the requester</li>
+          <li>Widen scope silently ("we're already in the file")</li>
+          <li>Claim success without evidence</li>
+          <li>Let the implementer declare victory</li>
+          <li>Run parallel work without explicit ownership boundaries</li>
+          <li>Skip TDD without making that decision visible</li>
+          <li>Introduce abstraction before naming its real pressure</li>
+          <li>Treat integration as a late phase</li>
+          <li>Write code traceable to no driver (scenario, risk, spike, design intent, or obligation)</li>
+          <li>Keep handoffs only in chat instead of in-repo Markdown</li>
+          <li>Treat tool-local session files as canonical work packets</li>
+        </ul>
+      </div>
+    </div>
+
+    <details class="mt-3">
+      <summary>Common anti-patterns explained</summary>
+      <div class="details-body">
+        <ul>
+          <li><strong>Delegating raw user text</strong> — The product-owner should restate the request in outcome terms first. Passing vague text to a specialist produces vague results.</li>
+          <li><strong>Copying context everywhere</strong> — Instead of copying scope and risks into every handoff, use one canonical work packet and reference it. One fact, one home.</li>
+          <li><strong>The implementer declares victory</strong> — The developer should not be the one who decides the work is done. The verifier checks independently. Separation of concerns applies to judgment, not just code.</li>
+          <li><strong>Treating resource use as post-processing</strong> — Stack, RAM, flash, CPU, latency, and watchdog behavior are part of correctness, not something to check after the feature is "done."</li>
+          <li><strong>Unbounded autonomy loops</strong> — Bounded autonomy requires explicit budget and stop states. Without them, a loop becomes an unbounded retry habit on ambiguous work.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     9. GETTING STARTED
+     ════════════════════════════════════════════════════════════ -->
+<section id="start">
+  <div class="container">
+    <p class="section-label">Practical</p>
+    <h2 class="section-title">Getting Started</h2>
+    <p class="section-subtitle">
+      Three steps to go from zero to a working task with the operating model.
+    </p>
+
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h4>Validate your setup</h4>
+          <p>Run the doctor command for your tool to check that all project rules, skills, and agent definitions are correctly wired:</p>
+          <pre><code>python3 tools/cli.py doctor --tool all
+python3 tools/cli.py sync
+python3 tools/cli.py sync --check</code></pre>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h4>Create a work packet</h4>
+          <p>Scaffold a new work packet with the CLI. This creates <code>brief.md</code>, <code>plan.md</code>, <code>status.md</code>, and the <code>evidence/</code> and <code>handoffs/</code> directories:</p>
+          <pre><code>python3 tools/cli.py new-work my-first-task
+python3 tools/cli.py check-work my-first-task</code></pre>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <h4>Start with the product-owner</h4>
+          <p>Open your AI tool and ask the <code>product-owner</code> agent to summarize the current instructions and available skills. Then describe your desired outcome — the product-owner will guide you from there.</p>
+          <pre><code># In Copilot CLI or Claude Code:
+# Start by talking to the product-owner agent
+"Summarize the current instructions and available skills"</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <details>
+      <summary>Tool-specific setup</summary>
+      <div class="details-body">
+        <div class="card-grid cols-3">
+          <div class="card">
+            <h3>GitHub Copilot</h3>
+            <p>Open the repo in your IDE, confirm Copilot is signed in, then:</p>
+            <pre><code>python3 tools/cli.py doctor --tool copilot
+python3 tools/cli.py first-run --tool copilot</code></pre>
+            <p class="text-muted text-sm mt-1">See <code>docs/copilot-vscode-playbook.md</code></p>
+          </div>
+          <div class="card">
+            <h3>Claude Code</h3>
+            <pre><code>claude auth login
+python3 tools/cli.py doctor --tool claude
+python3 tools/cli.py first-run --tool claude</code></pre>
+            <p class="text-muted text-sm mt-1">See <code>docs/claude-playbook.md</code></p>
+          </div>
+          <div class="card">
+            <h3>OpenAI Codex</h3>
+            <pre><code>npm i -g @openai/codex
+codex login
+python3 tools/cli.py doctor --tool codex
+python3 tools/cli.py first-run --tool codex</code></pre>
+            <p class="text-muted text-sm mt-1">See <code>docs/codex-playbook.md</code></p>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Cross-tool compatibility</summary>
+      <div class="details-body">
+        <p>The same role model is shared across Claude Code, GitHub Copilot, and OpenAI Codex. Canonical definitions live in <code>.agents/agents/*.toml</code> and <code>.agents/skills/</code>. Running <code>python3 tools/cli.py sync</code> regenerates tool-specific files from these canonical sources.</p>
+        <p>Role names and skill names stay aligned across tools so prompts and handoffs remain portable.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>What to do on Monday morning</summary>
+      <div class="details-body">
+        <ol>
+          <li><strong>Pick a real task</strong> — something small but non-trivial. A bug fix or a small feature.</li>
+          <li><strong>Create a work packet</strong> — <code>python3 tools/cli.py new-work &lt;task-name&gt;</code></li>
+          <li><strong>Fill the brief</strong> — Describe the problem, scope, non-goals, and acceptance criteria in <code>brief.md</code>.</li>
+          <li><strong>Let the product-owner drive</strong> — Start your AI tool and let the product-owner establish shared understanding, then delegate to planner and developer.</li>
+          <li><strong>Observe the handoffs</strong> — Watch how the brief turns into a plan, then code, then verification. Each step is traceable.</li>
+          <li><strong>Check the result</strong> — <code>python3 tools/cli.py check-work &lt;task-name&gt;</code></li>
+        </ol>
+        <p>Start small. The operating model works best when you trust it on something manageable first, then scale up.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <p>Agent Skills Starter — Operating Model Guide</p>
+    <p>Canonical references: <a href="../operating-model.md">operating-model.md</a> · <a href="../../AGENTS.md">AGENTS.md</a> · <a href="../../README.md">README.md</a></p>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════════════════════ -->
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#1a1a2e',
+      primaryBorderColor: '#58a6ff',
+      primaryTextColor: '#c9d1d9',
+      lineColor: '#58a6ff',
+      secondaryColor: '#161b22',
+      tertiaryColor: '#0d1117',
+      actorTextColor: '#e6edf3',
+      actorBorder: '#58a6ff',
+      signalColor: '#c9d1d9',
+      signalTextColor: '#e6edf3',
+      noteBkgColor: '#161b22',
+      noteTextColor: '#c9d1d9',
+      noteBorderColor: '#58a6ff',
+      sequenceNumberColor: '#58a6ff'
+    },
+    sequence: { mirrorActors: false }
+  });
+</script>
+
+<script>
+(function() {
+  // ── Tab switching ──────────────────────────────────────────
+  function activateTab(btn) {
+    const tabId = btn.dataset.tab;
+    const bar = btn.closest('.tab-bar');
+    const section = bar.parentElement;
+
+    bar.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.setAttribute('tabindex', '0');
+    btn.focus();
+
+    section.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    section.querySelector('#' + tabId).classList.add('active');
+  }
+
+  document.querySelectorAll('.tab-bar').forEach(bar => {
+    const tabs = Array.from(bar.querySelectorAll('.tab-btn'));
+    tabs.forEach((btn, i) => {
+      btn.setAttribute('tabindex', i === 0 ? '0' : '-1');
+      btn.addEventListener('click', () => activateTab(btn));
+      btn.addEventListener('keydown', e => {
+        let target;
+        if (e.key === 'ArrowRight') target = tabs[(i + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft') target = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') target = tabs[0];
+        else if (e.key === 'End') target = tabs[tabs.length - 1];
+        if (target) { e.preventDefault(); activateTab(target); }
+      });
+    });
+  });
+
+  // ── Active nav link highlighting with aria-current ─────────
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const sections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+  function updateActiveNav() {
+    const scrollY = window.scrollY + 80;
+    let current = sections[0];
+    for (const s of sections) {
+      if (s.offsetTop <= scrollY) current = s;
+    }
+    navLinks.forEach(a => {
+      const isActive = a.getAttribute('href') === '#' + current.id;
+      a.classList.toggle('active', isActive);
+      if (isActive) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+})();
+</script>
+
+</body>
+</html>
