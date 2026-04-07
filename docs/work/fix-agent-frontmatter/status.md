@@ -10,8 +10,8 @@
 ## Current owner
 
 - Role: developer
-- Date: 2026-03-25
-- Lane: main
+- Date: 2026-04-07
+- Lane: closed
 - Worktree / isolation: primary working tree
 
 ## Current summary
@@ -20,7 +20,7 @@ Fixed both the Claude and GitHub agent generators so generated custom agent fron
 
 ## Current step
 
-Hand off the verified fix.
+Closed.
 
 ## Last completed checkpoint
 
@@ -43,7 +43,7 @@ Updated `tools/cli.py`, regenerated `.claude/agents/*.md` and `.github/agents/*.
 
 ## Next action
 
-Share the fix and validation results with the requester.
+None — work is complete.
 
 ## Active evidence
 

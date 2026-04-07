@@ -1,12 +1,15 @@
 # Status: expand-researcher-triggers
 
 **Current owner:** product-owner
+**Date:** 2026-04-07
+**Lane:** closed
+**Current step:** Closed.
 **Last updated:** 2026-03-21
 **Phase:** Complete — pending commit and evaluation window
 
 ## Next action
 
-Commit AGENTS.md changes. Evaluate over next 5 tasks that reference an external component. Record keep/revise/revert in `docs/workflow-experiments/EXP-002-expand-researcher-triggers.md`.
+None — work is complete.
 
 ## Completed
 

@@ -10,8 +10,8 @@
 ## Current owner
 
 - Role: product-owner
-- Date: 2026-03-25
-- Lane: research
+- Date: 2026-04-07
+- Lane: closed
 - Worktree / isolation: primary working tree
 
 ## Current summary
@@ -20,7 +20,7 @@ Researched Copilot custom-agent selection and default behavior using official Gi
 
 ## Current step
 
-Hand back the research summary and remaining uncertainty.
+Closed.
 
 ## Open blockers
 
@@ -35,4 +35,4 @@ Hand back the research summary and remaining uncertainty.
 
 ## Next action
 
-Return the findings, including the distinction between manual selection, inferred invocation, and a true runtime default.
+None — work is complete.

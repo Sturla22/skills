@@ -10,8 +10,8 @@
 ## Current owner
 
 - Role: product-owner
-- Date: 2026-03-25
-- Lane: main
+- Date: 2026-04-07
+- Lane: closed
 - Worktree / isolation: primary working tree
 
 ## Current summary
@@ -20,7 +20,7 @@ Updated the operating model to clarify that a bare request to "commit" means mak
 
 ## Current step
 
-Hand back the completed workflow clarification.
+Closed.
 
 ## Open blockers
 
@@ -38,4 +38,4 @@ Hand back the completed workflow clarification.
 
 ## Next action
 
-Use the new rule on future commit-request tasks and review the experiment after the next `3` such tasks, or one month of use.
+None — work is complete.

@@ -10,8 +10,8 @@
 ## Current owner
 
 - Role: product-owner
-- Date: 2026-03-25
-- Lane: workflow clarification
+- Date: 2026-04-07
+- Lane: closed
 - Worktree / isolation: primary working tree
 
 ## Current summary
@@ -20,7 +20,7 @@ Confirmed that `tools/cli.py` already provides the supported CLI surface for wor
 
 ## Current step
 
-Ready to hand back the verified workflow clarification.
+Closed.
 
 ## Last completed checkpoint
 
@@ -46,7 +46,7 @@ Ready to hand back the verified workflow clarification.
 
 ## Next action
 
-Hand the change back to the requester.
+None — work is complete.
 
 ## Active evidence
 

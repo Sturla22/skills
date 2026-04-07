@@ -10,8 +10,8 @@
 ## Current owner
 
 - Role: product-owner
-- Date: 2026-03-25
-- Lane: main
+- Date: 2026-04-07
+- Lane: closed
 - Worktree / isolation: primary working tree
 
 ## Current summary
@@ -20,7 +20,7 @@ Implemented a small launcher that starts Copilot with the `product-owner` custom
 
 ## Current step
 
-Hand back the verified launcher.
+Closed.
 
 ## Open blockers
 
@@ -38,4 +38,4 @@ Hand back the verified launcher.
 
 ## Next action
 
-Use the launcher in normal workflow and decide later whether a shell alias or additional wrapper is worth adding.
+None — work is complete.

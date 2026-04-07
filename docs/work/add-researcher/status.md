@@ -3,7 +3,12 @@
 **Work ID:** add-researcher
 **Last updated:** 2026-03-19
 **Current owner:** product-owner
+**Date:** 2026-04-07
+**Lane:** closed
+**Current step:** Closed.
 **State:** complete
+
+**Next action:** None — work is complete.
 
 ---
 

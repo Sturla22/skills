@@ -10,8 +10,8 @@
 ## Current owner
 
 - Role: product-owner
-- Date: 2026-03-25
-- Lane: main
+- Date: 2026-04-07
+- Lane: closed
 - Worktree / isolation: primary working tree
 
 ## Current summary
@@ -20,7 +20,7 @@ Updated Copilot-facing repo guidance to bias the agent toward narrower, staged p
 
 ## Current step
 
-Hand back the workflow clarification.
+Closed.
 
 ## Open blockers
 
@@ -38,4 +38,4 @@ Hand back the workflow clarification.
 
 ## Next action
 
-Observe the next `3` Copilot-led delivery tasks and decide whether to keep, revise, or revert the experiment wording.
+None — work is complete.
