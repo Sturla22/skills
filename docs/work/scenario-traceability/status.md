@@ -5,27 +5,30 @@
 - Work ID: `scenario-traceability`
 - File path: `docs/work/scenario-traceability/status.md`
 - Brief: `docs/work/scenario-traceability/brief.md`
-- Plan: `docs/work/scenario-traceability/plan.md` _(not yet created)_
+- Plan: `docs/work/scenario-traceability/plan.md`
 
 ## Current owner
 
 - Role: product-owner
-- Date: 2026-03-20
+- Date: 2026-04-07
 - Lane: closed
 - Worktree / isolation: none
 
 ## Current summary
 
-COMPLETE. All 13 steps done. Requester approved template at validation gate.
-Three commits staged and ready to execute. All 8 ACs verified. CHANGELOG updated.
+Complete. All commits landed on `main`. Subsequent repo reorganization moved
+`scripts/` → `tools/` and `templates/` → `docs/templates/` (commit `c5e5c2b`).
 
 ## Current step
 
-Ready to commit (three commits — see plan.md step 13).
+Closed.
 
 ## Last completed checkpoint
 
-Validation gate passed — requester confirmed template and convention — 2026-03-20
+All three commits landed on `main`:
+- `656a8e5` — `feat(sync): add copy_rules() and establish .agents/rules/ as canonical source`
+- `884dc24` — `feat(traceability): add scenario-traceability skill, rule, and template`
+- `6b7fe65` — `feat(traceability): add coverage script and verification fixtures`
 
 ## Open blockers
 
@@ -33,29 +36,20 @@ None.
 
 ## Active risks / unknowns
 
-- `pathlib.glob` behavior on `docs/work/*/scenarios.md` — low risk, confirmed
-  by fixture run at G1
-- Template ≤ 60 lines constraint — prefer clarity over line count if conflict
+None.
 
 ## Continuous V&V status
 
-- Verification: not started — fixture and script not yet written
-- Validation: requester reviews template at step 8 (gate G4)
+- Verification: all 8 ACs (SC-001–SC-008) verified via fixture runs
+- Validation: requester approved template at gate G4 (2026-03-20)
 - Integration: n/a
-- Open gaps: steps 1–10 all pending
+- Open gaps: none
 
 ## Next action
 
-Execute the three commits from plan.md step 13 (requires Bash / git access):
-1. `feat(sync): add copy_rules() and establish .agents/rules/ as canonical source`
-2. `feat(traceability): add scenario-traceability skill, rule, and template`
-3. `feat(traceability): add coverage script and verification fixtures`
-
-Then run `python scripts/sync_agent_layouts.py --check` to confirm sync state.
+None — work is complete.
 
 ## Active evidence
 
-- Verification: none yet
-- Hypotheses: none
-- Optimization scorecard: n/a
+- Verification: `docs/work/scenario-traceability/evidence/verification.md`
 - Recent handoff: `docs/work/scenario-traceability/handoffs/001-product-owner-to-planner.md`
