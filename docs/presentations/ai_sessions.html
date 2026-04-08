@@ -237,7 +237,9 @@ graph LR
     <h1>🧩 Session 2</h1>
     <h2>Copilot: More Than Autocomplete</h2>
     <aside class="notes">
-      Most people still think of Copilot as the little suggestion box in VS Code. That's level 1. What I'm talking about here is agent mode, and that's a very different tool.
+      Most people still think of Copilot as the little suggestion box in VS Code. That's the simple version.
+
+      What I mean in this session is the larger tool around that, especially agent mode. That's a very different thing in practice.
     </aside>
   </section>
 
@@ -252,9 +254,9 @@ graph LR
     <aside class="notes">
       The first two items are familiar: inline autocomplete and chat.
 
-      The big jump is agent mode. Now it can edit multiple files, run commands, and iterate. That's level 3 on the ladder.
+      ▶ The big jump is agent mode. Now it can edit multiple files, run commands, and iterate. That's level 3 on the ladder.
 
-      And the other important idea is that the rules live in the repo. CLAUDE.md, copilot-instructions.md, .cursor/rules — different names, same concept. You set it up once, and the AI starts with your constraints already in view.
+      ▶ And the other important idea is that the rules live in the repo. Different tools use different filenames, but the principle is the same. You set it up once, and the AI starts with your constraints already in view.
     </aside>
   </section>
 
@@ -282,7 +284,7 @@ graph LR
     <aside class="notes">
       Karpathy has a good phrase for this: "jagged intelligence." These models can do something surprisingly sophisticated in one moment, then fail at something embarrassingly simple in the next.
 
-      For firmware, that's especially important, because code that compiles can still fail on hardware for all the usual reasons — timing, peripheral init, device-specific behavior. The model does not know your control loop budget unless you tell it. So tell it.
+      For firmware, that matters even more, because code that compiles can still fail on hardware for all the usual reasons: timing, peripheral init, device-specific behavior. The model does not know your control loop budget unless you tell it. So tell it.
     </aside>
   </section>
 
@@ -296,7 +298,7 @@ graph LR
     <aside class="notes">
       This is a good example of how little you sometimes need. Four short lines: the task, the constraint, the safety requirement, and the timing budget.
 
-      The mindset I like is: nudge, don't outsource. You're still the pilot. You already know what good looks like. You're just giving the model the boundaries it needs to move faster.
+      ▶ The mindset I like is: nudge, don't outsource. You're still the pilot. You already know what good looks like. You're just giving the model the boundaries it needs to move faster.
     </aside>
   </section>
 
@@ -317,7 +319,7 @@ graph LR
     <aside class="notes">
       The loop is simple: you express intent, the AI generates something, and then you review it.
 
-      The important part is the review step. Don't blindly accept it. If the generated code is hard to reason about, that's usually a sign the task needs to be made smaller or more explicit.
+      ▶ The important part is the review step. Don't blindly accept it. If the generated code is hard to reason about, that's usually a sign the task needs to be made smaller or more explicit.
     </aside>
   </section>
 </section>
@@ -328,7 +330,7 @@ graph LR
     <h1>🧩 Session 3</h1>
     <h2>Prompting &amp; Roles</h2>
     <aside class="notes">
-      This is where we stop reacting to whatever the model gives us and start directing its behavior more deliberately.
+      This is where we stop reacting to whatever the model gives us and start shaping its behavior more deliberately.
     </aside>
   </section>
 
@@ -339,7 +341,7 @@ graph LR
     <aside class="notes">
       Karpathy popularized the phrase "vibe coding," and it took off because it captured a real feeling: just ask for something, keep going, and don't think too hard about the code.
 
-      But even he framed that as something for throw-away scripts and quick demos. Firmware is not that. We need structure, and the nice thing is that structure makes the AI much more useful anyway.
+      But even he framed that as something for throw-away scripts and quick demos. Firmware is not that. We need more structure, and the good news is that structure usually makes the tool much more useful anyway.
     </aside>
   </section>
 
@@ -366,7 +368,7 @@ Output:
     <aside class="notes">
       This is the same model looking at the same code. The only real difference is how you asked. "Review this" gets you generic feedback. The structured version is much more likely to surface real issues, like race conditions or missing ISR guards.
 
-      And if you want a library of patterns to steal from, prompts.chat is worth bookmarking.
+      And if you want a library of prompt patterns to steal from, prompts.chat is worth bookmarking.
     </aside>
   </section>
 
@@ -388,7 +390,7 @@ graph LR
     <aside class="notes">
       The basic structure is simple: role, context, task, constraints, and output format.
 
-      The important mental shift is to treat prompts like specifications, not questions. You wouldn't hand a vague requirement to someone writing a peripheral driver. Same idea here.
+      ▶ The important mental shift is to treat prompts like specifications, not questions. You wouldn't hand a vague requirement to someone writing a peripheral driver. Same idea here.
     </aside>
   </section>
 
@@ -398,7 +400,7 @@ graph LR
     <aside class="notes">
       Karpathy has a line I like here: LLMs are a bit like a coworker with anterograde amnesia. They can be useful, but they don't carry stable long-term context the way a real teammate does.
 
-      So when you give the model a role, you're front-loading the expertise for that session. "You are a senior embedded firmware engineer on a Cortex-M with no heap" activates a very different pattern than saying nothing. The role is not decoration.
+      ▶ So when you give the model a role, you're front-loading the expertise for that session. "You are a senior embedded firmware engineer on a Cortex-M with no heap" activates a very different pattern than saying nothing. The role is not decoration.
     </aside>
   </section>
 </section>
@@ -409,7 +411,7 @@ graph LR
     <h1>🧩 Session 4</h1>
     <h2>Skills</h2>
     <aside class="notes">
-      Everything before this was useful. Everything after this is where the real leverage is.
+      Everything up to now has been useful. This is where it starts becoming reusable.
     </aside>
   </section>
 
@@ -425,9 +427,9 @@ graph LR
       </ul>
     </div>
     <aside class="notes">
-      Three situations that call for a skill: when the AI has little training data on your domain — niche hardware, proprietary protocols, your company's specific architecture. When you want things done a very specific way — your review checklist, your debugging methodology. When you use the same prompt more than once.
+      I think there are three good reasons to write a skill. One: the domain is niche, and the model is unlikely to know it well. Two: you want something done in a very specific way. Three: you find yourself repeating the same prompt.
 
-      ▶ The benchmark that backs this up: without expert-crafted skills, AI solved 67% of embedded tasks. With skills: 97%. The skill is what closes that gap.
+      ▶ And the benchmark behind this is hard to ignore. Without expert-crafted skills, AI solved 67% of embedded tasks. With skills, that went to 97%. The skill is what closes that gap.
     </aside>
   </section>
 
@@ -450,9 +452,9 @@ Debugging a symptom that has multiple possible causes
 Instrument first, then form hypotheses.
 Do not change configs speculatively.</code></pre>
     <aside class="notes">
-      This is a real skill I use. A markdown file — nothing more. When AI follows it, every debugging session produces the same documented trail: symptom, ranked hypotheses, discriminating checks, and the result.
+      This is a real skill I use. It's just a markdown file.
 
-      The evidence lives in the repo, not in a chat window that disappears. The next engineer inherits the investigation, not a blank slate.
+      But when the AI follows it, every debugging session leaves the same trail: symptom, ranked hypotheses, discriminating checks, and the result. And that evidence lives in the repo instead of disappearing in a chat window.
     </aside>
   </section>
 
@@ -470,9 +472,9 @@ of this plan until we reach a shared understanding.
   read the code directly instead of asking</code></pre>
     <p class="source">Matt Pocock — github.com/mattpocock/skills</p>
     <aside class="notes">
-      Matt Pocock — TypeScript educator, large following — built this. You say "grill me about this plan" and the AI interrogates every assumption, every edge case, every failure mode. It supplies a recommended answer with each question so you're not starting from scratch. And if it can verify something by reading the codebase, it reads the code directly instead of asking.
+      Matt Pocock built this one, and it's a good example because the behavior is very clear. You say "grill me about this plan" and the AI starts pushing on the assumptions, the edge cases, and the failure modes.
 
-      Pocock's full workflow: idea → PRD → GitHub issues → Kanban → Ralph loop → QA. Each step is a skill. The whole chain is reproducible by anyone on the team.
+      It also gives you a recommended answer with each question, so you're not starting from a blank page. And if it can verify something by reading the codebase, it does that instead of asking you.
     </aside>
   </section>
 
@@ -503,9 +505,9 @@ npx skills create my-review</code></pre>
       </div>
     </div>
     <aside class="notes">
-      There's now a whole ecosystem. Vercel Labs published an npm package — run npx skills add and point it at a GitHub repo. skillsmp.com is an open marketplace.
+      There is now a whole ecosystem around this. You can install skills from GitHub, browse public ones, or write your own.
 
-      The format is open: a SKILL.md file works with Claude Code, Copilot, Cursor, Codex — any agent that reads markdown. Not locked to any vendor. Skills live in the repo: version-controlled, shared with the team. Gitignore the folder if it contains proprietary knowledge you don't want public.
+      The part I like is that the format is open. A `SKILL.md` file is just a markdown file. It isn't locked to one vendor, and it can live in the repo with the rest of your engineering system.
     </aside>
   </section>
 
@@ -516,7 +518,7 @@ npx skills create my-review</code></pre>
     <aside class="notes">
       Rule of thumb: use a prompt twice, make it a skill.
 
-      ▶ Skills don't just encode what we do — they encode how we think. Engineering judgment, review criteria, debugging methodology. Institutional knowledge that usually lives only in people's heads. Now it lives in a file the whole team can use, improve, and version-control.
+      ▶ The deeper point is that skills don't just encode what we do. They encode how we think: review criteria, debugging method, engineering judgment. The stuff that usually lives only in people's heads can now live in a file the team can reuse and improve.
     </aside>
   </section>
 </section>
@@ -527,7 +529,9 @@ npx skills create my-review</code></pre>
     <h1>🧩 Session 5</h1>
     <h2>CLI: The Agent's Natural Habitat</h2>
     <aside class="notes">
-      We move out of the chat window and into the command line. But not the way you might think — you don't pipe text into AI. The AI runs the commands itself.
+      This is where we move out of the chat window and into the command line.
+
+      Not in the sense that you copy terminal output into the model. I mean the AI actually runs the commands itself.
     </aside>
   </section>
 
@@ -535,7 +539,9 @@ npx skills create my-review</code></pre>
     <h2>The AI Runs the Commands</h2>
     <p style="font-size:1.3em;">From chat → <strong style="color:#58a6ff;">the AI runs the commands</strong></p>
     <aside class="notes">
-      You tell the AI what you want. It runs your build, reads the errors, and fixes the code. In a loop. That's Level 3 — and it's a bigger jump than most people expect.
+      You tell the AI what you want. It runs the build, reads the errors, and fixes the code. Then it loops.
+
+      That's level 3, and it's a bigger jump than most people expect the first time they see it.
     </aside>
   </section>
 
@@ -552,9 +558,9 @@ Agent: Running `ctest --test-dir build/host-tests`...
        Re-running tests...
        All 16 tests pass. ✅</code></pre>
     <aside class="notes">
-      This is what Level 3 actually looks like. The AI is using tools — read files, write files, execute commands — not just generating text into a chat window. You review the diff and commit. The AI did the rest.
+      This is what level 3 actually looks like. The AI is using tools: reading files, writing files, executing commands. It's not just generating text into a chat window anymore.
 
-      CLI tools are ideal for this because they're structured text: clear inputs, outputs, error messages. That's exactly what LLMs are trained on.
+      You review the diff and decide whether it stays. The AI did the execution, but you still own the judgment.
     </aside>
   </section>
 
@@ -570,13 +576,11 @@ python3 tools/cli.py check-coverage   # exits 1 on gaps
 python3 tools/cli.py check-risks      # exits 1 on unmitigated
 python3 tools/cli.py sync --check     # exits 1 on drift</code></pre>
     <aside class="notes">
-      ▶ LLMs are remarkably good at building CLI tools. Clean input, clean output, clear error codes. So you ask AI to build a tool.
+      ▶ LLMs are remarkably good at building CLI tools. The interface is clean: input, output, error code.
 
-      ▶ Then AI uses its own tool in future sessions. Skip the loop where you relay output manually.
+      ▶ So you ask the AI to build a tool, and later the AI can use that same tool itself. You skip the awkward loop where you relay output manually.
 
-      ▶ And here's what I find elegant: these tools also run in CI. The AI built them, the AI uses them, and CI runs them automatically. Same tool, all three paths.
-
-      ▶ Skill tells the AI the methodology. CLI gives it the tools to execute. The AI orchestrates the whole thing.
+      ▶ And the nice part is that those same tools can also run in CI. Same tool, three paths: human, agent, CI.
     </aside>
   </section>
 
@@ -589,9 +593,9 @@ python3 tools/hil/reel_board_smoke.py \
   --artifact-dir evidence/hil-latest</code></pre>
     <p class="fragment" style="font-size:0.85em;">When your HIL test is a CLI command, the agent can run it too.</p>
     <aside class="notes">
-      This one is underappreciated by people outside firmware. When your HIL test is a single CLI command, the agent can run it too — flash the board, capture UART output, check BLE services, all in one pass.
+      This one is easy to underestimate if you don't live in firmware. When your HIL test is a single CLI command, the agent can run that too: flash the board, capture UART, check BLE services, the whole thing.
 
-      ▶ Someone still has to physically connect the board. Everything after that is scriptable. That means the same agent that writes your code can also validate it on hardware.
+      ▶ Someone still has to physically connect the board. But after that, everything can be scripted. That means the same agent that writes the code can also validate it on hardware.
     </aside>
   </section>
 </section>
@@ -603,18 +607,18 @@ python3 tools/hil/reel_board_smoke.py \
     <h2>Context Engineering</h2>
     <p class="fragment" style="color:#58a6ff; font-size:1.2em;">The most underrated skill</p>
     <aside class="notes">
-      MIT Technology Review titled their year-end piece "From vibe coding to context engineering." That's the direction the industry is heading.
+      Context engineering is one of those phrases that sounds a bit buzzwordy until you realize it's actually the practical part.
 
-      ▶ And firmware engineers have a natural advantage here — we already think in constraints. I'll show you why that matters.
+      ▶ And firmware engineers have a natural advantage here, because we already think in constraints. That's a big part of why this works well for us.
     </aside>
   </section>
 
   <section class="center-slide">
     <blockquote style="font-size:1.4em;">Context quality &gt; Model quality</blockquote>
     <aside class="notes">
-      Context quality matters more than model quality. A mediocre model with great context outperforms a frontier model with bad context.
+      This is one of the strongest practical lessons in the whole deck.
 
-      Anthropic's engineering team published a guide on this. Their core message: build dynamic systems that provide the right information, in the right format, at the right moment. Not "write a better prompt" — build a system that assembles the right context automatically.
+      A mediocre model with great context often beats a frontier model with bad context. The real work is not only writing a better prompt. It's getting the right information in front of the model at the right time.
     </aside>
   </section>
 
@@ -643,9 +647,9 @@ python3 tools/hil/reel_board_smoke.py \
     </div>
     <p class="fragment" style="font-size:0.85em;">These files <strong>live in your repo</strong>. Every AI session starts with the right context automatically.</p>
     <aside class="notes">
-      Every major AI tool reads a project rules file. Different names — CLAUDE.md, AGENTS.md, copilot-instructions.md, .cursor/rules — same principle.
+      Every major AI tool has some version of a project rules file. Different names, same principle.
 
-      Version-controlled, shared with the team, lives in the repo.
+      The important part is that these files live in the repo, not in somebody's private prompt history.
 
       ▶ Set it up once. Every engineer on the team, every session, starts with the right context automatically. No manual briefing. No "remind the AI about our constraints." It already knows.
     </aside>
@@ -674,9 +678,9 @@ python3 tools/hil/reel_board_smoke.py \
     </div>
     <blockquote class="fragment">"Curate, don't dump"</blockquote>
     <aside class="notes">
-      Vibe coding: dump the repo, hope the AI figures it out, retry until something works. Context engineering: curated relevant files, explicit constraints, working examples.
+      The bad version of this is: dump the repo in, hope the model figures it out, and retry until something seems to work.
 
-      ▶ "Curate, don't dump." Think of your context like a well-written bug report — everything the reader needs, nothing they don't.
+      ▶ The better version is curated context: relevant files, explicit constraints, good examples. Think of it like a well-written bug report. Everything the reader needs, nothing they don't.
     </aside>
   </section>
 
@@ -696,9 +700,9 @@ graph TD
     </div>
     <blockquote class="fragment" style="text-align:center;">More context ≠ better context</blockquote>
     <aside class="notes">
-      Think of it as a funnel. Start with everything. Filter to relevant files. Apply project rules. Layer in skills. Focus on the specific task. Each layer narrows the context and increases signal.
+      I think of this as a funnel. You start with everything, then narrow down to the relevant files, then the project rules, then the skill, then the actual task.
 
-      ▶ More context does not equal better context. Focused context equals better context.
+      ▶ More context does not automatically mean better context. Focused context is usually better context.
     </aside>
   </section>
 </section>
@@ -710,16 +714,18 @@ graph TD
     <h2>Debugging with AI</h2>
     <p class="fragment" style="color:#888;">Biggest immediate payoff</p>
     <aside class="notes">
-      Debugging is hard, time-consuming, and where AI gives the biggest immediate payoff. This is where I'd start if I were introducing this to a skeptical team.
+      If I had to pick one place to introduce AI to a skeptical firmware team, I would start here.
 
-      ▶ Because debugging is where you feel the friction most, and where AI removes it fastest.
+      ▶ Debugging is where you feel the friction most, and where AI often removes it fastest.
     </aside>
   </section>
 
   <section class="center-slide">
     <blockquote style="font-size:1.3em;">AI is a <strong>hypothesis generator</strong></blockquote>
     <aside class="notes">
-      AI doesn't debug for you. It generates hypotheses faster than you can think of them. Instead of staring at a log for an hour, you get five ranked root causes in ten seconds. Then you go test them. The judgment is still yours.
+      AI doesn't debug for you. What it does very well is generate hypotheses faster than you can.
+
+      Instead of staring at a log for an hour, you can get five plausible root causes in ten seconds. Then you go test them. The judgment is still yours.
     </aside>
   </section>
 
@@ -737,9 +743,9 @@ graph LR
     style R fill:#1a1a2e,stroke:#58a6ff,color:#fff
     </div>
     <aside class="notes">
-      Same loop you already use. AI supercharges the hypothesis step — it's read millions of bug reports and debug sessions.
+      This is the same loop you already use. The AI just supercharges the hypothesis step.
 
-      The test step is still yours. AI does not validate. You do.
+      It has effectively read millions of bug reports and debug sessions. But the test step is still yours. AI does not validate. You do.
     </aside>
   </section>
 
@@ -760,9 +766,9 @@ Instrumentation around i2c_transfer():
 measured worst-case = 14ms > 10ms budget</code></pre>
     <p style="font-size:0.9em; color:#58a6ff; margin-top:0.5em;">⬆️ This lives in the repo, not in a chat window.</p>
     <aside class="notes">
-      This is a real hypothesis document from the Zephyr project. Not in a chat window that disappears when you close the tab. In the repo, version-controlled. Anyone can review the reasoning. When the next engineer hits a similar symptom, the investigation is right there — root cause confirmed, discriminating check documented.
+      This is a real hypothesis document from the Zephyr project. Not in a chat window that disappears when you close the tab. In the repo, version-controlled, reviewable.
 
-      That's the difference between debugging in chat and debugging with a system.
+      And when the next engineer hits a similar symptom, the investigation is already there. That's the difference between debugging in chat and debugging with a system.
     </aside>
   </section>
 
@@ -772,7 +778,7 @@ measured worst-case = 14ms > 10ms budget</code></pre>
     <aside class="notes">
       Say this clearly: AI does not validate. You do. Never accept an AI diagnosis without evidence.
 
-      ▶ And logs are gold. The more structured your logging, the more AI can help. Invest in good logging — it pays dividends when debugging with AI.
+      ▶ And logs are gold. The more structured your logging, the more helpful the model becomes. Good logging pays off even more once AI is in the loop.
     </aside>
   </section>
 </section>
@@ -783,7 +789,7 @@ measured worst-case = 14ms > 10ms budget</code></pre>
     <h1>🧩 Session 8</h1>
     <h2>Agents &amp; Autonomous Loops</h2>
     <aside class="notes">
-      This is where AI goes from a tool you use to a process that runs.
+      This is the point where AI stops feeling like a tool you poke at and starts feeling more like a process that runs.
     </aside>
   </section>
 
@@ -803,7 +809,7 @@ graph LR
     <aside class="notes">
       A chatbot answers. An agent works. That's the key distinction.
 
-      Skill tells it what to do. Process tells it how. Loop means it iterates until done or until you stop it. That last part matters — I'll get to it.
+      Skill tells it what to do. Process tells it how. And the loop means it keeps going until the task is done or until it hits a stop condition.
     </aside>
   </section>
 
@@ -824,9 +830,9 @@ graph TD
     </div>
     <p class="source">Named after Ralph Wiggum — relentlessly failing but persistent. Popularized by Matt Pocock &amp; the aihero.dev community.</p>
     <aside class="notes">
-      The most well-known agent loop right now. Pick the next story from a list. Implement it. Run checks — type check, tests, build. If checks pass, commit and mark done. If they fail, read the errors, fix the code, re-run. Repeat until all stories pass or you hit the budget.
+      This is probably the best-known agent loop right now. Pick the next story from a list, implement it, run checks, fix failures, and keep going.
 
-      Named after Ralph Wiggum from The Simpsons — relentlessly failing but persistent. Matt Pocock popularized this with a simple shell script for Claude Code. Give it a list of user stories, and it works through them autonomously.
+      If the checks pass, commit and move on. If they fail, read the errors, fix the code, and re-run. It's simple, but it's a very useful pattern.
     </aside>
   </section>
 
@@ -841,9 +847,9 @@ graph TD
     </ul>
     <p class="source">github.com/karpathy/autoresearch — open-sourced March 2026</p>
     <aside class="notes">
-      About 630 lines of Python. The agent modifies the training script, trains for five minutes, evaluates whether the result improved, and loops. 700 experiments in 2 days, 20 optimizations found autonomously.
+      Karpathy's autoresearch is the large-scale version of the same idea. The agent modifies training code, runs a short experiment, evaluates whether the result improved, and loops.
 
-      Karpathy's vision: "a swarm of agents collaborating at increasing model scales, with humans optionally contributing on the edges." That's where this is heading. For us today: bounded loops with clear stop conditions. The principle scales down to firmware.
+      The numbers are the headline: 700 experiments in two days, 20 optimizations found. We are obviously not doing that in firmware today, but the underlying loop is the same.
     </aside>
   </section>
 
@@ -876,7 +882,7 @@ graph TD
     <aside class="notes">
       Watching an agent work can feel a lot like watching a junior engineer work through a checklist, just much faster.
 
-      Yegge makes a point I think is real: supervising agents is mentally tiring. Bounded autonomy helps because it gives you clear objectives, fixed budgets, mandatory checks, and escalation when the agent gets stuck instead of silently wandering off.
+      ▶ Yegge makes a point I think is real: supervising agents is mentally tiring. Bounded autonomy helps because it gives you clear objectives, fixed budgets, mandatory checks, and escalation when the agent gets stuck instead of silently wandering off.
     </aside>
   </section>
 </section>
@@ -887,7 +893,7 @@ graph TD
     <h1>🧩 Session 9</h1>
     <h2>Roles: One Hat at a Time</h2>
     <aside class="notes">
-      Up to now we've mostly talked about one agent doing useful work. Here the shift is from one agent to several specialized ones.
+      Up to now I've mostly talked about one agent doing useful work. Here the shift is from one agent to several specialized ones.
     </aside>
   </section>
 
@@ -897,7 +903,7 @@ graph TD
     <aside class="notes">
       As engineers, we switch hats constantly. We plan, code, test, and review, sometimes all in the same hour. Agents are not nearly as good at that.
 
-      If you ask one AI to plan and implement and review in the same session, it tends to compromise on all three. If you tell it, "your only job is to review and find problems," it goes much deeper. Separation of concerns turns out to matter for AI architecture too, not just software architecture.
+      If you ask one AI to plan and implement and review in the same session, it tends to compromise on all three. If you tell it, "your only job is to review and find problems," it goes much deeper. Separation of concerns matters for AI architecture too, not just software architecture.
     </aside>
   </section>
 
@@ -917,7 +923,7 @@ graph LR
     <aside class="notes">
       This is the basic flow I like. Product owner sets the outcome and the why. Planner breaks it into checkable steps. Developer implements. Verifier checks independently. Reviewer looks for hidden risk.
 
-      Then you bring in specialists only when needed — maybe a researcher for a datasheet, a red team to challenge the plan, or a firmware architect when interfaces matter. Each role has one job, and the product owner keeps the whole thread coherent.
+      Then you bring in specialists only when needed: maybe a researcher for a datasheet, a red team to challenge the plan, or a firmware architect when interfaces matter. Each role has one job, and the product owner keeps the thread coherent.
     </aside>
   </section>
 
@@ -946,7 +952,7 @@ graph LR
     <aside class="notes">
       Let me be candid about where agents are today. They work well on focused tasks, with one role, clear criteria, and small slices.
 
-      But they also drift. They hit context limits. They run out of turn budget halfway through something. And "creative helpfulness" is usually just scope creep in disguise. The answer is not to avoid agents. It's to bound them properly, keep the slices small, and review what they produce.
+      But they also drift. They hit context limits. They run out of turn budget halfway through something. And "creative helpfulness" is often just scope creep in disguise. The answer is not to avoid agents. It's to bound them properly, keep the slices small, and review what they produce.
     </aside>
   </section>
 
@@ -957,7 +963,7 @@ graph LR
     <aside class="notes">
       The short version is: one agent, one responsibility.
 
-      The value is not in any single agent being magical. The value is in the handoffs and feedback loops between them. In other words, the coordination is the system.
+      ▶ The value is not in any single agent being magical. The value is in the handoffs and feedback loops between them. In other words, the coordination is the system.
     </aside>
   </section>
 </section>
@@ -968,7 +974,7 @@ graph LR
     <h1>🧩 Session 10</h1>
     <h2>Systems Thinking</h2>
     <aside class="notes">
-      This is the big-picture session where all the earlier pieces come together.
+      This is the big-picture session where the earlier pieces start fitting together.
     </aside>
   </section>
 
@@ -976,9 +982,9 @@ graph LR
     <h2>We Design Systems of Work</h2>
     <p style="font-size:1.3em;">From writing code → <strong style="color:#58a6ff;">designing systems of work</strong></p>
     <aside class="notes">
-      Yegge predicts that IDEs will be heavily displaced by agent interfaces. Maybe his exact timeline is right, maybe it isn't, but the direction feels clear.
+      Yegge predicts that IDEs will be heavily displaced by agent interfaces. Maybe his exact timeline is right and maybe it isn't, but the direction feels clear.
 
-      For firmware, the code still matters because it runs on real hardware. But the thing we invest in more and more is the system that produces, checks, and improves that code.
+      For firmware, the code still matters because it runs on real hardware. But more and more, the thing we invest in is the system that produces, checks, and improves that code.
     </aside>
   </section>
 
@@ -990,11 +996,11 @@ graph LR
       <li class="fragment">Decomposition</li>
     </ul>
     <aside class="notes">
-      First: validation matters more than generation. AI can generate code all day. Our value shifts toward defining what "correct" means and proving it.
+      ▶ First: validation matters more than generation. AI can generate code all day. Our value shifts toward defining what "correct" means and proving it.
 
-      Second: feedback loops. CI feeds back into the work. Skill improvements feed forward into the next task.
+      ▶ Second: feedback loops. CI feeds back into the work. Skill improvements feed forward into the next task.
 
-      Third: decomposition. Big problems become much more manageable when you break them into smaller pieces, each with its own agent, skill, and verification.
+      ▶ Third: decomposition. Big problems become much more manageable when you break them into smaller pieces, each with its own agent, skill, and verification.
     </aside>
   </section>
 
@@ -1017,7 +1023,7 @@ graph TD
     <aside class="notes">
       This is the system view. Skills define capabilities. Agents use them. CLI tools give the agents leverage. CI runs the checks. Evidence accumulates in durable artifacts. Then that evidence improves the skills.
 
-      So yes, you're still writing code sometimes. But at a higher level, you're orchestrating work.
+      ▶ So yes, you're still writing code sometimes. But at a higher level, you're orchestrating work.
     </aside>
   </section>
 </section>
@@ -1059,11 +1065,11 @@ graph TD
     </div>
     <p class="source">Target: PHYTEC reel_board@2 (nRF52840) running Zephyr RTOS</p>
     <aside class="notes">
-      On the left is the firmware itself: 100 hertz PID loop, BLE telemetry over GATT, fault detection with latched recovery, dual-bank NVM with CRC-32, e-ink display, hardware watchdog. This was running on a PHYTEC reel_board with an nRF52840.
+      On the left is the firmware itself: 100 hertz PID loop, BLE telemetry over GATT, fault detection with latched recovery, dual-bank NVM with CRC-32, e-ink display, hardware watchdog.
 
       On the right is the AI system around it: 13 agent roles, 34 skills, 22 templates, a CLI the AI built and uses, and CI to keep the whole thing in sync.
 
-      The human role in that setup was basically product owner: define the outcome, review the results, make the decisions. The AI wrote the code, the tests, and the documents.
+      The important point is not that every number is impressive. The important point is that the firmware and the system around it were built together, and the human role in that setup was mostly to define the outcome and review the results.
     </aside>
   </section>
 
@@ -1087,11 +1093,11 @@ graph TD
       </div>
     </div>
     <aside class="notes">
-      This was one of the results that surprised me most. The AI generated the full IEC 62304 Class B document set — 13 documents — from the codebase. Then a different AI role, the safety auditor, reviewed those docs from a notified-body perspective. That audit found 26 real findings.
+      This was one of the results that surprised me most. The AI generated the full IEC 62304 Class B document set from the codebase, and then a different AI role reviewed it from a notified-body perspective.
 
-      After remediation across 11 parallel slices, 18 of those findings were closed. The remaining 8 were mostly process gaps — named human reviewers, human sign-off, things like that.
+      That audit found 26 real findings. After remediation across 11 parallel slices, 18 were closed. The remaining ones were mostly process gaps: named human reviewers, human sign-off, things like that.
 
-      And that's exactly as it should be. AI is a tool here. The responsibility for documentation, verification, and regulatory compliance still sits with us. But it can accelerate the work dramatically.
+      And that's exactly as it should be. AI is a tool here. The responsibility for documentation, verification, and regulatory compliance still sits with us.
     </aside>
   </section>
 
@@ -1114,7 +1120,7 @@ graph TD
     <aside class="notes">
       This is what I mean by durable context. Not chat history, but a structured directory in the repo: brief, plan, status, scenarios, evidence, handoffs.
 
-      When the context window resets — and it will — the work packet keeps the thread alive. If a new engineer joins, they can read the brief and plan. If someone asks why a decision was made, the evidence is there. That's the difference between using AI in a chat window and building a system around it.
+      When the context window resets, the work packet keeps the thread alive. If a new engineer joins, they can read the brief and plan. If someone asks why a decision was made, the evidence is there. That's the difference between using AI in a chat window and building a system around it.
     </aside>
   </section>
 
@@ -1143,7 +1149,7 @@ graph TD
     <aside class="notes">
       This is the contrast I want people to leave with. Without a system, the AI is generic, context gets lost, and the knowledge stays in people's heads. With a system, the AI follows your methodology and the evidence stays in the repo.
 
-      And again, this is not theoretical. This ran on real hardware: a 65-minute soak test, 9 fault-injection scenarios, 28 usage scenarios, all of it captured in the repo.
+      ▶ And again, this is not theoretical. This ran on real hardware: a 65-minute soak test, 9 fault-injection scenarios, 28 usage scenarios, all of it captured in the repo.
     </aside>
   </section>
 </section>
@@ -1170,7 +1176,7 @@ graph TD
       <p style="font-size:0.8em;">"The review follows our checklist — memory safety, concurrency, edge cases — because the skill tells it to. Without the skill, it gives generic feedback."</p>
     </div>
     <aside class="notes">
-      For this one, open a firmware file with a subtle bug — maybe a missing ISR guard or an unchecked return value. Ask the AI to review it using the skill, then show the skill file itself and make the point that it is just a markdown file driving the behavior.
+      For this one, open a firmware file with a subtle bug, maybe a missing ISR guard or an unchecked return value. Ask the AI to review it using the skill, then show the skill file itself and make the point that it is just a markdown file driving the behavior.
 
       The thing that usually lands with people is the contrast between with-skill and without-skill.
     </aside>
@@ -1214,7 +1220,7 @@ graph TD
       <p style="font-size:0.8em;">"I didn't think of half these questions. The AI is stress-testing my plan before I write a single line."</p>
     </div>
     <aside class="notes">
-      This one tends to be the crowd-pleaser. Pick a feature the audience actually cares about — BLE OTA updates is a good one — and say "grill me."
+      This one tends to be the crowd-pleaser. Pick a feature the audience actually cares about, BLE OTA updates for example, and say "grill me."
 
       Then let the AI probe the plan: failure modes, timing, rollback, edge cases. The reaction you usually get is, "I didn't think of half those questions," and that's exactly the point.
     </aside>
@@ -1266,11 +1272,11 @@ graph TD
     <aside class="notes">
       Firmware teams are actually in a strong position here, because we're already used to thinking in constraints.
 
-      Timing matters, and the model won't know your budget unless you state it. Hardware is real, so code that compiles is still not the same thing as code that works on device.
+      ▶ Timing matters, and the model won't know your budget unless you state it. Hardware is real, so code that compiles is still not the same thing as code that works on device.
 
-      But the upside is that ISR safety, memory limits, timing budgets — all of that already lives in our heads. That makes context engineering feel more natural for firmware engineers than it does for a lot of other disciplines.
+      ▶ But the upside is that ISR safety, memory limits, timing budgets, all of that already lives in our heads. That makes context engineering feel more natural for firmware engineers than it does for a lot of other disciplines.
 
-      And when your HIL setup can be driven from the CLI, agents can actually close that loop for you.
+      ▶ And when your HIL setup can be driven from the CLI, agents can actually close that loop for you.
     </aside>
   </section>
 
