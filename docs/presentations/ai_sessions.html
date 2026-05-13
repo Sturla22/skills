@@ -42,7 +42,7 @@
   <h1>🧠 AI for Firmware Engineers</h1>
   <h3>Össur R&D Bionics</h3>
   <p style="color:#888; margin-top:1.5em;">From Copilot → Skills → Agent Systems</p>
-  <p style="color:#58a6ff; font-size:0.75em; margin-top:0.5em;">Session 1 of 10 — Introduction &amp; Framing</p>
+  <p style="color:#58a6ff; font-size:0.75em; margin-top:0.5em;">Session 1 of 9 — Introduction &amp; Framing</p>
   <aside class="notes">
     What I want to do today is make this practical.
 
@@ -231,15 +231,39 @@ graph LR
   </section>
 </section>
 
-<!-- ===== SESSION 2 — COPILOT ===== -->
+<!-- ===== SESSION 2 — COPILOT, PROMPTING & ROLES ===== -->
 <section>
   <section class="center-slide">
     <h1>🧩 Session 2</h1>
-    <h2>Copilot: More Than Autocomplete</h2>
+    <h2>Copilot, Prompting &amp; Roles</h2>
     <aside class="notes">
-      Most people still think of Copilot as the little suggestion box in VS Code. That's the simple version.
+      Before going deeper on Copilot, I want to briefly connect back to session 1.
 
-      What I mean in this session is the larger tool around that, especially agent mode. That's a very different thing in practice.
+      Last time was the framing: AI is not just a chat window, and the job is shifting from writing every line by hand toward designing the workflow that produces and checks code.
+
+      This session is the first concrete step in that arc. Copilot is the tool most people already have, and prompting is how we start steering it deliberately.
+    </aside>
+  </section>
+
+  <section>
+    <h2>Quick Recap From Session 1</h2>
+    <ul style="font-size:0.85em;">
+      <li class="fragment">AI is useful when the engineer stays responsible for intent, constraints, and review</li>
+      <li class="fragment">We are moving from <strong>autocomplete</strong> toward <strong>agent loops</strong></li>
+      <li class="fragment">The path is <strong>Prompt → Skill → Agent → Agent System</strong></li>
+      <li class="fragment">For firmware, constraints are not optional: timing, memory, hardware behavior, and safety still define correctness</li>
+    </ul>
+    <blockquote class="fragment" style="text-align:center;">Session 2 is about directing Copilot without giving up engineering judgment.</blockquote>
+    <aside class="notes">
+      The recap is intentionally short.
+
+      ▶ The key idea from last time is not that AI writes code for us. The key idea is that AI becomes useful when we give it the right shape: intent, constraints, review, and feedback.
+
+      ▶ We also introduced the autonomy ladder. Inline suggestions are levels 1 and 2. Agent mode starts to move us into level 3 because the tool can edit files and run commands.
+
+      ▶ And we introduced the longer path: prompts, skills, agents, and eventually agent systems. Today is still early on that path. We are staying close to Copilot because that is where most people can start immediately.
+
+      ▶ So Session 2 is about directing Copilot without giving up engineering judgment.
     </aside>
   </section>
 
@@ -252,6 +276,8 @@ graph LR
       <li class="fragment"><code>copilot-instructions.md</code> — project rules the AI reads automatically</li>
     </ul>
     <aside class="notes">
+      This slide maps that recap onto the tool.
+
       The first two items are familiar: inline autocomplete and chat.
 
       ▶ The big jump is agent mode. Now it can edit multiple files, run commands, and iterate. That's level 3 on the ladder.
@@ -298,7 +324,7 @@ graph LR
     <aside class="notes">
       This is a good example of how little you sometimes need. Four short lines: the task, the constraint, the safety requirement, and the timing budget.
 
-      ▶ The mindset I like is: nudge, don't outsource. You're still the pilot. You already know what good looks like. You're just giving the model the boundaries it needs to move faster.
+      ▶ This is the session 1 framing applied to a real Copilot interaction: nudge, don't outsource. You're still the pilot. You already know what good looks like. You're just giving the model the boundaries it needs to move faster.
     </aside>
   </section>
 
@@ -320,17 +346,8 @@ graph LR
       The loop is simple: you express intent, the AI generates something, and then you review it.
 
       ▶ The important part is the review step. Don't blindly accept it. If the generated code is hard to reason about, that's usually a sign the task needs to be made smaller or more explicit.
-    </aside>
-  </section>
-</section>
 
-<!-- ===== SESSION 3 — PROMPTING ===== -->
-<section>
-  <section class="center-slide">
-    <h1>🧩 Session 3</h1>
-    <h2>Prompting &amp; Roles</h2>
-    <aside class="notes">
-      This is where we stop reacting to whatever the model gives us and start shaping its behavior more deliberately.
+      That leads directly into prompting. If the output is weak, the next move is usually not "try again harder." The next move is to specify the role, context, task, constraints, and expected output more clearly.
     </aside>
   </section>
 
@@ -339,6 +356,8 @@ graph LR
     <p style="font-size:1.3em;">From autocomplete → <strong style="color:#58a6ff;">directing behavior</strong></p>
     <blockquote style="margin:1em auto; font-size:0.9em;">"Vibe coding was always for throw-away scripts. Firmware is not that." — Karpathy (paraphrased)</blockquote>
     <aside class="notes">
+      This is the second half of the session: using Copilot is not only about which button you press. It is about how clearly you direct the behavior.
+
       Karpathy popularized the phrase "vibe coding," and it took off because it captured a real feeling: just ask for something, keep going, and don't think too hard about the code.
 
       But even he framed that as something for throw-away scripts and quick demos. Firmware is not that. We need more structure, and the good news is that structure usually makes the tool much more useful anyway.
@@ -405,10 +424,10 @@ graph LR
   </section>
 </section>
 
-<!-- ===== SESSION 4 — SKILLS ===== -->
+<!-- ===== SESSION 3 — SKILLS ===== -->
 <section>
   <section class="center-slide">
-    <h1>🧩 Session 4</h1>
+    <h1>🧩 Session 3</h1>
     <h2>Skills</h2>
     <aside class="notes">
       Everything up to now has been useful. This is where it starts becoming reusable.
@@ -523,10 +542,10 @@ npx skills create my-review</code></pre>
   </section>
 </section>
 
-<!-- ===== SESSION 5 — CLI & AGENTS AS TOOL USERS ===== -->
+<!-- ===== SESSION 4 — CLI & AGENTS AS TOOL USERS ===== -->
 <section>
   <section class="center-slide">
-    <h1>🧩 Session 5</h1>
+    <h1>🧩 Session 4</h1>
     <h2>CLI: The Agent's Natural Habitat</h2>
     <aside class="notes">
       This is where we move out of the chat window and into the command line.
@@ -600,10 +619,10 @@ python3 tools/hil/reel_board_smoke.py \
   </section>
 </section>
 
-<!-- ===== SESSION 6 — CONTEXT ENGINEERING ===== -->
+<!-- ===== SESSION 5 — CONTEXT ENGINEERING ===== -->
 <section>
   <section class="center-slide">
-    <h1>🧩 Session 6</h1>
+    <h1>🧩 Session 5</h1>
     <h2>Context Engineering</h2>
     <p class="fragment" style="color:#58a6ff; font-size:1.2em;">The most underrated skill</p>
     <aside class="notes">
@@ -707,10 +726,10 @@ graph TD
   </section>
 </section>
 
-<!-- ===== SESSION 7 — DEBUGGING ===== -->
+<!-- ===== SESSION 6 — DEBUGGING ===== -->
 <section>
   <section class="center-slide">
-    <h1>🧩 Session 7</h1>
+    <h1>🧩 Session 6</h1>
     <h2>Debugging with AI</h2>
     <p class="fragment" style="color:#888;">Biggest immediate payoff</p>
     <aside class="notes">
@@ -783,10 +802,10 @@ measured worst-case = 14ms > 10ms budget</code></pre>
   </section>
 </section>
 
-<!-- ===== SESSION 8 — AGENTS & LOOPS ===== -->
+<!-- ===== SESSION 7 — AGENTS & LOOPS ===== -->
 <section>
   <section class="center-slide">
-    <h1>🧩 Session 8</h1>
+    <h1>🧩 Session 7</h1>
     <h2>Agents &amp; Autonomous Loops</h2>
     <aside class="notes">
       This is the point where AI stops feeling like a tool you poke at and starts feeling more like a process that runs.
@@ -887,10 +906,10 @@ graph TD
   </section>
 </section>
 
-<!-- ===== SESSION 9 — AGENT ROLES ===== -->
+<!-- ===== SESSION 8 — AGENT ROLES ===== -->
 <section>
   <section class="center-slide">
-    <h1>🧩 Session 9</h1>
+    <h1>🧩 Session 8</h1>
     <h2>Roles: One Hat at a Time</h2>
     <aside class="notes">
       Up to now I've mostly talked about one agent doing useful work. Here the shift is from one agent to several specialized ones.
@@ -968,10 +987,10 @@ graph LR
   </section>
 </section>
 
-<!-- ===== SESSION 10 — SYSTEMS THINKING ===== -->
+<!-- ===== SESSION 9 — SYSTEMS THINKING ===== -->
 <section>
   <section class="center-slide">
-    <h1>🧩 Session 10</h1>
+    <h1>🧩 Session 9</h1>
     <h2>Systems Thinking</h2>
     <aside class="notes">
       This is the big-picture session where the earlier pieces start fitting together.
