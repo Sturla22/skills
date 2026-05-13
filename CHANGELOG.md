@@ -9,6 +9,7 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
+- GitHub Pages landing page at `docs/index.html`, served from the `/docs` folder on the main branch (`sturla22.github.io/skills`).
 - `tools/cli.py new-postmortem <work-id>` creates numbered postmortem records under `docs/work/<work-id>/evidence/`, and `tools/cli.py check-debt` reports tracked debt items from `docs/tech-debt.md` by status.
 - A lightweight stdlib-only pre-commit secret detector now lives at `tools/dev/detect_secrets.py`. The local `detect-secrets` hook scans staged text files for long base64/hex blobs, common API/password patterns, AWS keys, and private-key headers while skipping markdown, lockfiles, binary files, and explicit allowlist comments.
 - Workflow guidance now explicitly prefers supported CLI commands over direct file edits when the CLI already models the operation, especially for work packets and related artifacts. `AGENTS.md`, `docs/operating-model.md`, `.github/copilot-instructions.md`, and `README.md` now point users toward `tools/cli.py new-work`, `new-handoff`, `new-scenarios`, `check-work`, and `list-work` before manual file creation.
